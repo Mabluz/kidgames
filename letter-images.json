@@ -2,9 +2,9 @@
   "A": {
     "words": ["Ape", "Akebrett", "Appelsin", "Akvarium"],
     "images": ["🐒",
-      "https://www.extra-leker.no/media/catalog/product/cache/92542945a20c5be4864d45dd54ceb81b/n/t/nti-883132_1__276261__h62090134.jpg",
+      "images/A_AKEBRETT.jpg",
       "🍊",
-      "https://lade.tropehagen.no/wp-content/uploads/sites/34/pim-product/Tetra-startersett-akvarium-11251.jpg"],
+      "images/A_AKVARIUM.jpg"],
     "audio": ["sounds/A_Ape.wav", "sounds/A_Akebrett.wav", "sounds/A_Appelsin.wav", "sounds/A_Akvarium.wav"]
   },
   "B": {
@@ -14,10 +14,10 @@
   },
   "C": {
     "words": ["Cafe", "Camping", "Cowboy", "Cola"],
-    "images": ["https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/R%C3%B6e_g%C3%A5rd_caf%C3%A9_2.jpg/1200px-R%C3%B6e_g%C3%A5rd_caf%C3%A9_2.jpg",
-      "https://www.novaparks.com/sites/default/files/styles/scale_1440/public/2025-03/PohickBayPark20240831-NP-03%20-%20web.jpg",
-      "https://www.temashop.no/media/catalog/product/cache/cat_resized/1200/0/c/o/cowboyvast_kostymer_studentskiva_1_repbg.jpg",
-      "https://bilder.ngdata.no/7090000248093/kmh/large.jpg"],
+    "images": ["images/C_CAFE.jpg",
+      "images/C_CAMPING.jpg",
+      "images/C_COWBOY.jpg",
+      "images/C_COLA.jpg"],
     "audio": ["sounds/C_Cafe.wav", "sounds/C_Camping.wav", "sounds/C_Cowboy.wav", "sounds/C_Cola.wav"]
   },
   "D": {
@@ -42,7 +42,7 @@
   },
   "H": {
     "words": ["Hund", "Hus", "Heks", "Hjerte", "Hane", "Havn", "Hest", "Hammer", "Hodet", "Hånd", "Himmel", "Helg", "Hoppeslott", "Havet", "Høst", "Hjelm", "Hukommelse", "Hastighet", "Hvile", "Helsesøster"],
-    "images": ["🐕", "🏠", "https://www.barnesanger.no/leker/stiv-heks/stiv-heks.jpg", "❤️", "🐓", "⚓", "🐎", "🔨", "🧑‍🦲", "✋", "☁️", "🗓️", "🏰", "🌊", "🍂", "⛑️", "🧠", "⚡", "😴", "👩‍⚕️"],
+    "images": ["🐕", "🏠", "images/H_HEKS.jpg", "❤️", "🐓", "⚓", "🐎", "🔨", "🧑‍🦲", "✋", "☁️", "🗓️", "🏰", "🌊", "🍂", "⛑️", "🧠", "⚡", "😴", "👩‍⚕️"],
     "audio": ["sounds/H_Hund.wav", "sounds/H_Hus.wav", "sounds/H_Heks.wav", "sounds/H_Hjerte.wav", "sounds/H_Hane.wav", "sounds/H_Havn.wav", "sounds/H_Hest.wav", "sounds/H_Hammer.wav", "sounds/H_Hodet.wav", "sounds/H_Hånd.wav", "sounds/H_Himmel.wav", "sounds/H_Helg.wav", "sounds/H_Hoppeslott.wav", "sounds/H_Havet.wav", "sounds/H_Høst.wav", "sounds/H_Hjelm.wav", "sounds/H_Hukommelse.wav", "sounds/H_Hastighet.wav", "sounds/H_Hvile.wav", "sounds/H_Helsesøster.wav"]
   },
   "I": {
@@ -52,7 +52,7 @@
   },
   "J": {
     "words": ["Jorden", "Jeger", "Jul", "Juice"],
-    "images": ["🌍", "🏹", "🎄", "https://verdensbakeriet.no/assets/uploads/appelsin-juice-46a004b6-1ccb-11ed-8f75-ce7bda36116d_verdens_bakerier8444.jpg"],
+    "images": ["🌍", "🏹", "🎄", "images/J_JUICE.jpg"],
     "audio": ["sounds/J_Jorden.wav", "sounds/J_Jeger.wav", "sounds/J_Jul.wav", "sounds/J_Juice.wav"]
   },
   "K": {
@@ -62,7 +62,7 @@
   },
   "L": {
     "words": ["Løve", "Lys", "Larve", "Laks"],
-    "images": ["🦁", "💡", "🐛", "https://media.snl.no/media/6733/standard_laks.jpg"],
+    "images": ["🦁", "💡", "🐛", "images/L_LAKS.jpg"],
     "audio": ["sounds/L_Løve.wav", "sounds/L_Lys.wav", "sounds/L_Larve.wav", "sounds/L_Laks.wav"]
   },
   "M": {
@@ -78,9 +78,9 @@
   "O": {
     "words": ["Ost", "Ovn", "Okse", "Orkester"],
     "images": ["🧀",
-      "https://webshop.blob.core.windows.net/cache/c/3/a/9/9/5/c3a99580da89a85bfbf7f0d3ad4c306c280afed4.jpg",
+      "images/O_OVN.jpg",
       "🐂",
-      "https://arktiskfilharmoni.no/wp-content/uploads/2019/10/SYmf.orkester_Marthe-M%C3%B8lstre-NY-e1571308844879.jpg"],
+      "images/O_ORKESTER.jpg"],
     "audio": ["sounds/O_Ost.wav", "sounds/O_Ovn.wav", "sounds/O_Okse.wav", "sounds/O_Orkester.wav"]
   },
   "P": {
@@ -90,7 +90,7 @@
   },
   "Q": {
     "words": ["Quiz", "Quesadilla", "Quickstep", "Qatar"],
-    "images": ["❓", "🌮", "💃", "https://hampshireflag.co.uk/wp-content/uploads/2023/03/HFC20Qatar20Flag.png"],
+    "images": ["❓", "🌮", "💃", "images/Q_QATAR.png"],
     "audio": ["sounds/Q_Quiz.wav", "sounds/Q_Quesadilla.wav", "sounds/Q_Quickstep.wav", "sounds/Q_Qatar.wav"]
   },
   "R": {
@@ -100,7 +100,7 @@
   },
   "S": {
     "words": ["Slange", "Sol", "Sko", "Snø", "Sykkel", "Skje", "Soverom", "Skulptur", "Strand", "Saks", "Spisepinner", "Sommerfugl", "Snorkeling", "Sjokolade", "Skole", "Symaskine", "Silhuett", "Sykepleier", "Solbriller", "Sirene"],
-    "images": ["🐍", "☀️", "👟", "❄️", "🚲", "🥄", "🛏️", "🗿", "🏖️", "✂️", "🥢", "🦋", "🤿", "🍫", "🏫", "🪡", "👥", "👩‍⚕️", "🕶️", "https://www.temashop.no/media/catalog/product/cache/cat_resized/1200/0/p/o/politilys_og_sirene_tilbeh_r_byggeklosser_bursdag.jpg"],
+    "images": ["🐍", "☀️", "👟", "❄️", "🚲", "🥄", "🛏️", "🗿", "🏖️", "✂️", "🥢", "🦋", "🤿", "🍫", "🏫", "🪡", "👥", "👩‍⚕️", "🕶️", "images/S_SIRENE.jpg"],
     "audio": ["sounds/S_Slange.wav", "sounds/S_Sol.wav", "sounds/S_Sko.wav", "sounds/S_Snø.wav", "sounds/S_Sykkel.wav", "sounds/S_Skje.wav", "sounds/S_Soverom.wav", "sounds/S_Skulptur.wav", "sounds/S_Strand.wav", "sounds/S_Saks.wav", "sounds/S_Spisepinner.wav", "sounds/S_Sommerfugl.wav", "sounds/S_Snorkeling.wav", "sounds/S_Sjokolade.wav", "sounds/S_Skole.wav", "sounds/S_Symaskine.wav", "sounds/S_Silhuett.wav", "sounds/S_Sykepleier.wav", "sounds/S_Solbriller.wav", "sounds/S_Sirene.wav"]
   },
   "T": {
@@ -150,7 +150,7 @@
   },
   "Å": {
     "words": ["Ål", "Åpen", "År", "Åker"],
-    "images": ["https://media.snl.no/media/238022/article_topimage_aal.jpg",
+    "images": ["images/Å_ÅL.jpg",
       "🔓", "📅", "🌾"],
     "audio": ["sounds/Å_Ål.wav", "sounds/Å_Åpen.wav", "sounds/Å_År.wav", "sounds/Å_Åker.wav"]
   }

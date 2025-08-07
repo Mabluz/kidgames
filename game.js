@@ -541,7 +541,7 @@ class MemoryGame {
     }
     
     renderImage(image) {
-        if (image && (image.startsWith('http') || image.startsWith('data:'))) {
+        if (image && (image.startsWith('http') || image.startsWith('data:') || image.startsWith('images/'))) {
             return `<img src="${image}" alt="Custom image" class="custom-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span style="display:none;">❓</span>`;
         }
         return image;

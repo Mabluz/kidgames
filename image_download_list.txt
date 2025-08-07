@@ -1,0 +1,63 @@
+# Image Download List for Memory Game
+# Download these URLs and save them with the suggested filenames in the images/ folder
+
+# Letter A - Akebrett
+https://www.extra-leker.no/media/catalog/product/cache/92542945a20c5be4864d45dd54ceb81b/n/t/nti-883132_1__276261__h62090134.jpg
+→ Save as: images/A_AKEBRETT.jpg
+
+# Letter A - Akvarium
+https://lade.tropehagen.no/wp-content/uploads/sites/34/pim-product/Tetra-startersett-akvarium-11251.jpg
+→ Save as: images/A_AKVARIUM.jpg
+
+# Letter C - Cafe
+https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/R%C3%B6e_g%C3%A5rd_caf%C3%A9_2.jpg/1200px-R%C3%B6e_g%C3%A5rd_caf%C3%A9_2.jpg
+→ Save as: images/C_CAFE.jpg
+
+# Letter C - Camping
+https://www.novaparks.com/sites/default/files/styles/scale_1440/public/2025-03/PohickBayPark20240831-NP-03%20-%20web.jpg
+→ Save as: images/C_CAMPING.jpg
+
+# Letter C - Cowboy
+https://www.temashop.no/media/catalog/product/cache/cat_resized/1200/0/c/o/cowboyvast_kostymer_studentskiva_1_repbg.jpg
+→ Save as: images/C_COWBOY.jpg
+
+# Letter C - Cola
+https://bilder.ngdata.no/7090000248093/kmh/large.jpg
+→ Save as: images/C_COLA.jpg
+
+# Letter H - Heks
+https://www.barnesanger.no/leker/stiv-heks/stiv-heks.jpg
+→ Save as: images/H_HEKS.jpg
+
+# Letter J - Juice
+https://verdensbakeriet.no/assets/uploads/appelsin-juice-46a004b6-1ccb-11ed-8f75-ce7bda36116d_verdens_bakerier8444.jpg
+→ Save as: images/J_JUICE.jpg
+
+# Letter L - Laks
+https://media.snl.no/media/6733/standard_laks.jpg
+→ Save as: images/L_LAKS.jpg
+
+# Letter O - Ovn
+https://webshop.blob.core.windows.net/cache/c/3/a/9/9/5/c3a99580da89a85bfbf7f0d3ad4c306c280afed4.jpg
+→ Save as: images/O_OVN.jpg
+
+# Letter O - Orkester
+https://arktiskfilharmoni.no/wp-content/uploads/2019/10/SYmf.orkester_Marthe-M%C3%B8lstre-NY-e1571308844879.jpg
+→ Save as: images/O_ORKESTER.jpg
+
+# Letter Q - Qatar
+https://hampshireflag.co.uk/wp-content/uploads/2023/03/HFC20Qatar20Flag.png
+→ Save as: images/Q_QATAR.png
+
+# Letter S - Sirene
+https://www.temashop.no/media/catalog/product/cache/cat_resized/1200/0/p/o/politilys_og_sirene_tilbeh_r_byggeklosser_bursdag.jpg
+→ Save as: images/S_SIRENE.jpg
+
+# Letter Å - Ål
+https://media.snl.no/media/238022/article_topimage_aal.jpg
+→ Save as: images/Å_ÅL.jpg
+
+# DOWNLOAD INSTRUCTIONS:
+# 1. Create the images/ folder if it doesn't exist
+# 2. Download each URL and save with the suggested filename
+# 3. After downloading all images, the letter-images.json file will be updated automatically
