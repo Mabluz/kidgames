@@ -608,3 +608,79 @@ header p {
     font-style: italic;
     margin: 0;
 }
+
+/* Multiplayer Styles */
+.player-count-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.player-count-section label {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.player-count-select {
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.player-count-select:focus {
+    outline: none;
+    border-color: #4ecdc4;
+}
+
+.player-info {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.players-info {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+}
+
+.current-player {
+    text-align: center;
+    color: #4ecdc4;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.player-scores {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.player-score {
+    padding: 8px 12px;
+    border-radius: 15px;
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.player-score.active {
+    background: #4ecdc4;
+    color: white;
+    border-color: #44a08d;
+    transform: scale(1.05);
+}

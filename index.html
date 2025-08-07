@@ -33,6 +33,21 @@
                 </div>
             </div>
             
+            <div class="setup-section">
+                <div class="player-count-section">
+                    <label for="player-count">Hvor mange spillere?</label>
+                    <select id="player-count" class="player-count-select">
+                        <option value="1">1 spiller</option>
+                        <option value="2">2 spillere</option>
+                        <option value="3">3 spillere</option>
+                        <option value="4">4 spillere</option>
+                    </select>
+                    <div class="player-info">
+                        <p>Ved flerspiller: spillere bytter på å flippe 2 kort. Hvis du finner et par får du en tur til!</p>
+                    </div>
+                </div>
+            </div>
+            
             <button id="start-game-btn" class="start-game-btn">🚀 Start spill</button>
         </div>
         
@@ -41,6 +56,9 @@
                 <div class="score">
                     <span>Forsøk: <span id="attempts">0</span></span>
                     <span>Par: <span id="pairs">0</span>/<span id="total-pairs">29</span></span>
+                </div>
+                <div class="players-info" id="players-info">
+                    <!-- Player information will be added here -->
                 </div>
                 <div class="controls">
                     <button id="settings-btn" class="settings-btn" title="Innstillinger">⚙️</button>

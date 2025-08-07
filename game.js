@@ -18,6 +18,11 @@ class MemoryGame {
         this.flippedCards = [];
         this.matchedPairs = 0;
         this.attempts = 0;
+        
+        // Multiplayer properties
+        this.playerCount = 1;
+        this.players = [];
+        this.currentPlayerIndex = 0;
         this.gameBoard = document.getElementById('game-board');
         this.attemptsEl = document.getElementById('attempts');
         this.pairsEl = document.getElementById('pairs');
@@ -377,6 +382,11 @@ class MemoryGame {
             card2.isMatched = true;
             this.matchedPairs++;
             
+            // Update current player score in multiplayer
+            if (this.playerCount > 1) {
+                this.players[this.currentPlayerIndex].matches++;
+            }
+            
             // Update the visual state for matched cards
             const card1Element = document.querySelector(`[data-card-id="${card1.id}"] .card-back`);
             const card2Element = document.querySelector(`[data-card-id="${card2.id}"] .card-back`);
@@ -390,6 +400,7 @@ class MemoryGame {
         }
         
         this.updateScore();
+        this.updatePlayerDisplay();
     }
 
     showFeedback(message, type) {
@@ -437,6 +448,32 @@ class MemoryGame {
     }
     
     showWinMessage() {
+        // Update win message for multiplayer
+        if (this.playerCount > 1) {
+            // Find the winner(s)
+            const maxMatches = Math.max(...this.players.map(p => p.matches));
+            const winners = this.players.filter(p => p.matches === maxMatches);
+            
+            const winMessageElement = this.winMessage;
+            const titleElement = winMessageElement.querySelector('h2');
+            const messageElement = winMessageElement.querySelector('p');
+            
+            if (winners.length === 1) {
+                titleElement.textContent = `🏆 ${winners[0].name} vinner!`;
+                messageElement.textContent = `Gratulerer! Du fant ${winners[0].matches} par av ${this.selectedPairs} totalt.`;
+            } else {
+                titleElement.textContent = '🏆 Uavgjort!';
+                const winnerNames = winners.map(w => w.name).join(' og ');
+                messageElement.textContent = `${winnerNames} delte seieren med ${maxMatches} par hver!`;
+            }
+        } else {
+            // Single player - use original message
+            const titleElement = this.winMessage.querySelector('h2');
+            const messageElement = this.winMessage.querySelector('p');
+            titleElement.textContent = '🏆 Gratulerer!';
+            messageElement.textContent = 'Du fant alle parene!';
+        }
+        
         this.winMessage.classList.remove('hidden');
     }
     
@@ -454,6 +491,11 @@ class MemoryGame {
         this.currentFlippedCard = null;
         this.recordedAudio = null;
         this.singleLetterMode = false;
+        
+        // Reset multiplayer state
+        this.playerCount = 1;
+        this.players = [];
+        this.currentPlayerIndex = 0;
         
         // Reset audio chunks if recording was in progress
         this.audioChunks = [];
@@ -524,7 +566,7 @@ class MemoryGame {
             this.shouldCheckMatchAfterRecording = false;
             this.isSecondCardRecording = false; // Reset second card flag
             
-            // If it was not a match, flip the cards back now
+            // If it was not a match, flip the cards back and switch players (in multiplayer)
             if (!this.isCurrentMatch) {
                 const [card1, card2] = this.flippedCards;
                 card1.isFlipped = false;
@@ -534,7 +576,13 @@ class MemoryGame {
                 const card2Element = document.querySelector(`[data-card-id="${card2.id}"]`);
                 card1Element.classList.remove('flipped');
                 card2Element.classList.remove('flipped');
+                
+                // Switch to next player in multiplayer if no match
+                if (this.playerCount > 1) {
+                    this.nextPlayer();
+                }
             }
+            // If it was a match, the current player gets to continue (no player switch)
             
             // Clear flipped cards and reset for next turn
             this.flippedCards = [];
@@ -774,9 +822,13 @@ class MemoryGame {
             return;
         }
         
-        // Get tile count
+        // Get tile count and player count
         const tileCount = parseInt(document.getElementById('tile-count').value);
+        this.playerCount = parseInt(document.getElementById('player-count').value);
         const maxPossibleTiles = this.selectedLetters.length * 4 * 2; // Each letter has 4 words, 2 tiles per pair
+        
+        // Initialize players
+        this.initializePlayers();
         
         // Validate tile count
         if (tileCount < 4) {
@@ -804,6 +856,57 @@ class MemoryGame {
         
         // Initialize and start the game
         this.initializeGame();
+        this.updatePlayerDisplay();
+    }
+    
+    initializePlayers() {
+        this.players = [];
+        this.currentPlayerIndex = 0;
+        
+        for (let i = 1; i <= this.playerCount; i++) {
+            this.players.push({
+                id: i,
+                name: `Spiller ${i}`,
+                score: 0,
+                matches: 0
+            });
+        }
+    }
+    
+    updatePlayerDisplay() {
+        const playersInfo = document.getElementById('players-info');
+        
+        if (this.playerCount === 1) {
+            playersInfo.style.display = 'none';
+            return;
+        }
+        
+        playersInfo.style.display = 'block';
+        playersInfo.innerHTML = '';
+        
+        // Current player indicator
+        const currentPlayerDiv = document.createElement('div');
+        currentPlayerDiv.className = 'current-player';
+        currentPlayerDiv.innerHTML = `<strong>Tur: ${this.players[this.currentPlayerIndex].name}</strong>`;
+        playersInfo.appendChild(currentPlayerDiv);
+        
+        // Player scores
+        const scoresDiv = document.createElement('div');
+        scoresDiv.className = 'player-scores';
+        
+        this.players.forEach((player, index) => {
+            const playerDiv = document.createElement('div');
+            playerDiv.className = `player-score ${index === this.currentPlayerIndex ? 'active' : ''}`;
+            playerDiv.innerHTML = `${player.name}: ${player.matches} par`;
+            scoresDiv.appendChild(playerDiv);
+        });
+        
+        playersInfo.appendChild(scoresDiv);
+    }
+
+    nextPlayer() {
+        this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.playerCount;
+        this.updatePlayerDisplay();
     }
 
     // Settings Modal Functions
