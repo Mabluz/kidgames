@@ -475,6 +475,8 @@ class MemoryGame {
         }
         
         this.winMessage.classList.remove('hidden');
+        this.triggerConfetti();
+        this.playGameOverSound();
     }
     
     restartGame() {
@@ -713,9 +715,20 @@ class MemoryGame {
         if (this.currentFlippedCard) {
             this.voiceControls.classList.remove('hidden');
             this.voiceControls.classList.add('attention');
-            document.getElementById('recording-status').textContent = 
-                `Hør uttalen først, deretter si ordet "${this.currentFlippedCard.word}" og klikk ta opp!`;
-            document.getElementById('listen-btn').classList.remove('hidden');
+            
+            // Check if audio file exists for this card
+            const hasAudio = this.currentFlippedCard.audio && this.currentFlippedCard.audio.trim() !== '';
+            
+            if (hasAudio) {
+                document.getElementById('recording-status').textContent = 
+                    `Hør uttalen først, deretter si ordet "${this.currentFlippedCard.word}" og klikk ta opp!`;
+                document.getElementById('listen-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('recording-status').textContent = 
+                    `Ingen lydfil for "${this.currentFlippedCard.word}". Si ordet og klikk ta opp!`;
+                document.getElementById('listen-btn').classList.add('hidden');
+            }
+            
             document.getElementById('play-btn').classList.add('hidden');
             document.getElementById('continue-btn').classList.add('hidden');
         }
@@ -907,6 +920,44 @@ class MemoryGame {
     nextPlayer() {
         this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.playerCount;
         this.updatePlayerDisplay();
+    }
+
+    triggerConfetti() {
+        const confettiContainer = document.createElement('div');
+        confettiContainer.className = 'confetti';
+        document.body.appendChild(confettiContainer);
+
+        // Create 50 confetti pieces
+        for (let i = 0; i < 50; i++) {
+            const confettiPiece = document.createElement('div');
+            confettiPiece.className = 'confetti-piece';
+            
+            // Random horizontal position
+            confettiPiece.style.left = Math.random() * 100 + '%';
+            
+            // Random size variation
+            const size = Math.random() * 8 + 4;
+            confettiPiece.style.width = size + 'px';
+            confettiPiece.style.height = size + 'px';
+            
+            // Random animation duration
+            confettiPiece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            
+            confettiContainer.appendChild(confettiPiece);
+        }
+
+        // Remove confetti after animation
+        setTimeout(() => {
+            document.body.removeChild(confettiContainer);
+        }, 4000);
+    }
+
+    playGameOverSound() {
+        const audio = new Audio('game-over.wav');
+        audio.play().catch(error => {
+            console.log('Could not play game-over sound:', error);
+            // Silently fail if audio file doesn't exist or can't be played
+        });
     }
 
     // Settings Modal Functions

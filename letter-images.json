@@ -23,57 +23,57 @@
   "D": {
     "words": ["Drage", "Delfin", "Dinosaur", "Dør"],
     "images": ["🐉", "🐬", "🦕", "🚪"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/D_Drage.wav", "sounds/D_Delfin.wav", "sounds/D_Dinosaur.wav", "sounds/D_Dør.wav"]
   },
   "E": {
     "words": ["Elefant", "Eple", "Edderkopp", "Engel"],
     "images": ["🐘", "🍎", "🕷️", "👼"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/E_Elefant.wav", "sounds/E_Eple.wav", "sounds/E_Edderkopp.wav", "sounds/E_Engel.wav"]
   },
   "F": {
     "words": ["Fisk", "Fugl", "Frosk", "Fly"],
     "images": ["🐟", "🐦", "🐸", "✈️"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/F_Fisk.wav", "sounds/F_Fugl.wav", "sounds/F_Frosk.wav", "sounds/F_Fly.wav"]
   },
   "G": {
     "words": ["Gitar", "Gulerot", "Glass", "Gris"],
     "images": ["🎸", "🥕", "🥛", "🐷"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/G_Gitar.wav", "sounds/G_Gulerot.wav", "sounds/G_Glass.wav", "sounds/G_Gris.wav"]
   },
   "H": {
     "words": ["Hund", "Hus", "Heks", "Hjerte"],
     "images": ["🐕", "🏠", "🧙", "❤️"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/H_Hund.wav", "sounds/H_Hus.wav", "sounds/H_Heks.wav", "sounds/H_Hjerte.wav"]
   },
   "I": {
     "words": ["Iskrem", "Ild", "Is", "Insekt"],
     "images": ["🍦", "🔥", "🧊", "🐛"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/I_Iskrem.wav", "sounds/I_Ild.wav", "sounds/I_Is.wav", "sounds/I_Insekt.wav"]
   },
   "J": {
     "words": ["Jorden", "Jeger", "Jul", "Juice"],
     "images": ["🌍", "🏹", "🎄", "🧊"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/J_Jorden.wav", "sounds/J_Jeger.wav", "sounds/J_Jul.wav", "sounds/J_Juice.wav"]
   },
   "K": {
     "words": ["Katt", "Kaffe", "Kake", "Krone"],
     "images": ["🐱", "☕", "🍰", "👑"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/K_Katt.wav", "sounds/K_Kaffe.wav", "sounds/K_Kake.wav", "sounds/K_Krone.wav"]
   },
   "L": {
     "words": ["Løve", "Lys", "Larve", "Laks"],
     "images": ["🦁", "💡", "🐛", "https://media.snl.no/media/6733/standard_laks.jpg"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/L_Løve.wav", "sounds/L_Lys.wav", "sounds/L_Larve.wav", "sounds/L_Laks.wav"]
   },
   "M": {
     "words": ["Måne", "Mus", "Melk", "Musikk"],
     "images": ["🌙", "🐭", "🥛", "🎵"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/M_Måne.wav", "sounds/M_Mus.wav", "sounds/M_Melk.wav", "sounds/M_Musikk.wav"]
   },
   "N": {
     "words": ["Nese", "Nøtt", "Natt", "Null"],
     "images": ["👃", "🥜", "🌃", "0️⃣"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/N_Nese.wav", "sounds/N_Nøtt.wav", "sounds/N_Natt.wav", "sounds/N_Null.wav"]
   },
   "O": {
     "words": ["Ost", "Ovn", "Okse", "Orkester"],
@@ -81,77 +81,77 @@
       "https://webshop.blob.core.windows.net/cache/c/3/a/9/9/5/c3a99580da89a85bfbf7f0d3ad4c306c280afed4.jpg",
       "🐂",
       "https://arktiskfilharmoni.no/wp-content/uploads/2019/10/SYmf.orkester_Marthe-M%C3%B8lstre-NY-e1571308844879.jpg"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/O_Ost.wav", "sounds/O_Ovn.wav", "sounds/O_Okse.wav", "sounds/O_Orkester.wav"]
   },
   "P": {
     "words": ["Panda", "Pizza", "Paraply", "Papir"],
     "images": ["🐼", "🍕", "☂️", "📄"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/P_Panda.wav", "sounds/P_Pizza.wav", "sounds/P_Paraply.wav", "sounds/P_Papir.wav"]
   },
   "Q": {
-    "words": ["Quiz", "Quesadilla", "Quartz"],
-    "images": ["❓", "🌮", "💎"],
-    "audio": ["", "", ""]
+    "words": ["Quiz", "Quesadilla"],
+    "images": ["❓", "🌮"],
+    "audio": ["sounds/Q_Quiz.wav", "sounds/Q_Quesadilla.wav"]
   },
   "R": {
     "words": ["Regnbue", "Rotte", "Rose", "Robot"],
     "images": ["🌈", "🐀", "🌹", "🤖"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/R_Regnbue.wav", "sounds/R_Rotte.wav", "sounds/R_Rose.wav", "sounds/R_Robot.wav"]
   },
   "S": {
     "words": ["Slange", "Sol", "Sko", "Snø"],
     "images": ["🐍", "☀️", "👟", "❄️"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/S_Slange.wav", "sounds/S_Sol.wav", "sounds/S_Sko.wav", "sounds/S_Snø.wav"]
   },
   "T": {
     "words": ["Tiger", "Tre", "Tog", "Tann"],
     "images": ["🐅", "🌳", "🚂", "🦷"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/T_Tiger.wav", "sounds/T_Tre.wav", "sounds/T_Tog.wav", "sounds/T_Tann.wav"]
   },
   "U": {
     "words": ["Ugle", "Ur", "Ulv", "Unge"],
     "images": ["🦉", "⏰", "🐺", "👶"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/U_Ugle.wav", "sounds/U_Ur.wav", "sounds/U_Ulv.wav", "sounds/U_Unge.wav"]
   },
   "V": {
     "words": ["Vann", "Vind", "Vinter", "Veps"],
     "images": ["💧", "💨", "❄️", "🐝"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/V_Vann.wav", "sounds/V_Vind.wav", "sounds/V_Vinter.wav", "sounds/V_Veps.wav"]
   },
   "W": {
     "words": ["WC", "Wok", "Wifi", "Websider"],
     "images": ["🚽", "🥘", "📶", "💻"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/W_WC.wav", "sounds/W_Wok.wav", "sounds/W_Wifi.wav", "sounds/W_Websider.wav"]
   },
   "X": {
     "words": ["X-ray", "Xylofon", "Xbox"],
     "images": ["🩻", "🎹", "🎮"],
-    "audio": ["", "", ""]
+    "audio": ["sounds/X_X-ray.wav", "sounds/X_Xylofon.wav", "sounds/X_Xbox.wav"]
   },
   "Y": {
     "words": ["Yoga", "Yacht", "Yak", "Yogurt"],
     "images": ["🧘", "⛵", "🦬", "🥛"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/Y_Yoga.wav", "sounds/Y_Yacht.wav", "sounds/Y_Yak.wav", "sounds/Y_Yogurt.wav"]
   },
   "Z": {
     "words": ["Zebra", "Zoo", "Zombie", "Zoom"],
     "images": ["🦓", "🏛️", "🧟", "🔍"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/Z_Zebra.wav", "sounds/Z_Zoo.wav", "sounds/Z_Zombie.wav", "sounds/Z_Zoom.wav"]
   },
   "Æ": {
     "words": ["Ære", "Ærlig", "Ært", "Ærfugl"],
     "images": ["🏆", "🤝", "🟢", "🦆"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/Æ_Ære.wav", "sounds/Æ_Ærlig.wav", "sounds/Æ_Ært.wav", "sounds/Æ_Ærfugl.wav"]
   },
   "Ø": {
     "words": ["Øy", "Øl", "Øye", "Ørn"],
     "images": ["🏝️", "🍺", "👁️", "🦅"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/Ø_Øy.wav", "sounds/Ø_Øl.wav", "sounds/Ø_Øye.wav", "sounds/Ø_Ørn.wav"]
   },
   "Å": {
     "words": ["Ål", "Åpen", "År", "Åker"],
     "images": ["https://media.snl.no/media/238022/article_topimage_aal.jpg",
       "🔓", "📅", "🌾"],
-    "audio": ["", "", "", ""]
+    "audio": ["sounds/Å_Ål.wav", "sounds/Å_Åpen.wav", "sounds/Å_År.wav", "sounds/Å_Åker.wav"]
   }
 }
