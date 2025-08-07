@@ -42,7 +42,7 @@
   },
   "H": {
     "words": ["Hund", "Hus", "Heks", "Hjerte"],
-    "images": ["🐕", "🏠", "🧙", "❤️"],
+    "images": ["🐕", "🏠", "https://www.barnesanger.no/leker/stiv-heks/stiv-heks.jpg", "❤️"],
     "audio": ["sounds/H_Hund.wav", "sounds/H_Hus.wav", "sounds/H_Heks.wav", "sounds/H_Hjerte.wav"]
   },
   "I": {
@@ -52,7 +52,7 @@
   },
   "J": {
     "words": ["Jorden", "Jeger", "Jul", "Juice"],
-    "images": ["🌍", "🏹", "🎄", "🧊"],
+    "images": ["🌍", "🏹", "🎄", "https://verdensbakeriet.no/assets/uploads/appelsin-juice-46a004b6-1ccb-11ed-8f75-ce7bda36116d_verdens_bakerier8444.jpg"],
     "audio": ["sounds/J_Jorden.wav", "sounds/J_Jeger.wav", "sounds/J_Jul.wav", "sounds/J_Juice.wav"]
   },
   "K": {
@@ -89,9 +89,9 @@
     "audio": ["sounds/P_Panda.wav", "sounds/P_Pizza.wav", "sounds/P_Paraply.wav", "sounds/P_Papir.wav"]
   },
   "Q": {
-    "words": ["Quiz", "Quesadilla"],
-    "images": ["❓", "🌮"],
-    "audio": ["sounds/Q_Quiz.wav", "sounds/Q_Quesadilla.wav"]
+    "words": ["Quiz", "Quesadilla", "Quickstep", "Qatar"],
+    "images": ["❓", "🌮", "💃", "https://hampshireflag.co.uk/wp-content/uploads/2023/03/HFC20Qatar20Flag.png"],
+    "audio": ["sounds/Q_Quiz.wav", "sounds/Q_Quesadilla.wav", "sounds/Q_Quickstep.wav", "sounds/Q_Qatar.wav"]
   },
   "R": {
     "words": ["Regnbue", "Rotte", "Rose", "Robot"],
@@ -124,9 +124,9 @@
     "audio": ["sounds/W_WC.wav", "sounds/W_Wok.wav", "sounds/W_Wifi.wav", "sounds/W_Websider.wav"]
   },
   "X": {
-    "words": ["X-ray", "Xylofon", "Xbox"],
-    "images": ["🩻", "🎹", "🎮"],
-    "audio": ["sounds/X_X-ray.wav", "sounds/X_Xylofon.wav", "sounds/X_Xbox.wav"]
+    "words": ["X-ray", "Xylofon", "Xbox", "X-Men"],
+    "images": ["🩻", "🎹", "🎮", "🦸‍♂️"],
+    "audio": ["sounds/X_X-ray.wav", "sounds/X_Xylofon.wav", "sounds/X_Xbox.wav", "sounds/X_X-Men.wav"]
   },
   "Y": {
     "words": ["Yoga", "Yacht", "Yak", "Yogurt"],
