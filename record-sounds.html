@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter Sound Recorder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .letters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .letter-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .letter-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .letter-title {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2196F3;
+            margin-right: 10px;
+        }
+
+        .word-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+
+        .word-text {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .word-image {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .record-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .record-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .record-btn.record {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .record-btn.stop {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        .record-btn.save {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .record-btn.play {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .record-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .status {
+            font-size: 12px;
+            color: #666;
+            margin-left: 10px;
+        }
+
+        .recording {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .progress-bar {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            padding: 3px;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            background-color: #4CAF50;
+            height: 20px;
+            border-radius: 7px;
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .bulk-actions {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .bulk-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .bulk-btn.download {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .bulk-btn.clear {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .audio-preview {
+            margin-top: 10px;
+        }
+
+        .audio-preview audio {
+            width: 100%;
+            height: 30px;
+        }
+
+        .has-recording {
+            background-color: #e8f5e8 !important;
+            border-color: #4CAF50 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Letter Sound Recorder</h1>
+        <p>Record pronunciation sounds for each letter and word in the memory game</p>
+    </div>
+
+    <div class="bulk-actions">
+        <button class="bulk-btn download" onclick="downloadAllRecordings()">
+            📥 Download All Recordings
+        </button>
+        <button class="bulk-btn clear" onclick="clearAllRecordings()">
+            🗑️ Clear All Recordings
+        </button>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressBar">0%</div>
+    </div>
+
+    <div class="letters-grid" id="lettersGrid">
+        <!-- Letter cards will be generated here -->
+    </div>
+
+    <script>
+        let letterData = {};
+        let mediaRecorder;
+        let currentRecording = null;
+        let recordedChunks = [];
+        let recordings = {};
+
+        // Check if an audio file exists in the sounds directory
+        async function checkAudioFileExists(letter, word) {
+            const filename = `${letter}_${word}.wav`;
+            try {
+                const response = await fetch(`sounds/${filename}`, { method: 'HEAD' });
+                return response.ok;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        // Initialize the application
+        async function init() {
+            try {
+                const response = await fetch('letter-images.json');
+                letterData = await response.json();
+                await generateLetterCards();
+                updateProgress();
+            } catch (error) {
+                console.error('Error loading letter data:', error);
+                alert('Error loading letter data. Please make sure letter-images.json is available.');
+            }
+        }
+
+        async function generateLetterCards() {
+            const grid = document.getElementById('lettersGrid');
+            
+            for (const [letter, data] of Object.entries(letterData)) {
+                const card = document.createElement('div');
+                card.className = 'letter-card';
+                
+                let wordsHtml = '';
+                
+                for (let index = 0; index < data.words.length; index++) {
+                    const word = data.words[index];
+                    const image = data.images[index];
+                    const recordingKey = `${letter}_${index}`;
+                    
+                    // Check if audio file exists in sounds directory
+                    const hasExistingRecording = await checkAudioFileExists(letter, word);
+                    const hasRecordingClass = hasExistingRecording ? 'has-recording' : '';
+                    const statusText = hasExistingRecording ? 'File exists in sounds/' : 'Ready';
+                    
+                    wordsHtml += `
+                        <div class="word-item ${hasRecordingClass}" id="word_${recordingKey}">
+                            <div style="display: flex; align-items: center;">
+                                <span class="word-text">${word}</span>
+                                ${image ? (image.startsWith('http') ? 
+                                    `<img src="${image}" alt="${word}" class="word-image" onerror="this.style.display='none'">` : 
+                                    `<span class="word-image">${image}</span>`) : ''}
+                            </div>
+                            <div class="record-controls">
+                                ${hasExistingRecording ? `<button class="record-btn play" onclick="playRecording('${recordingKey}', '${letter}', '${word}')" id="play_${recordingKey}">
+                                    ▶️ Play
+                                </button>` : ''}
+                                <button class="record-btn record" onclick="startRecording('${recordingKey}', '${word}')" id="record_${recordingKey}">
+                                    🎤 Record
+                                </button>
+                                <button class="record-btn stop hidden" onclick="stopRecording('${recordingKey}')" id="stop_${recordingKey}">
+                                    ⏹️ Stop
+                                </button>
+                                <button class="record-btn save hidden" onclick="saveRecording('${recordingKey}', '${letter}', '${word}')" id="save_${recordingKey}">
+                                    💾 Save
+                                </button>
+                                <span class="status" id="status_${recordingKey}">${statusText}</span>
+                            </div>
+                            <div class="audio-preview" id="preview_${recordingKey}">
+                                ${hasExistingRecording ? `<audio controls><source src="sounds/${letter}_${word}.wav" type="audio/wav"></audio>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                card.innerHTML = `
+                    <div class="letter-header">
+                        <div class="letter-title">${letter}</div>
+                    </div>
+                    ${wordsHtml}
+                `;
+                
+                grid.appendChild(card);
+            }
+        }
+
+        async function startRecording(recordingKey, word) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                
+                recordedChunks = [];
+                mediaRecorder = new MediaRecorder(stream);
+                currentRecording = recordingKey;
+                
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+                
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: 'audio/wav' });
+                    recordings[recordingKey] = blob;
+                    
+                    // Create audio preview
+                    const audioUrl = URL.createObjectURL(blob);
+                    const audioElement = document.createElement('audio');
+                    audioElement.src = audioUrl;
+                    audioElement.controls = true;
+                    
+                    const previewDiv = document.getElementById(`preview_${recordingKey}`);
+                    previewDiv.innerHTML = '';
+                    previewDiv.appendChild(audioElement);
+                    
+                    // Show play button if it doesn't exist
+                    const controlsDiv = document.getElementById(`word_${recordingKey}`).querySelector('.record-controls');
+                    if (!document.getElementById(`play_${recordingKey}`)) {
+                        const playButton = document.createElement('button');
+                        playButton.className = 'record-btn play';
+                        playButton.id = `play_${recordingKey}`;
+                        playButton.innerHTML = '▶️ Play';
+                        
+                        // Get letter and word from recordingKey
+                        const parts = recordingKey.split('_');
+                        const letter = parts[0];
+                        const wordIndex = parts[1];
+                        const word = letterData[letter].words[wordIndex];
+                        
+                        playButton.onclick = () => playRecording(recordingKey, letter, word);
+                        controlsDiv.insertBefore(playButton, controlsDiv.firstChild);
+                    }
+                    
+                    // Show save button
+                    document.getElementById(`save_${recordingKey}`).classList.remove('hidden');
+                    document.getElementById(`status_${recordingKey}`).textContent = 'Recording ready to save';
+                };
+                
+                mediaRecorder.start();
+                
+                // Update UI - hide Record button, show Stop button
+                document.getElementById(`record_${recordingKey}`).classList.add('hidden');
+                document.getElementById(`stop_${recordingKey}`).classList.remove('hidden');
+                document.getElementById(`status_${recordingKey}`).textContent = 'Recording...';
+                document.getElementById(`status_${recordingKey}`).classList.add('recording');
+                
+            } catch (error) {
+                console.error('Error starting recording:', error);
+                alert('Error accessing microphone. Please ensure microphone permissions are granted.');
+            }
+        }
+
+        function stopRecording(recordingKey) {
+            if (mediaRecorder && currentRecording === recordingKey) {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                
+                // Update UI - show Record button, hide Stop button, show Save button
+                document.getElementById(`record_${recordingKey}`).classList.remove('hidden');
+                document.getElementById(`stop_${recordingKey}`).classList.add('hidden');
+                document.getElementById(`save_${recordingKey}`).classList.remove('hidden');
+                document.getElementById(`status_${recordingKey}`).classList.remove('recording');
+            }
+        }
+
+        async function saveRecording(recordingKey, letter, word) {
+            if (!recordings[recordingKey]) {
+                alert('No recording available to save');
+                return;
+            }
+            
+            const blob = recordings[recordingKey];
+            const filename = `${letter}_${word}.wav`;
+            
+            // Create download link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            
+            // Mark as saved and hide save button
+            document.getElementById(`word_${recordingKey}`).classList.add('has-recording');
+            document.getElementById(`status_${recordingKey}`).textContent = 'Saved!';
+            document.getElementById(`save_${recordingKey}`).classList.add('hidden');
+            
+            updateProgress();
+            
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 1000);
+        }
+
+        function updateProgress() {
+            const totalWords = Object.values(letterData).reduce((sum, data) => sum + data.words.length, 0);
+            const savedRecordings = document.querySelectorAll('.has-recording').length;
+            const percentage = Math.round((savedRecordings / totalWords) * 100);
+            
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = `${savedRecordings}/${totalWords} (${percentage}%)`;
+        }
+
+        function downloadAllRecordings() {
+            const savedRecordings = Object.keys(recordings);
+            if (savedRecordings.length === 0) {
+                alert('No recordings to download');
+                return;
+            }
+            
+            savedRecordings.forEach(key => {
+                const parts = key.split('_');
+                const letter = parts[0];
+                const wordIndex = parts[1];
+                const word = letterData[letter].words[wordIndex];
+                
+                const blob = recordings[key];
+                const filename = `${letter}_${word}.wav`;
+                
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            });
+        }
+
+        function playRecording(recordingKey, letter, word) {
+            // First try to play the new recording if it exists
+            if (recordings[recordingKey]) {
+                const audioUrl = URL.createObjectURL(recordings[recordingKey]);
+                const audio = new Audio(audioUrl);
+                
+                audio.play().catch(error => {
+                    console.error('Error playing new recording:', error);
+                    alert('Could not play the new recording.');
+                });
+                
+                // Clean up the URL after playing
+                audio.onended = () => URL.revokeObjectURL(audioUrl);
+                audio.onerror = () => URL.revokeObjectURL(audioUrl);
+            } else {
+                // Fall back to existing file in sounds directory
+                const filename = `sounds/${letter}_${word}.wav`;
+                const audio = new Audio(filename);
+                
+                audio.play().catch(error => {
+                    console.error('Error playing existing audio:', error);
+                    alert(`Could not play ${filename}. Make sure the file exists in the sounds directory.`);
+                });
+            }
+        }
+
+        function clearAllRecordings() {
+            if (confirm('Are you sure you want to clear all recordings?')) {
+                recordings = {};
+                document.querySelectorAll('.has-recording').forEach(el => {
+                    el.classList.remove('has-recording');
+                });
+                document.querySelectorAll('.audio-preview').forEach(el => {
+                    el.innerHTML = '';
+                });
+                document.querySelectorAll('.status').forEach(el => {
+                    el.textContent = 'Ready';
+                });
+                document.querySelectorAll('.save').forEach(el => {
+                    el.disabled = true;
+                });
+                updateProgress();
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
