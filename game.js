@@ -697,16 +697,16 @@ class MemoryGame {
                 audio.play().catch(error => {
                     console.log('Could not play pre-recorded audio:', error);
                     document.getElementById('recording-status').textContent = 
-                        `Lydfil ikke tilgjengelig for "${this.currentFlippedCard.word}". Si ordet og klikk ta opp!`;
+                        `Lydfil ikke tilgjengelig for "${this.currentFlippedCard.word}". Klikk ta opp og si ordet!`;
                 });
                 
                 audio.onended = () => {
                     document.getElementById('recording-status').textContent = 
-                        `Nå er det din tur! Si "${this.currentFlippedCard.word}" og klikk ta opp!`;
+                        `Nå er det din tur! Klikk ta opp og si "${this.currentFlippedCard.word}"!`;
                 };
             } else {
                 document.getElementById('recording-status').textContent = 
-                    `Ingen lydfil for "${this.currentFlippedCard.word}". Si ordet og klikk ta opp!`;
+                    `Ingen lydfil for "${this.currentFlippedCard.word}". Klikk ta opp og si ordet!`;
             }
         }
     }
@@ -721,11 +721,11 @@ class MemoryGame {
             
             if (hasAudio) {
                 document.getElementById('recording-status').textContent = 
-                    `Hør uttalen først, deretter si ordet "${this.currentFlippedCard.word}" og klikk ta opp!`;
+                    `Hør uttalen først, deretter klikk ta opp og si ordet "${this.currentFlippedCard.word}"!`;
                 document.getElementById('listen-btn').classList.remove('hidden');
             } else {
                 document.getElementById('recording-status').textContent = 
-                    `Ingen lydfil for "${this.currentFlippedCard.word}". Si ordet og klikk ta opp!`;
+                    `Ingen lydfil for "${this.currentFlippedCard.word}". Klikk ta opp og si ordet!`;
                 document.getElementById('listen-btn').classList.add('hidden');
             }
             
