@@ -31,9 +31,9 @@
     "audio": ["sounds/E_Elefant.wav", "sounds/E_Eple.wav", "sounds/E_Edderkopp.wav", "sounds/E_Engel.wav"]
   },
   "F": {
-    "words": ["Fisk", "Fugl", "Frosk", "Fly"],
-    "images": ["🐟", "🐦", "🐸", "✈️"],
-    "audio": ["sounds/F_Fisk.wav", "sounds/F_Fugl.wav", "sounds/F_Frosk.wav", "sounds/F_Fly.wav"]
+    "words": ["Fisk", "Fugl", "Frosk", "Fly", "Flaske", "Finger", "Fotball", "Fødsel", "Føtter", "Flagg", "Film", "Ferie", "Fyrverkeri", "Fargelegging", "Fabrikk", "Filosofi", "Fruktsalat", "Ferge", "Fornøyd", "Fredag"],
+    "images": ["🐟", "🐦", "🐸", "✈️", "🍼", "👆", "⚽", "👶", "🦶", "🏳️", "🎬", "🏖️", "🎆", "🎨", "🏭", "🤔", "🥗", "⛴️", "😊", "📅"],
+    "audio": ["sounds/F_Fisk.wav", "sounds/F_Fugl.wav", "sounds/F_Frosk.wav", "sounds/F_Fly.wav", "sounds/F_Flaske.wav", "sounds/F_Finger.wav", "sounds/F_Fotball.wav", "sounds/F_Fødsel.wav", "sounds/F_Føtter.wav", "sounds/F_Flagg.wav", "sounds/F_Film.wav", "sounds/F_Ferie.wav", "sounds/F_Fyrverkeri.wav", "sounds/F_Fargelegging.wav", "sounds/F_Fabrikk.wav", "sounds/F_Filosofi.wav", "sounds/F_Fruktsalat.wav", "sounds/F_Ferge.wav", "sounds/F_Fornøyd.wav", "sounds/F_Fredag.wav"]
   },
   "G": {
     "words": ["Gitar", "Gulerot", "Glass", "Gris"],
@@ -41,9 +41,9 @@
     "audio": ["sounds/G_Gitar.wav", "sounds/G_Gulerot.wav", "sounds/G_Glass.wav", "sounds/G_Gris.wav"]
   },
   "H": {
-    "words": ["Hund", "Hus", "Heks", "Hjerte"],
-    "images": ["🐕", "🏠", "https://www.barnesanger.no/leker/stiv-heks/stiv-heks.jpg", "❤️"],
-    "audio": ["sounds/H_Hund.wav", "sounds/H_Hus.wav", "sounds/H_Heks.wav", "sounds/H_Hjerte.wav"]
+    "words": ["Hund", "Hus", "Heks", "Hjerte", "Hane", "Havn", "Hest", "Hammer", "Hodet", "Hånd", "Himmel", "Helg", "Hoppeslott", "Havet", "Høst", "Hjelm", "Hukommelse", "Hastighet", "Hvile", "Helsesøster"],
+    "images": ["🐕", "🏠", "https://www.barnesanger.no/leker/stiv-heks/stiv-heks.jpg", "❤️", "🐓", "⚓", "🐎", "🔨", "🧑‍🦲", "✋", "☁️", "🗓️", "🏰", "🌊", "🍂", "⛑️", "🧠", "⚡", "😴", "👩‍⚕️"],
+    "audio": ["sounds/H_Hund.wav", "sounds/H_Hus.wav", "sounds/H_Heks.wav", "sounds/H_Hjerte.wav", "sounds/H_Hane.wav", "sounds/H_Havn.wav", "sounds/H_Hest.wav", "sounds/H_Hammer.wav", "sounds/H_Hodet.wav", "sounds/H_Hånd.wav", "sounds/H_Himmel.wav", "sounds/H_Helg.wav", "sounds/H_Hoppeslott.wav", "sounds/H_Havet.wav", "sounds/H_Høst.wav", "sounds/H_Hjelm.wav", "sounds/H_Hukommelse.wav", "sounds/H_Hastighet.wav", "sounds/H_Hvile.wav", "sounds/H_Helsesøster.wav"]
   },
   "I": {
     "words": ["Iskrem", "Ild", "Is", "Insekt"],
@@ -56,9 +56,9 @@
     "audio": ["sounds/J_Jorden.wav", "sounds/J_Jeger.wav", "sounds/J_Jul.wav", "sounds/J_Juice.wav"]
   },
   "K": {
-    "words": ["Katt", "Kaffe", "Kake", "Krone"],
-    "images": ["🐱", "☕", "🍰", "👑"],
-    "audio": ["sounds/K_Katt.wav", "sounds/K_Kaffe.wav", "sounds/K_Kake.wav", "sounds/K_Krone.wav"]
+    "words": ["Katt", "Kaffe", "Kake", "Krone", "Kul", "Kirke", "Kylling", "Kano", "Kniv", "Klokke", "Kjøkken", "Kino", "Konsentrasjon", "Karamell", "Kompass", "Keyboard", "Kanskje", "Klippe", "Klovn", "Kjæreste"],
+    "images": ["🐱", "☕", "🍰", "👑", "😎", "⛪", "🐔", "🛶", "🔪", "🕐", "🍳", "🎬", "🎯", "🍬", "🧭", "⌨️", "🤷", "⛰️", "🤡", "💕"],
+    "audio": ["sounds/K_Katt.wav", "sounds/K_Kaffe.wav", "sounds/K_Kake.wav", "sounds/K_Krone.wav", "sounds/K_Kul.wav", "sounds/K_Kirke.wav", "sounds/K_Kylling.wav", "sounds/K_Kano.wav", "sounds/K_Kniv.wav", "sounds/K_Klokke.wav", "sounds/K_Kjøkken.wav", "sounds/K_Kino.wav", "sounds/K_Konsentrasjon.wav", "sounds/K_Karamell.wav", "sounds/K_Kompass.wav", "sounds/K_Keyboard.wav", "sounds/K_Kanskje.wav", "sounds/K_Klippe.wav", "sounds/K_Klovn.wav", "sounds/K_Kjæreste.wav"]
   },
   "L": {
     "words": ["Løve", "Lys", "Larve", "Laks"],
@@ -99,9 +99,9 @@
     "audio": ["sounds/R_Regnbue.wav", "sounds/R_Rotte.wav", "sounds/R_Rose.wav", "sounds/R_Robot.wav"]
   },
   "S": {
-    "words": ["Slange", "Sol", "Sko", "Snø"],
-    "images": ["🐍", "☀️", "👟", "❄️"],
-    "audio": ["sounds/S_Slange.wav", "sounds/S_Sol.wav", "sounds/S_Sko.wav", "sounds/S_Snø.wav"]
+    "words": ["Slange", "Sol", "Sko", "Snø", "Sykkel", "Skje", "Soverom", "Skulptur", "Strand", "Saks", "Spisepinner", "Sommerfugl", "Snorkeling", "Sjokolade", "Skole", "Symaskine", "Silhuett", "Sykepleier", "Solbriller", "Sirene"],
+    "images": ["🐍", "☀️", "👟", "❄️", "🚲", "🥄", "🛏️", "🗿", "🏖️", "✂️", "🥢", "🦋", "🤿", "🍫", "🏫", "🪡", "👥", "👩‍⚕️", "🕶️", "https://www.temashop.no/media/catalog/product/cache/cat_resized/1200/0/p/o/politilys_og_sirene_tilbeh_r_byggeklosser_bursdag.jpg"],
+    "audio": ["sounds/S_Slange.wav", "sounds/S_Sol.wav", "sounds/S_Sko.wav", "sounds/S_Snø.wav", "sounds/S_Sykkel.wav", "sounds/S_Skje.wav", "sounds/S_Soverom.wav", "sounds/S_Skulptur.wav", "sounds/S_Strand.wav", "sounds/S_Saks.wav", "sounds/S_Spisepinner.wav", "sounds/S_Sommerfugl.wav", "sounds/S_Snorkeling.wav", "sounds/S_Sjokolade.wav", "sounds/S_Skole.wav", "sounds/S_Symaskine.wav", "sounds/S_Silhuett.wav", "sounds/S_Sykepleier.wav", "sounds/S_Solbriller.wav", "sounds/S_Sirene.wav"]
   },
   "T": {
     "words": ["Tiger", "Tre", "Tog", "Tann"],
