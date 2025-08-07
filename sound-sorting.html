@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyd Sorteringsspill</title>
+    <link rel="stylesheet" href="sound-sorting.css">
+</head>
+<body>
+    <div class="container">
+        <div id="setup-screen" class="screen">
+            <h1>Lyd Sorteringsspill</h1>
+            <div class="setup-content">
+                <div class="section">
+                    <h2>Velg bokstaver å bruke:</h2>
+                    <div class="letter-selection">
+                        <button id="select-all" class="select-button">Velg alle</button>
+                        <button id="select-none" class="select-button">Velg ingen</button>
+                        <div class="letter-grid" id="letter-grid">
+                            <!-- Letters will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Antall ord å sortere:</h2>
+                    <div class="word-count-selection">
+                        <button class="word-count-btn active" data-count="5">5 ord</button>
+                        <button class="word-count-btn" data-count="10">10 ord</button>
+                        <button class="word-count-btn" data-count="15">15 ord</button>
+                        <button class="word-count-btn" data-count="20">20 ord</button>
+                    </div>
+                </div>
+
+                <button id="start-game" class="start-button">Start spill</button>
+            </div>
+        </div>
+
+        <div id="game-screen" class="screen hidden">
+            <div class="game-header">
+                <h1>Lyd Sorteringsspill</h1>
+                <div class="game-info">
+                    <span id="score">Poeng: 0</span>
+                    <span id="remaining">Gjenstående: 0</span>
+                </div>
+            </div>
+
+            <div class="game-content">
+                <div class="dropzone-area">
+                    <div class="letter-boxes" id="letter-boxes">
+                        <!-- Letter sorting boxes will be created by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="word-cards-area">
+                    <div class="word-cards" id="word-cards">
+                        <!-- Word cards will be created by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button id="new-game" class="control-button">Nytt spill</button>
+                <button id="replay-sound" class="control-button">Spill siste lyd igjen</button>
+            </div>
+        </div>
+
+        <div id="completion-screen" class="screen hidden">
+            <h1>Gratulerer!</h1>
+            <div class="completion-content">
+                <p>Du har sortert alle ordene riktig!</p>
+                <div id="final-score"></div>
+                <button id="play-again" class="start-button">Spill igjen</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="sound-sorting.js"></script>
+</body>
+</html>

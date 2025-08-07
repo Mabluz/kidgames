@@ -1,0 +1,579 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+}
+
+.container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.screen {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    min-height: 600px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Setup Screen Styles */
+.setup-content h1 {
+    text-align: center;
+    color: #5a67d8;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+.section h2 {
+    color: #4a5568;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.letter-selection {
+    margin-bottom: 20px;
+}
+
+.select-button {
+    background: #e2e8f0;
+    border: 2px solid #cbd5e0;
+    padding: 8px 16px;
+    margin-right: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.select-button:hover {
+    background: #cbd5e0;
+    border-color: #a0aec0;
+}
+
+.letter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.letter-btn {
+    background: #f7fafc;
+    border: 2px solid #e2e8f0;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    color: #4a5568;
+}
+
+.letter-btn:hover {
+    background: #edf2f7;
+    border-color: #cbd5e0;
+    transform: translateY(-2px);
+}
+
+.letter-btn.selected {
+    background: #5a67d8;
+    border-color: #4c51bf;
+    color: white;
+    transform: scale(1.05);
+}
+
+.word-count-selection {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.word-count-btn {
+    background: #f7fafc;
+    border: 2px solid #e2e8f0;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: #4a5568;
+}
+
+.word-count-btn:hover {
+    background: #edf2f7;
+    border-color: #cbd5e0;
+}
+
+.word-count-btn.active {
+    background: #48bb78;
+    border-color: #38a169;
+    color: white;
+}
+
+.start-button {
+    width: 100%;
+    background: #5a67d8;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.start-button:hover {
+    background: #4c51bf;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(90, 103, 216, 0.4);
+}
+
+/* Game Screen Styles */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.game-header h1 {
+    color: #5a67d8;
+    font-size: 2rem;
+}
+
+.game-info {
+    display: flex;
+    gap: 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.game-content {
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dropzone-area {
+    background: #e6fffa;
+    border: 2px solid #4fd1c7;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(79, 209, 199, 0.2);
+    position: relative;
+    z-index: 10;
+}
+
+.letter-boxes {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+}
+
+.letter-box {
+    background: #f7fafc;
+    border: 3px solid #e2e8f0;
+    border-radius: 12px;
+    min-width: 140px;
+    min-height: 200px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.letter-box:hover {
+    border-color: #5a67d8;
+    box-shadow: 0 5px 15px rgba(90, 103, 216, 0.2);
+}
+
+.letter-box-header {
+    background: #5a67d8;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+}
+
+.letter-dropzone {
+    padding: 15px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 2px dashed transparent;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    margin: 5px;
+}
+
+.dropped-cards-area {
+    flex: 1;
+    padding: 10px;
+    position: relative;
+    min-height: 120px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.drop-zone-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #a0aec0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    text-align: center;
+}
+
+.letter-box.drag-active .drop-zone-indicator {
+    opacity: 0.7;
+}
+
+.letter-box.drag-active .letter-dropzone {
+    border-color: #cbd5e0;
+    background: #f7fafc;
+}
+
+.letter-dropzone.drag-over {
+    border-color: #48bb78;
+    background: #f0fff4;
+    transform: scale(1.05);
+}
+
+.letter-dropzone.drag-over .drop-zone-indicator {
+    opacity: 1;
+    color: #48bb78;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.word-cards-area {
+    background: #f0f4f8;
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 300px;
+    position: relative;
+    z-index: 5;
+}
+
+.word-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.word-card {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 15px;
+    cursor: grab;
+    transition: all 0.3s ease;
+    text-align: center;
+    user-select: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 5;
+}
+
+.word-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-color: #5a67d8;
+}
+
+.word-card.dragging {
+    opacity: 0.7;
+    transform: rotate(5deg) scale(0.95);
+    z-index: 15;
+}
+
+.dropped-cards-area .word-card.placed-correct {
+    background: #48bb78;
+    color: white;
+    border-color: #38a169;
+    cursor: default;
+    transform: translateX(-50%) scale(0.75);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform-origin: center;
+    transition: all 0.3s ease;
+    z-index: var(--stack-index, 1);
+    opacity: var(--stack-opacity, 1);
+}
+
+/* Base cardstack positioning with slight randomness */
+.dropped-cards-area .word-card.placed-correct:nth-child(odd) {
+    transform: translateX(-50%) scale(0.75) rotate(-1deg);
+    left: 49%;
+}
+
+.dropped-cards-area .word-card.placed-correct:nth-child(even) {
+    transform: translateX(-50%) scale(0.75) rotate(0.5deg);
+    left: 51%;
+    top: 7px;
+}
+
+.dropped-cards-area .word-card.placed-correct:nth-child(3n) {
+    transform: translateX(-50%) scale(0.75) rotate(-0.8deg);
+    top: 6px;
+    left: 48%;
+}
+
+.dropped-cards-area .word-card.placed-correct:nth-child(4n) {
+    transform: translateX(-50%) scale(0.75) rotate(1.2deg);
+    top: 8px;
+    left: 52%;
+}
+
+/* Touch drag clone styling */
+.drag-clone {
+    transform: scale(0.9) rotate(3deg);
+    opacity: 0.9;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border: 2px solid #5a67d8;
+}
+
+/* Touch interaction improvements */
+.word-card {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    touch-action: none;
+}
+
+.word-card.incorrect {
+    animation: shake 0.5s ease-in-out;
+    border-color: #e53e3e;
+    background: #fed7d7;
+}
+
+.letter-dropzone.flash-red {
+    animation: flashRedDropzone 0.6s ease-in-out;
+}
+
+@keyframes flashRedDropzone {
+    0%, 100% { 
+        background: #fafafa;
+        border-color: transparent;
+    }
+    50% { 
+        background: #fed7d7;
+        border-color: #e53e3e;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.card-emoji {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.card-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    pointer-events: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.card-word {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #4a5568;
+    pointer-events: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.card-emoji {
+    pointer-events: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.word-card.placed-correct .card-word {
+    color: white;
+}
+
+.game-controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.control-button {
+    background: #718096;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.control-button:hover {
+    background: #4a5568;
+    transform: translateY(-2px);
+}
+
+/* Completion Screen Styles */
+.completion-content {
+    text-align: center;
+}
+
+.completion-content h1 {
+    color: #48bb78;
+    font-size: 3rem;
+    margin-bottom: 30px;
+}
+
+.completion-content p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #4a5568;
+}
+
+#final-score h2 {
+    color: #5a67d8;
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+#final-score p {
+    color: #718096;
+    font-size: 1.1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+        width: 98%;
+    }
+
+    .screen {
+        padding: 20px;
+    }
+
+    .game-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .dropzone-area {
+        padding: 15px;
+    }
+
+    .letter-boxes {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .letter-box {
+        width: calc(50% - 5px);
+        max-width: 160px;
+        min-width: 130px;
+        min-height: 180px;
+    }
+
+    .word-cards {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .game-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .control-button {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .letter-grid {
+        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+        max-height: 200px;
+    }
+
+    .word-count-selection {
+        justify-content: center;
+    }
+}
+
+/* Enhanced Drag and Drop Visual Feedback - Now handled above in letter-box-content styles */
