@@ -5,12 +5,14 @@
       "images/A_AKEBRETT.jpg",
       "🍊",
       "images/A_AKVARIUM.jpg"],
-    "audio": ["sounds/A_Ape.wav", "sounds/A_Akebrett.wav", "sounds/A_Appelsin.wav", "sounds/A_Akvarium.wav"]
+    "audio": ["sounds/A_Ape.wav", "sounds/A_Akebrett.wav", "sounds/A_Appelsin.wav", "sounds/A_Akvarium.wav"],
+    "letterSound": "sounds/Letter_A.wav"
   },
   "B": {
     "words": ["Bjørn", "Bil", "Ball", "Blomst"],
     "images": ["🐻", "🚙", "⚽", "🌸"],
-    "audio": ["sounds/B_Bjørn.wav", "sounds/B_Bil.wav", "sounds/B_Ball.wav", "sounds/B_Blomst.wav"]
+    "audio": ["sounds/B_Bjørn.wav", "sounds/B_Bil.wav", "sounds/B_Ball.wav", "sounds/B_Blomst.wav"],
+    "letterSound": "sounds/Letter_B.wav"
   },
   "C": {
     "words": ["Cafe", "Camping", "Cowboy", "Cola"],
@@ -18,62 +20,74 @@
       "images/C_CAMPING.jpg",
       "images/C_COWBOY.jpg",
       "images/C_COLA.jpg"],
-    "audio": ["sounds/C_Cafe.wav", "sounds/C_Camping.wav", "sounds/C_Cowboy.wav", "sounds/C_Cola.wav"]
+    "audio": ["sounds/C_Cafe.wav", "sounds/C_Camping.wav", "sounds/C_Cowboy.wav", "sounds/C_Cola.wav"],
+    "letterSound": "sounds/Letter_C.wav"
   },
   "D": {
     "words": ["Drage", "Delfin", "Dinosaur", "Dør"],
     "images": ["🐉", "🐬", "🦕", "🚪"],
-    "audio": ["sounds/D_Drage.wav", "sounds/D_Delfin.wav", "sounds/D_Dinosaur.wav", "sounds/D_Dør.wav"]
+    "audio": ["sounds/D_Drage.wav", "sounds/D_Delfin.wav", "sounds/D_Dinosaur.wav", "sounds/D_Dør.wav"],
+    "letterSound": "sounds/Letter_D.wav"
   },
   "E": {
     "words": ["Elefant", "Eple", "Edderkopp", "Engel"],
     "images": ["🐘", "🍎", "🕷️", "👼"],
-    "audio": ["sounds/E_Elefant.wav", "sounds/E_Eple.wav", "sounds/E_Edderkopp.wav", "sounds/E_Engel.wav"]
+    "audio": ["sounds/E_Elefant.wav", "sounds/E_Eple.wav", "sounds/E_Edderkopp.wav", "sounds/E_Engel.wav"],
+    "letterSound": "sounds/Letter_E.wav"
   },
   "F": {
     "words": ["Fisk", "Fugl", "Frosk", "Fly", "Flaske", "Finger", "Fotball", "Fødsel", "Føtter", "Flagg", "Film", "Ferie", "Fyrverkeri", "Fargelegging", "Fabrikk", "Filosofi", "Fruktsalat", "Ferge", "Fornøyd", "Fredag"],
     "images": ["🐟", "🐦", "🐸", "✈️", "🍼", "👆", "⚽", "👶", "🦶", "🏳️", "🎬", "🏖️", "🎆", "🎨", "🏭", "🤔", "🥗", "⛴️", "😊", "📅"],
-    "audio": ["sounds/F_Fisk.wav", "sounds/F_Fugl.wav", "sounds/F_Frosk.wav", "sounds/F_Fly.wav", "sounds/F_Flaske.wav", "sounds/F_Finger.wav", "sounds/F_Fotball.wav", "sounds/F_Fødsel.wav", "sounds/F_Føtter.wav", "sounds/F_Flagg.wav", "sounds/F_Film.wav", "sounds/F_Ferie.wav", "sounds/F_Fyrverkeri.wav", "sounds/F_Fargelegging.wav", "sounds/F_Fabrikk.wav", "sounds/F_Filosofi.wav", "sounds/F_Fruktsalat.wav", "sounds/F_Ferge.wav", "sounds/F_Fornøyd.wav", "sounds/F_Fredag.wav"]
+    "audio": ["sounds/F_Fisk.wav", "sounds/F_Fugl.wav", "sounds/F_Frosk.wav", "sounds/F_Fly.wav", "sounds/F_Flaske.wav", "sounds/F_Finger.wav", "sounds/F_Fotball.wav", "sounds/F_Fødsel.wav", "sounds/F_Føtter.wav", "sounds/F_Flagg.wav", "sounds/F_Film.wav", "sounds/F_Ferie.wav", "sounds/F_Fyrverkeri.wav", "sounds/F_Fargelegging.wav", "sounds/F_Fabrikk.wav", "sounds/F_Filosofi.wav", "sounds/F_Fruktsalat.wav", "sounds/F_Ferge.wav", "sounds/F_Fornøyd.wav", "sounds/F_Fredag.wav"],
+    "letterSound": "sounds/Letter_F.wav"
   },
   "G": {
     "words": ["Gitar", "Gulerot", "Glass", "Gris"],
     "images": ["🎸", "🥕", "🥛", "🐷"],
-    "audio": ["sounds/G_Gitar.wav", "sounds/G_Gulerot.wav", "sounds/G_Glass.wav", "sounds/G_Gris.wav"]
+    "audio": ["sounds/G_Gitar.wav", "sounds/G_Gulerot.wav", "sounds/G_Glass.wav", "sounds/G_Gris.wav"],
+    "letterSound": "sounds/Letter_G.wav"
   },
   "H": {
     "words": ["Hund", "Hus", "Heks", "Hjerte", "Hane", "Havn", "Hest", "Hammer", "Hodet", "Hånd", "Himmel", "Helg", "Hoppeslott", "Havet", "Høst", "Hjelm", "Hukommelse", "Hastighet", "Hvile", "Helsesøster"],
     "images": ["🐕", "🏠", "images/H_HEKS.jpg", "❤️", "🐓", "⚓", "🐎", "🔨", "🧑‍🦲", "✋", "☁️", "🗓️", "🏰", "🌊", "🍂", "⛑️", "🧠", "⚡", "😴", "👩‍⚕️"],
-    "audio": ["sounds/H_Hund.wav", "sounds/H_Hus.wav", "sounds/H_Heks.wav", "sounds/H_Hjerte.wav", "sounds/H_Hane.wav", "sounds/H_Havn.wav", "sounds/H_Hest.wav", "sounds/H_Hammer.wav", "sounds/H_Hodet.wav", "sounds/H_Hånd.wav", "sounds/H_Himmel.wav", "sounds/H_Helg.wav", "sounds/H_Hoppeslott.wav", "sounds/H_Havet.wav", "sounds/H_Høst.wav", "sounds/H_Hjelm.wav", "sounds/H_Hukommelse.wav", "sounds/H_Hastighet.wav", "sounds/H_Hvile.wav", "sounds/H_Helsesøster.wav"]
+    "audio": ["sounds/H_Hund.wav", "sounds/H_Hus.wav", "sounds/H_Heks.wav", "sounds/H_Hjerte.wav", "sounds/H_Hane.wav", "sounds/H_Havn.wav", "sounds/H_Hest.wav", "sounds/H_Hammer.wav", "sounds/H_Hodet.wav", "sounds/H_Hånd.wav", "sounds/H_Himmel.wav", "sounds/H_Helg.wav", "sounds/H_Hoppeslott.wav", "sounds/H_Havet.wav", "sounds/H_Høst.wav", "sounds/H_Hjelm.wav", "sounds/H_Hukommelse.wav", "sounds/H_Hastighet.wav", "sounds/H_Hvile.wav", "sounds/H_Helsesøster.wav"],
+    "letterSound": "sounds/Letter_H.wav"
   },
   "I": {
     "words": ["Iskrem", "Ild", "Is", "Insekt"],
     "images": ["🍦", "🔥", "🧊", "🐛"],
-    "audio": ["sounds/I_Iskrem.wav", "sounds/I_Ild.wav", "sounds/I_Is.wav", "sounds/I_Insekt.wav"]
+    "audio": ["sounds/I_Iskrem.wav", "sounds/I_Ild.wav", "sounds/I_Is.wav", "sounds/I_Insekt.wav"],
+    "letterSound": "sounds/Letter_I.wav"
   },
   "J": {
     "words": ["Jorden", "Jeger", "Jul", "Juice"],
     "images": ["🌍", "🏹", "🎄", "images/J_JUICE.jpg"],
-    "audio": ["sounds/J_Jorden.wav", "sounds/J_Jeger.wav", "sounds/J_Jul.wav", "sounds/J_Juice.wav"]
+    "audio": ["sounds/J_Jorden.wav", "sounds/J_Jeger.wav", "sounds/J_Jul.wav", "sounds/J_Juice.wav"],
+    "letterSound": "sounds/Letter_J.wav"
   },
   "K": {
     "words": ["Katt", "Kaffe", "Kake", "Krone", "Kul", "Kirke", "Kylling", "Kano", "Kniv", "Klokke", "Kjøkken", "Kino", "Konsentrasjon", "Karamell", "Kompass", "Keyboard", "Kanskje", "Klippe", "Klovn", "Kjæreste"],
     "images": ["🐱", "☕", "🍰", "👑", "😎", "⛪", "🐔", "🛶", "🔪", "🕐", "🍳", "🎬", "🎯", "🍬", "🧭", "⌨️", "🤷", "⛰️", "🤡", "💕"],
-    "audio": ["sounds/K_Katt.wav", "sounds/K_Kaffe.wav", "sounds/K_Kake.wav", "sounds/K_Krone.wav", "sounds/K_Kul.wav", "sounds/K_Kirke.wav", "sounds/K_Kylling.wav", "sounds/K_Kano.wav", "sounds/K_Kniv.wav", "sounds/K_Klokke.wav", "sounds/K_Kjøkken.wav", "sounds/K_Kino.wav", "sounds/K_Konsentrasjon.wav", "sounds/K_Karamell.wav", "sounds/K_Kompass.wav", "sounds/K_Keyboard.wav", "sounds/K_Kanskje.wav", "sounds/K_Klippe.wav", "sounds/K_Klovn.wav", "sounds/K_Kjæreste.wav"]
+    "audio": ["sounds/K_Katt.wav", "sounds/K_Kaffe.wav", "sounds/K_Kake.wav", "sounds/K_Krone.wav", "sounds/K_Kul.wav", "sounds/K_Kirke.wav", "sounds/K_Kylling.wav", "sounds/K_Kano.wav", "sounds/K_Kniv.wav", "sounds/K_Klokke.wav", "sounds/K_Kjøkken.wav", "sounds/K_Kino.wav", "sounds/K_Konsentrasjon.wav", "sounds/K_Karamell.wav", "sounds/K_Kompass.wav", "sounds/K_Keyboard.wav", "sounds/K_Kanskje.wav", "sounds/K_Klippe.wav", "sounds/K_Klovn.wav", "sounds/K_Kjæreste.wav"],
+    "letterSound": "sounds/Letter_K.wav"
   },
   "L": {
     "words": ["Løve", "Lys", "Larve", "Laks"],
     "images": ["🦁", "💡", "🐛", "images/L_LAKS.jpg"],
-    "audio": ["sounds/L_Løve.wav", "sounds/L_Lys.wav", "sounds/L_Larve.wav", "sounds/L_Laks.wav"]
+    "audio": ["sounds/L_Løve.wav", "sounds/L_Lys.wav", "sounds/L_Larve.wav", "sounds/L_Laks.wav"],
+    "letterSound": "sounds/Letter_L.wav"
   },
   "M": {
     "words": ["Måne", "Mus", "Melk", "Musikk"],
     "images": ["🌙", "🐭", "🥛", "🎵"],
-    "audio": ["sounds/M_Måne.wav", "sounds/M_Mus.wav", "sounds/M_Melk.wav", "sounds/M_Musikk.wav"]
+    "audio": ["sounds/M_Måne.wav", "sounds/M_Mus.wav", "sounds/M_Melk.wav", "sounds/M_Musikk.wav"],
+    "letterSound": "sounds/Letter_M.wav"
   },
   "N": {
     "words": ["Nese", "Nøtt", "Natt", "Null"],
     "images": ["👃", "🥜", "🌃", "0️⃣"],
-    "audio": ["sounds/N_Nese.wav", "sounds/N_Nøtt.wav", "sounds/N_Natt.wav", "sounds/N_Null.wav"]
+    "audio": ["sounds/N_Nese.wav", "sounds/N_Nøtt.wav", "sounds/N_Natt.wav", "sounds/N_Null.wav"],
+    "letterSound": "sounds/Letter_N.wav"
   },
   "O": {
     "words": ["Ost", "Ovn", "Okse", "Orkester"],
@@ -81,77 +95,92 @@
       "images/O_OVN.jpg",
       "🐂",
       "images/O_ORKESTER.jpg"],
-    "audio": ["sounds/O_Ost.wav", "sounds/O_Ovn.wav", "sounds/O_Okse.wav", "sounds/O_Orkester.wav"]
+    "audio": ["sounds/O_Ost.wav", "sounds/O_Ovn.wav", "sounds/O_Okse.wav", "sounds/O_Orkester.wav"],
+    "letterSound": "sounds/Letter_O.wav"
   },
   "P": {
     "words": ["Panda", "Pizza", "Paraply", "Papir"],
     "images": ["🐼", "🍕", "☂️", "📄"],
-    "audio": ["sounds/P_Panda.wav", "sounds/P_Pizza.wav", "sounds/P_Paraply.wav", "sounds/P_Papir.wav"]
+    "audio": ["sounds/P_Panda.wav", "sounds/P_Pizza.wav", "sounds/P_Paraply.wav", "sounds/P_Papir.wav"],
+    "letterSound": "sounds/Letter_P.wav"
   },
   "Q": {
     "words": ["Quiz", "Quesadilla", "Quickstep", "Qatar"],
     "images": ["❓", "🌮", "💃", "images/Q_QATAR.png"],
-    "audio": ["sounds/Q_Quiz.wav", "sounds/Q_Quesadilla.wav", "sounds/Q_Quickstep.wav", "sounds/Q_Qatar.wav"]
+    "audio": ["sounds/Q_Quiz.wav", "sounds/Q_Quesadilla.wav", "sounds/Q_Quickstep.wav", "sounds/Q_Qatar.wav"],
+    "letterSound": "sounds/Letter_Q.wav"
   },
   "R": {
     "words": ["Regnbue", "Rotte", "Rose", "Robot"],
     "images": ["🌈", "🐀", "🌹", "🤖"],
-    "audio": ["sounds/R_Regnbue.wav", "sounds/R_Rotte.wav", "sounds/R_Rose.wav", "sounds/R_Robot.wav"]
+    "audio": ["sounds/R_Regnbue.wav", "sounds/R_Rotte.wav", "sounds/R_Rose.wav", "sounds/R_Robot.wav"],
+    "letterSound": "sounds/Letter_R.wav"
   },
   "S": {
     "words": ["Slange", "Sol", "Sko", "Snø", "Sykkel", "Skje", "Soverom", "Skulptur", "Strand", "Saks", "Spisepinner", "Sommerfugl", "Snorkeling", "Sjokolade", "Skole", "Symaskine", "Silhuett", "Sykepleier", "Solbriller", "Sirene"],
     "images": ["🐍", "☀️", "👟", "❄️", "🚲", "🥄", "🛏️", "🗿", "🏖️", "✂️", "🥢", "🦋", "🤿", "🍫", "🏫", "🪡", "👥", "👩‍⚕️", "🕶️", "images/S_SIRENE.jpg"],
-    "audio": ["sounds/S_Slange.wav", "sounds/S_Sol.wav", "sounds/S_Sko.wav", "sounds/S_Snø.wav", "sounds/S_Sykkel.wav", "sounds/S_Skje.wav", "sounds/S_Soverom.wav", "sounds/S_Skulptur.wav", "sounds/S_Strand.wav", "sounds/S_Saks.wav", "sounds/S_Spisepinner.wav", "sounds/S_Sommerfugl.wav", "sounds/S_Snorkeling.wav", "sounds/S_Sjokolade.wav", "sounds/S_Skole.wav", "sounds/S_Symaskine.wav", "sounds/S_Silhuett.wav", "sounds/S_Sykepleier.wav", "sounds/S_Solbriller.wav", "sounds/S_Sirene.wav"]
+    "audio": ["sounds/S_Slange.wav", "sounds/S_Sol.wav", "sounds/S_Sko.wav", "sounds/S_Snø.wav", "sounds/S_Sykkel.wav", "sounds/S_Skje.wav", "sounds/S_Soverom.wav", "sounds/S_Skulptur.wav", "sounds/S_Strand.wav", "sounds/S_Saks.wav", "sounds/S_Spisepinner.wav", "sounds/S_Sommerfugl.wav", "sounds/S_Snorkeling.wav", "sounds/S_Sjokolade.wav", "sounds/S_Skole.wav", "sounds/S_Symaskine.wav", "sounds/S_Silhuett.wav", "sounds/S_Sykepleier.wav", "sounds/S_Solbriller.wav", "sounds/S_Sirene.wav"],
+    "letterSound": "sounds/Letter_S.wav"
   },
   "T": {
     "words": ["Tiger", "Tre", "Tog", "Tann"],
     "images": ["🐅", "🌳", "🚂", "🦷"],
-    "audio": ["sounds/T_Tiger.wav", "sounds/T_Tre.wav", "sounds/T_Tog.wav", "sounds/T_Tann.wav"]
+    "audio": ["sounds/T_Tiger.wav", "sounds/T_Tre.wav", "sounds/T_Tog.wav", "sounds/T_Tann.wav"],
+    "letterSound": "sounds/Letter_T.wav"
   },
   "U": {
     "words": ["Ugle", "Ur", "Ulv", "Unge"],
     "images": ["🦉", "⏰", "🐺", "👶"],
-    "audio": ["sounds/U_Ugle.wav", "sounds/U_Ur.wav", "sounds/U_Ulv.wav", "sounds/U_Unge.wav"]
+    "audio": ["sounds/U_Ugle.wav", "sounds/U_Ur.wav", "sounds/U_Ulv.wav", "sounds/U_Unge.wav"],
+    "letterSound": "sounds/Letter_U.wav"
   },
   "V": {
     "words": ["Vann", "Vind", "Vinter", "Veps"],
     "images": ["💧", "💨", "❄️", "🐝"],
-    "audio": ["sounds/V_Vann.wav", "sounds/V_Vind.wav", "sounds/V_Vinter.wav", "sounds/V_Veps.wav"]
+    "audio": ["sounds/V_Vann.wav", "sounds/V_Vind.wav", "sounds/V_Vinter.wav", "sounds/V_Veps.wav"],
+    "letterSound": "sounds/Letter_V.wav"
   },
   "W": {
     "words": ["WC", "Wok", "Wifi", "Websider"],
     "images": ["🚽", "🥘", "📶", "💻"],
-    "audio": ["sounds/W_WC.wav", "sounds/W_Wok.wav", "sounds/W_Wifi.wav", "sounds/W_Websider.wav"]
+    "audio": ["sounds/W_WC.wav", "sounds/W_Wok.wav", "sounds/W_Wifi.wav", "sounds/W_Websider.wav"],
+    "letterSound": "sounds/Letter_W.wav"
   },
   "X": {
     "words": ["X-ray", "Xylofon", "Xbox", "X-Men"],
     "images": ["🩻", "🎹", "🎮", "🦸‍♂️"],
-    "audio": ["sounds/X_X-ray.wav", "sounds/X_Xylofon.wav", "sounds/X_Xbox.wav", "sounds/X_X-Men.wav"]
+    "audio": ["sounds/X_X-ray.wav", "sounds/X_Xylofon.wav", "sounds/X_Xbox.wav", "sounds/X_X-Men.wav"],
+    "letterSound": "sounds/Letter_X.wav"
   },
   "Y": {
     "words": ["Yoga", "Yacht", "Yak", "Yogurt"],
     "images": ["🧘", "⛵", "🦬", "🥛"],
-    "audio": ["sounds/Y_Yoga.wav", "sounds/Y_Yacht.wav", "sounds/Y_Yak.wav", "sounds/Y_Yogurt.wav"]
+    "audio": ["sounds/Y_Yoga.wav", "sounds/Y_Yacht.wav", "sounds/Y_Yak.wav", "sounds/Y_Yogurt.wav"],
+    "letterSound": "sounds/Letter_Y.wav"
   },
   "Z": {
     "words": ["Zebra", "Zoo", "Zombie", "Zoom"],
     "images": ["🦓", "🏛️", "🧟", "🔍"],
-    "audio": ["sounds/Z_Zebra.wav", "sounds/Z_Zoo.wav", "sounds/Z_Zombie.wav", "sounds/Z_Zoom.wav"]
+    "audio": ["sounds/Z_Zebra.wav", "sounds/Z_Zoo.wav", "sounds/Z_Zombie.wav", "sounds/Z_Zoom.wav"],
+    "letterSound": "sounds/Letter_Z.wav"
   },
   "Æ": {
     "words": ["Ære", "Ærlig", "Ært", "Ærfugl"],
     "images": ["🏆", "🤝", "🟢", "🦆"],
-    "audio": ["sounds/Æ_Ære.wav", "sounds/Æ_Ærlig.wav", "sounds/Æ_Ært.wav", "sounds/Æ_Ærfugl.wav"]
+    "audio": ["sounds/Æ_Ære.wav", "sounds/Æ_Ærlig.wav", "sounds/Æ_Ært.wav", "sounds/Æ_Ærfugl.wav"],
+    "letterSound": "sounds/Letter_Æ.wav"
   },
   "Ø": {
     "words": ["Øy", "Øl", "Øye", "Ørn"],
     "images": ["🏝️", "🍺", "👁️", "🦅"],
-    "audio": ["sounds/Ø_Øy.wav", "sounds/Ø_Øl.wav", "sounds/Ø_Øye.wav", "sounds/Ø_Ørn.wav"]
+    "audio": ["sounds/Ø_Øy.wav", "sounds/Ø_Øl.wav", "sounds/Ø_Øye.wav", "sounds/Ø_Ørn.wav"],
+    "letterSound": "sounds/Letter_Ø.wav"
   },
   "Å": {
     "words": ["Ål", "Åpen", "År", "Åker"],
     "images": ["images/Å_ÅL.jpg",
       "🔓", "📅", "🌾"],
-    "audio": ["sounds/Å_Ål.wav", "sounds/Å_Åpen.wav", "sounds/Å_År.wav", "sounds/Å_Åker.wav"]
+    "audio": ["sounds/Å_Ål.wav", "sounds/Å_Åpen.wav", "sounds/Å_År.wav", "sounds/Å_Åker.wav"],
+    "letterSound": "sounds/Letter_Å.wav"
   }
 }

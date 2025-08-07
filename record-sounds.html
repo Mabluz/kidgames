@@ -196,6 +196,65 @@
             background-color: #e8f5e8 !important;
             border-color: #4CAF50 !important;
         }
+
+        /* Letter Sound Recording Styles */
+        .letters-sound-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+
+        .letter-sound-card {
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .letter-sound-card:hover {
+            border-color: #2196F3;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .letter-sound-card.has-letter-recording {
+            background-color: #e8f5e8;
+            border-color: #4CAF50;
+        }
+
+        .letter-sound-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #2196F3;
+            margin-bottom: 10px;
+        }
+
+        .letter-sound-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .letter-sound-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .letter-sound-status {
+            font-size: 10px;
+            color: #666;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -204,7 +263,18 @@
         <p>Record pronunciation sounds for each letter and word in the memory game</p>
     </div>
 
+    <!-- Letter Sound Recording Section -->
     <div class="bulk-actions">
+        <h2>📝 Letter Sound Recording</h2>
+        <p>Record the pronunciation of individual letters (A, B, C, etc.)</p>
+        <div class="letters-sound-grid" id="lettersSoundGrid">
+            <!-- Letter sound recording will be generated here -->
+        </div>
+    </div>
+
+    <div class="bulk-actions">
+        <h2>📝 Word Sound Recording</h2>
+        <p>Record pronunciation sounds for individual words</p>
         <button class="bulk-btn download" onclick="downloadAllRecordings()">
             📥 Download All Recordings
         </button>
@@ -227,6 +297,7 @@
         let currentRecording = null;
         let recordedChunks = [];
         let recordings = {};
+        let letterSoundRecordings = {};
 
         // Check if an audio file exists in the sounds directory
         async function checkAudioFileExists(letter, word) {
@@ -239,11 +310,62 @@
             }
         }
 
+        // Check if a letter sound file exists
+        async function checkLetterSoundExists(letter) {
+            const filename = `Letter_${letter}.wav`;
+            try {
+                const response = await fetch(`sounds/${filename}`, { method: 'HEAD' });
+                return response.ok;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        // Generate letter sound recording cards
+        async function generateLetterSoundCards() {
+            const letterSoundGrid = document.getElementById('lettersSoundGrid');
+            
+            for (const letter of Object.keys(letterData)) {
+                const hasExistingSound = await checkLetterSoundExists(letter);
+                const hasRecordingClass = hasExistingSound ? 'has-letter-recording' : '';
+                const statusText = hasExistingSound ? 'File exists' : 'Not recorded';
+                
+                const card = document.createElement('div');
+                card.className = `letter-sound-card ${hasRecordingClass}`;
+                card.id = `letter_sound_${letter}`;
+                
+                card.innerHTML = `
+                    <div class="letter-sound-title">${letter}</div>
+                    <div class="letter-sound-controls">
+                        ${hasExistingSound ? `<button class="letter-sound-btn play" style="background-color: #2196F3; color: white;" onclick="playLetterSound('${letter}')">
+                            ▶️ Play
+                        </button>` : ''}
+                        <button class="letter-sound-btn record" style="background-color: #f44336; color: white;" onclick="startLetterRecording('${letter}')" id="letter_record_${letter}">
+                            🎤 Record
+                        </button>
+                        <button class="letter-sound-btn stop hidden" style="background-color: #ff9800; color: white;" onclick="stopLetterRecording('${letter}')" id="letter_stop_${letter}">
+                            ⏹️ Stop
+                        </button>
+                        <button class="letter-sound-btn save hidden" style="background-color: #4CAF50; color: white;" onclick="saveLetterRecording('${letter}')" id="letter_save_${letter}">
+                            💾 Save
+                        </button>
+                    </div>
+                    <div class="letter-sound-status" id="letter_status_${letter}">${statusText}</div>
+                    <div class="audio-preview" id="letter_preview_${letter}">
+                        ${hasExistingSound ? `<audio controls><source src="sounds/Letter_${letter}.wav" type="audio/wav"></audio>` : ''}
+                    </div>
+                `;
+                
+                letterSoundGrid.appendChild(card);
+            }
+        }
+
         // Initialize the application
         async function init() {
             try {
                 const response = await fetch('letter-images.json');
                 letterData = await response.json();
+                await generateLetterSoundCards();
                 await generateLetterCards();
                 updateProgress();
             } catch (error) {
@@ -483,19 +605,144 @@
         function clearAllRecordings() {
             if (confirm('Are you sure you want to clear all recordings?')) {
                 recordings = {};
-                document.querySelectorAll('.has-recording').forEach(el => {
-                    el.classList.remove('has-recording');
+                letterSoundRecordings = {};
+                document.querySelectorAll('.has-recording, .has-letter-recording').forEach(el => {
+                    el.classList.remove('has-recording', 'has-letter-recording');
                 });
                 document.querySelectorAll('.audio-preview').forEach(el => {
                     el.innerHTML = '';
                 });
-                document.querySelectorAll('.status').forEach(el => {
-                    el.textContent = 'Ready';
+                document.querySelectorAll('.status, .letter-sound-status').forEach(el => {
+                    el.textContent = el.classList.contains('letter-sound-status') ? 'Not recorded' : 'Ready';
                 });
                 document.querySelectorAll('.save').forEach(el => {
                     el.disabled = true;
                 });
                 updateProgress();
+            }
+        }
+
+        // Letter sound recording functions
+        async function startLetterRecording(letter) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                
+                recordedChunks = [];
+                mediaRecorder = new MediaRecorder(stream);
+                currentRecording = `letter_${letter}`;
+                
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+                
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: 'audio/wav' });
+                    letterSoundRecordings[letter] = blob;
+                    
+                    // Create audio preview
+                    const audioUrl = URL.createObjectURL(blob);
+                    const audioElement = document.createElement('audio');
+                    audioElement.src = audioUrl;
+                    audioElement.controls = true;
+                    
+                    const previewDiv = document.getElementById(`letter_preview_${letter}`);
+                    previewDiv.innerHTML = '';
+                    previewDiv.appendChild(audioElement);
+                    
+                    // Show save button
+                    document.getElementById(`letter_save_${letter}`).classList.remove('hidden');
+                    document.getElementById(`letter_status_${letter}`).textContent = 'Recording ready to save';
+                };
+                
+                mediaRecorder.start();
+                
+                // Update UI
+                document.getElementById(`letter_record_${letter}`).classList.add('hidden');
+                document.getElementById(`letter_stop_${letter}`).classList.remove('hidden');
+                document.getElementById(`letter_status_${letter}`).textContent = 'Recording...';
+                document.getElementById(`letter_status_${letter}`).classList.add('recording');
+                
+            } catch (error) {
+                console.error('Error starting letter recording:', error);
+                alert('Error accessing microphone. Please ensure microphone permissions are granted.');
+            }
+        }
+
+        function stopLetterRecording(letter) {
+            if (mediaRecorder && currentRecording === `letter_${letter}`) {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                
+                // Update UI
+                document.getElementById(`letter_record_${letter}`).classList.remove('hidden');
+                document.getElementById(`letter_stop_${letter}`).classList.add('hidden');
+                document.getElementById(`letter_save_${letter}`).classList.remove('hidden');
+                document.getElementById(`letter_status_${letter}`).classList.remove('recording');
+            }
+        }
+
+        async function saveLetterRecording(letter) {
+            if (!letterSoundRecordings[letter]) {
+                alert('No recording available to save');
+                return;
+            }
+            
+            const blob = letterSoundRecordings[letter];
+            const filename = `Letter_${letter}.wav`;
+            
+            // Create download link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            
+            // Mark as saved
+            document.getElementById(`letter_sound_${letter}`).classList.add('has-letter-recording');
+            document.getElementById(`letter_status_${letter}`).textContent = 'Saved!';
+            document.getElementById(`letter_save_${letter}`).classList.add('hidden');
+            
+            // Add play button if it doesn't exist
+            const controlsDiv = document.getElementById(`letter_sound_${letter}`).querySelector('.letter-sound-controls');
+            if (!controlsDiv.querySelector('.play')) {
+                const playButton = document.createElement('button');
+                playButton.className = 'letter-sound-btn play';
+                playButton.style.backgroundColor = '#2196F3';
+                playButton.style.color = 'white';
+                playButton.innerHTML = '▶️ Play';
+                playButton.onclick = () => playLetterSound(letter);
+                controlsDiv.insertBefore(playButton, controlsDiv.firstChild);
+            }
+            
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 1000);
+        }
+
+        function playLetterSound(letter) {
+            // Try to play new recording first
+            if (letterSoundRecordings[letter]) {
+                const audioUrl = URL.createObjectURL(letterSoundRecordings[letter]);
+                const audio = new Audio(audioUrl);
+                
+                audio.play().catch(error => {
+                    console.error('Error playing new letter recording:', error);
+                    alert('Could not play the new recording.');
+                });
+                
+                audio.onended = () => URL.revokeObjectURL(audioUrl);
+                audio.onerror = () => URL.revokeObjectURL(audioUrl);
+            } else {
+                // Fall back to existing file
+                const filename = `sounds/Letter_${letter}.wav`;
+                const audio = new Audio(filename);
+                
+                audio.play().catch(error => {
+                    console.error('Error playing existing letter audio:', error);
+                    alert(`Could not play ${filename}. Make sure the file exists in the sounds directory.`);
+                });
             }
         }
 

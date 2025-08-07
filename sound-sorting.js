@@ -14,6 +14,11 @@ class SoundSortingGame {
         this.touchOffset = { x: 0, y: 0 };
         this.dragClone = null;
         
+        // Scoring and timing variables
+        this.cardTimers = new Map(); // Track start time for each card
+        this.wrongAttempts = new Map(); // Track wrong attempts per card
+        this.gameStartTime = null;
+        
         this.setupScreen = document.getElementById('setup-screen');
         this.gameScreen = document.getElementById('game-screen');
         this.completionScreen = document.getElementById('completion-screen');
@@ -118,6 +123,9 @@ class SoundSortingGame {
         this.createGameBoard();
         this.showGameScreen();
         this.score = 0;
+        this.gameStartTime = Date.now();
+        this.cardTimers.clear();
+        this.wrongAttempts.clear();
         this.updateScore();
     }
 
@@ -165,7 +173,12 @@ class SoundSortingGame {
             box.className = 'letter-box';
             box.dataset.letter = letter;
             box.innerHTML = `
-                <div class="letter-box-header">${letter}</div>
+                <div class="letter-box-header">
+                    <span class="letter-title">${letter}</span>
+                    <button class="letter-play-btn" onclick="game.playLetterSound('${letter}')" title="Spill av bokstavlyd">
+                        🔊
+                    </button>
+                </div>
                 <div class="letter-dropzone" ondrop="game.drop(event)" ondragover="game.allowDrop(event)" ondragenter="game.dragEnter(event)" ondragleave="game.dragLeave(event)">
                     <div class="drop-zone-indicator">Slipp her</div>
                 </div>
@@ -199,7 +212,7 @@ class SoundSortingGame {
             `;
 
             card.addEventListener('dragstart', (e) => this.dragStart(e));
-            card.addEventListener('click', () => this.playWordSound(wordData.audio));
+            card.addEventListener('click', () => this.playWordSound(wordData.audio, card.id));
             
             // Touch events for mobile support
             card.addEventListener('touchstart', (e) => this.touchStart(e), { passive: false });
@@ -210,7 +223,7 @@ class SoundSortingGame {
         });
     }
 
-    playWordSound(audioPath) {
+    playWordSound(audioPath, cardId = null) {
         if (this.currentAudio) {
             this.currentAudio.pause();
         }
@@ -220,11 +233,35 @@ class SoundSortingGame {
         this.currentAudio.play().catch(error => {
             console.error('Error playing audio:', error);
         });
+
+        // Start timer for this card if not already started
+        if (cardId && !this.cardTimers.has(cardId)) {
+            this.cardTimers.set(cardId, Date.now());
+        }
     }
 
     replayLastSound() {
         if (this.lastPlayedAudio) {
             this.playWordSound(this.lastPlayedAudio);
+        }
+    }
+
+    playLetterSound(letter) {
+        if (this.letterData[letter] && this.letterData[letter].letterSound) {
+            const letterSoundPath = this.letterData[letter].letterSound;
+            
+            if (this.currentAudio) {
+                this.currentAudio.pause();
+            }
+
+            this.currentAudio = new Audio(letterSoundPath);
+            this.lastPlayedAudio = letterSoundPath;
+            this.currentAudio.play().catch(error => {
+                console.error('Error playing letter sound:', error);
+                console.warn(`Could not play letter sound: ${letterSoundPath}`);
+            });
+        } else {
+            console.warn(`No letter sound available for letter: ${letter}`);
         }
     }
 
@@ -285,19 +322,27 @@ class SoundSortingGame {
             card.classList.add('placed-correct');
             card.draggable = false;
             
+            // Calculate and add speed-based score
+            const points = this.calculateScore(card.id);
+            this.score += points;
+            this.showScorePopup(card, points);
+            
             // Update stack order - latest card on top (use setTimeout to ensure DOM is updated)
             setTimeout(() => {
                 this.updateCardStack(droppedCardsArea);
             }, 0);
             
-            this.score += 10;
             this.updateScore();
             this.checkGameComplete();
         } else {
-            // Incorrect placement - flash the dropzone red
+            // Incorrect placement - flash the dropzone red and apply penalty
             const dropzone = letterBox.querySelector('.letter-dropzone');
             card.classList.add('incorrect');
             dropzone.classList.add('flash-red');
+            
+            // Track wrong attempt for penalty calculation
+            const wrongCount = this.wrongAttempts.get(card.id) || 0;
+            this.wrongAttempts.set(card.id, wrongCount + 1);
             
             setTimeout(() => {
                 card.classList.remove('incorrect');
@@ -382,6 +427,11 @@ class SoundSortingGame {
         
         if (!card) return;
 
+        // Start timer for this card if not already started
+        if (!this.cardTimers.has(card.id)) {
+            this.cardTimers.set(card.id, Date.now());
+        }
+
         this.isDragging = true;
         this.draggedCard = card;
         
@@ -413,7 +463,7 @@ class SoundSortingGame {
         // Play sound
         const audioPath = card.dataset.audio;
         if (audioPath) {
-            this.playWordSound(audioPath);
+            this.playWordSound(audioPath, card.id);
         }
     }
 
@@ -480,12 +530,16 @@ class SoundSortingGame {
                 this.draggedCard.classList.add('placed-correct');
                 this.draggedCard.draggable = false;
                 
+                // Calculate and add speed-based score
+                const points = this.calculateScore(this.draggedCard.id);
+                this.score += points;
+                this.showScorePopup(this.draggedCard, points);
+                
                 // Update stack order - latest card on top (use setTimeout to ensure DOM is updated)
                 setTimeout(() => {
                     this.updateCardStack(droppedCardsArea);
                 }, 0);
                 
-                this.score += 10;
                 this.updateScore();
                 this.checkGameComplete();
             } else {
@@ -493,6 +547,10 @@ class SoundSortingGame {
                 const dropzone = letterBox.querySelector('.letter-dropzone');
                 this.draggedCard.classList.add('incorrect');
                 dropzone.classList.add('flash-red');
+                
+                // Track wrong attempt for penalty calculation
+                const wrongCount = this.wrongAttempts.get(this.draggedCard.id) || 0;
+                this.wrongAttempts.set(this.draggedCard.id, wrongCount + 1);
                 
                 setTimeout(() => {
                     this.draggedCard.classList.remove('incorrect');
@@ -505,6 +563,57 @@ class SoundSortingGame {
         this.isDragging = false;
         this.draggedCard = null;
     }
+
+    calculateScore(cardId) {
+        const startTime = this.cardTimers.get(cardId);
+        if (!startTime) {
+            // Fallback if no timer found
+            return 50;
+        }
+
+        const timeElapsed = (Date.now() - startTime) / 1000; // Convert to seconds
+        const wrongAttempts = this.wrongAttempts.get(cardId) || 0;
+
+        // Base score: 100 points
+        let baseScore = 100;
+
+        // Speed bonus: More points for faster completion (max 50 bonus points)
+        // Perfect time: 3 seconds = 50 bonus, 10+ seconds = 0 bonus
+        const speedBonus = Math.max(0, Math.round(50 - (timeElapsed - 3) * 5));
+
+        // Penalty for wrong attempts: -20 points per wrong attempt
+        const wrongPenalty = wrongAttempts * 20;
+
+        // Calculate final score (minimum 10 points)
+        const finalScore = Math.max(10, baseScore + speedBonus - wrongPenalty);
+
+        return finalScore;
+    }
+
+    showScorePopup(card, points) {
+        // Create floating score popup
+        const popup = document.createElement('div');
+        popup.className = 'score-popup';
+        popup.textContent = `+${points}`;
+        
+        // Position relative to the card
+        const cardRect = card.getBoundingClientRect();
+        popup.style.position = 'fixed';
+        popup.style.left = (cardRect.left + cardRect.width / 2) + 'px';
+        popup.style.top = (cardRect.top - 10) + 'px';
+        popup.style.transform = 'translateX(-50%)';
+        popup.style.zIndex = '1000';
+        
+        document.body.appendChild(popup);
+
+        // Animate and remove
+        setTimeout(() => {
+            if (popup.parentNode) {
+                popup.parentNode.removeChild(popup);
+            }
+        }, 2000);
+    }
+
 }
 
 // Initialize the game when the page loads
