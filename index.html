@@ -3,108 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bokstav Hukommelse Spill</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Lydspill for Barn - Velg et Spill</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        .main-container {
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            padding: 3rem;
+            max-width: 900px;
+            width: 90%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #4a5568;
+            margin-bottom: 1rem;
+            font-size: 2.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .game-card {
+            background: linear-gradient(145deg, #f7fafc, #edf2f7);
+            border-radius: 20px;
+            padding: 2rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .game-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .game-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-description {
+            color: #4a5568;
+            font-size: 1rem;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+        }
+
+        .game-features {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .feature-badge {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+            color: #718096;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .game-card {
+                padding: 1.5rem;
+            }
+
+            .game-icon {
+                font-size: 3rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🎮 Håkon's Memory 🎮</h1>
-        </header>
+    <div class="main-container">
+        <h1>🎵 Lydspill for Barn 🎵</h1>
+        <p class="subtitle">Velg et spill og lær bokstaver gjennom lyd og lek!</p>
         
-        <div id="setup-screen" class="setup-screen">
-            <div class="setup-section">
-                <div class="letter-grid" id="letter-selection">
+        <div class="games-grid">
+            <a href="memory-game/memory-game.html" class="game-card">
+                <div class="game-icon">🧠</div>
+                <div class="game-title">Bokstav Memory</div>
+                <div class="game-description">
+                    Match bokstaver med bilder i dette klassiske memory-spillet. 
+                    Velg egne bokstaver og vanskelighetsgrad.
                 </div>
-                <div class="selection-controls">
-                    <button id="select-all-btn" class="control-btn">Velg alle</button>
-                    <button id="select-none-btn" class="control-btn">Fjern alle</button>
+                <div class="game-features">
+                    <span class="feature-badge">Memory</span>
+                    <span class="feature-badge">Tilpassbar</span>
+                    <span class="feature-badge">Bilder</span>
                 </div>
-            </div>
-            
-            <div class="setup-section">
-                <div class="tile-count-section">
-                    <label for="tile-count">Hvor mange kort vil du ha?</label>
-                    <input type="number" id="tile-count" min="4" max="32" step="2" value="8" class="tile-count-input">
-                    <div class="tile-info">
-                        <span id="pairs-info">4 par</span>
-                        <span id="max-tiles-info">Maksimalt mulig: 16 kort</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="setup-section">
-                <div class="player-count-section">
-                    <label for="player-count">Hvor mange spillere?</label>
-                    <select id="player-count" class="player-count-select">
-                        <option value="1">1 spiller</option>
-                        <option value="2">2 spillere</option>
-                        <option value="3">3 spillere</option>
-                        <option value="4">4 spillere</option>
-                    </select>
-                    <div class="player-info">
-                        <p>Ved flerspiller: spillere bytter på å flippe 2 kort. Hvis du finner et par får du en tur til!</p>
-                    </div>
-                </div>
-            </div>
-            
-            <button id="start-game-btn" class="start-game-btn">🚀 Start spill</button>
-        </div>
-        
-        <div id="game-area" class="game-area">
-            <div class="game-info">
-                <div class="score">
-                    <span>Forsøk: <span id="attempts">0</span></span>
-                    <span>Par: <span id="pairs">0</span>/<span id="total-pairs">29</span></span>
-                </div>
-                <div class="players-info" id="players-info">
-                    <!-- Player information will be added here -->
-                </div>
-                <div class="controls">
-                    <button id="settings-btn" class="settings-btn" title="Innstillinger">⚙️</button>
-                </div>
-            </div>
-            
-            <div id="voice-controls" class="voice-controls hidden">
-                <div class="voice-buttons-container">
-                    <button id="listen-btn" class="listen-btn">🔊 Hør ordet</button>
-                    <button id="record-btn" class="record-btn">🎤 Ta opp</button>
-                    <button id="play-btn" class="play-btn hidden">▶️ Spill av igjen</button>
-                    <button id="continue-btn" class="continue-btn hidden">✓ Fortsett</button>
-                </div>
-                <div id="recording-status" class="recording-status"></div>
-            </div>
+            </a>
 
-            <div id="win-message" class="win-message hidden">
-                <h2>🏆 Gratulerer!</h2>
-                <p>Du fant alle parene!</p>
-                <button id="play-again-btn" class="play-again-btn">Spill igjen</button>
-            </div>
-
-            <div class="game-board" id="game-board">
-            </div>
-        </div>
-        
-    </div>
-    
-    <!-- Settings Modal -->
-    <div id="settings-modal" class="settings-modal hidden">
-        <div class="settings-modal-content">
-            <div class="settings-header">
-                <h3>⚙️ Innstillinger</h3>
-                <button id="close-settings-btn" class="close-settings-btn">✕</button>
-            </div>
-            <div class="settings-body">
-                <div class="settings-section">
-                    <h4>Spillkontroller</h4>
-                    <button id="restart-btn" class="restart-btn">🔄 Nytt spill</button>
-                    <p class="warning-text">⚠️ Dette vil slette gjeldende spill</p>
+            <a href="find-sounds/find-sounds.html" class="game-card">
+                <div class="game-icon">🌸</div>
+                <div class="game-title">Finn Lyden</div>
+                <div class="game-description">
+                    Hør på bokstavlyder og gjett det riktige ordet. 
+                    En vennlig blomst hjelper deg på veien!
                 </div>
-            </div>
+                <div class="game-features">
+                    <span class="feature-badge">Lytting</span>
+                    <span class="feature-badge">Ordgjetting</span>
+                    <span class="feature-badge">Lyder</span>
+                </div>
+            </a>
+
+            <a href="sound-sorting/sound-sorting.html" class="game-card">
+                <div class="game-icon">🎯</div>
+                <div class="game-title">Sorter Lyder</div>
+                <div class="game-description">
+                    Dra og slipp ord til riktig bokstav. 
+                    Lær bokstaver ved å sortere ord etter deres første lyd.
+                </div>
+                <div class="game-features">
+                    <span class="feature-badge">Dra & slipp</span>
+                    <span class="feature-badge">Sortering</span>
+                    <span class="feature-badge">Poeng</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>🎮 Alle spill er laget for å hjelpe barn med å lære bokstaver og lyder på en morsom måte!</p>
         </div>
     </div>
-    <div id="settings-overlay" class="settings-overlay hidden"></div>
-    
-    <script src="game.js"></script>
 </body>
 </html>

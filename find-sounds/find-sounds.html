@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finn Lyden - Lydspill for Barn</title>
+    <link rel="stylesheet" href="find-sounds.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Finn Lyden - Gjett Ordet!</h1>
+        
+        <div class="start-screen" id="start-screen">
+            <h2>Velkommen til Finn Lyden!</h2>
+            <p>Hør på lydene og finn de riktige bokstavene. Trykk for å starte!</p>
+            <button id="start-game-btn" class="start-btn">Start Spill</button>
+        </div>
+        
+        <div class="game-screen" id="game-screen" style="display: none;">
+        
+        <div class="flower-display">
+            <svg id="flower-svg" width="200" height="250">
+                <!-- Flower stem (always visible) -->
+                <line x1="100" y1="200" x2="100" y2="120" stroke="#2d5016" stroke-width="6"/>
+                
+                <!-- Flower center (always visible) -->
+                <circle cx="100" cy="120" r="20" fill="#FFD700" stroke="#FFA500" stroke-width="2"/>
+                
+                <!-- Flower petals (initially all visible) -->
+                <ellipse id="petal1" cx="100" cy="85" rx="15" ry="25" fill="#FF69B4" stroke="#FF1493" stroke-width="2" style="display:block"/>
+                <ellipse id="petal2" cx="130" cy="105" rx="25" ry="15" fill="#FF69B4" stroke="#FF1493" stroke-width="2" style="display:block"/>
+                <ellipse id="petal3" cx="120" cy="145" rx="20" ry="20" fill="#FF69B4" stroke="#FF1493" stroke-width="2" style="display:block"/>
+                <ellipse id="petal4" cx="80" cy="145" rx="20" ry="20" fill="#FF69B4" stroke="#FF1493" stroke-width="2" style="display:block"/>
+                <ellipse id="petal5" cx="70" cy="105" rx="25" ry="15" fill="#FF69B4" stroke="#FF1493" stroke-width="2" style="display:block"/>
+                <ellipse id="petal6" cx="85" cy="95" rx="18" ry="22" fill="#FF69B4" stroke="#FF1493" stroke-width="2" style="display:block"/>
+                <ellipse id="petal7" cx="115" cy="95" rx="18" ry="22" fill="#FF69B4" stroke="#FF1493" stroke-width="2" style="display:block"/>
+                
+                <!-- Ground -->
+                <ellipse cx="100" cy="210" rx="60" ry="15" fill="#90EE90" stroke="#32CD32" stroke-width="2"/>
+                
+                <!-- Happy/sad face on flower center -->
+                <circle id="left-eye" cx="90" cy="115" r="3" fill="black"/>
+                <circle id="right-eye" cx="110" cy="115" r="3" fill="black"/>
+                <path id="smile" d="M 85 125 Q 100 135 115 125" stroke="black" stroke-width="2" fill="none"/>
+                <path id="frown" d="M 85 130 Q 100 120 115 130" stroke="black" stroke-width="2" fill="none" style="display:none"/>
+            </svg>
+        </div>
+
+        <div class="word-display">
+            <div id="word-container"></div>
+        </div>
+
+        <div class="game-info">
+            <p>Gjenværende forsøk: <span id="attempts-left">7</span></p>
+            <p>Brukte bokstaver: <span id="used-letters"></span></p>
+        </div>
+
+        <div class="letter-help">
+            <button id="replay-letter-btn">🔊 Spill av bokstav igjen</button>
+            <button id="play-found-letters-btn">🎵 Spill av fundne bokstaver</button>
+        </div>
+
+        <div class="alphabet">
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="A">A</button>
+                <button class="sound-btn" data-letter="A">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="B">B</button>
+                <button class="sound-btn" data-letter="B">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="C">C</button>
+                <button class="sound-btn" data-letter="C">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="D">D</button>
+                <button class="sound-btn" data-letter="D">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="E">E</button>
+                <button class="sound-btn" data-letter="E">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="F">F</button>
+                <button class="sound-btn" data-letter="F">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="G">G</button>
+                <button class="sound-btn" data-letter="G">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="H">H</button>
+                <button class="sound-btn" data-letter="H">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="I">I</button>
+                <button class="sound-btn" data-letter="I">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="J">J</button>
+                <button class="sound-btn" data-letter="J">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="K">K</button>
+                <button class="sound-btn" data-letter="K">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="L">L</button>
+                <button class="sound-btn" data-letter="L">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="M">M</button>
+                <button class="sound-btn" data-letter="M">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="N">N</button>
+                <button class="sound-btn" data-letter="N">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="O">O</button>
+                <button class="sound-btn" data-letter="O">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="P">P</button>
+                <button class="sound-btn" data-letter="P">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="Q">Q</button>
+                <button class="sound-btn" data-letter="Q">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="R">R</button>
+                <button class="sound-btn" data-letter="R">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="S">S</button>
+                <button class="sound-btn" data-letter="S">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="T">T</button>
+                <button class="sound-btn" data-letter="T">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="U">U</button>
+                <button class="sound-btn" data-letter="U">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="V">V</button>
+                <button class="sound-btn" data-letter="V">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="W">W</button>
+                <button class="sound-btn" data-letter="W">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="X">X</button>
+                <button class="sound-btn" data-letter="X">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="Y">Y</button>
+                <button class="sound-btn" data-letter="Y">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="Z">Z</button>
+                <button class="sound-btn" data-letter="Z">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="Æ">Æ</button>
+                <button class="sound-btn" data-letter="Æ">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="Ø">Ø</button>
+                <button class="sound-btn" data-letter="Ø">🔊</button>
+            </div>
+            <div class="letter-container">
+                <button class="letter-btn" data-letter="Å">Å</button>
+                <button class="sound-btn" data-letter="Å">🔊</button>
+            </div>
+        </div>
+
+        <div class="game-result" id="game-result" style="display: none;">
+            <div class="result-content">
+                <h2 id="result-message"></h2>
+                <div id="word-image-container"></div>
+                <button id="new-game-btn">Nytt Spill</button>
+            </div>
+        </div>
+        
+        </div> <!-- Close game-screen -->
+    </div>
+
+    <script src="find-sounds.js"></script>
+</body>
+</html>

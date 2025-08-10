@@ -139,8 +139,9 @@ class MemoryGame {
         const allPossiblePairs = [];
         this.selectedLetters.forEach(letterObj => {
             letterObj.words.forEach((word, index) => {
-                const image = letterObj.customImages[index] || letterObj.images[index];
-                const audio = letterObj.audio[index] || "";
+                const rawImage = letterObj.customImages[index] || letterObj.images[index];
+                const image = rawImage && (rawImage.startsWith('http') || rawImage.length <= 4) ? rawImage : `../${rawImage}`;
+                const audio = letterObj.audio[index] ? `../${letterObj.audio[index]}` : "";
                 allPossiblePairs.push({
                     letter: letterObj.letter,
                     word: word,
@@ -524,7 +525,7 @@ class MemoryGame {
     // Custom Image Functions
     async loadCustomImagesFromJSON() {
         try {
-            const response = await fetch('./letter-images.json');
+            const response = await fetch('../letter-images.json');
             const lettersData = await response.json();
             
             this.letters = Object.keys(lettersData).map(letter => ({
@@ -541,7 +542,7 @@ class MemoryGame {
     }
     
     renderImage(image) {
-        if (image && (image.startsWith('http') || image.startsWith('data:') || image.startsWith('images/'))) {
+        if (image && (image.startsWith('http') || image.startsWith('data:') || image.startsWith('images/') || image.startsWith('../images/'))) {
             return `<img src="${image}" alt="Custom image" class="custom-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span style="display:none;">❓</span>`;
         }
         return image;

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bokstav Hukommelse Spill</title>
+    <link rel="stylesheet" href="memory-game.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Håkon's Memory 🎮</h1>
+        </header>
+        
+        <div id="setup-screen" class="setup-screen">
+            <div class="setup-section">
+                <div class="letter-grid" id="letter-selection">
+                </div>
+                <div class="selection-controls">
+                    <button id="select-all-btn" class="control-btn">Velg alle</button>
+                    <button id="select-none-btn" class="control-btn">Fjern alle</button>
+                </div>
+            </div>
+            
+            <div class="setup-section">
+                <div class="tile-count-section">
+                    <label for="tile-count">Hvor mange kort vil du ha?</label>
+                    <input type="number" id="tile-count" min="4" max="32" step="2" value="8" class="tile-count-input">
+                    <div class="tile-info">
+                        <span id="pairs-info">4 par</span>
+                        <span id="max-tiles-info">Maksimalt mulig: 16 kort</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="setup-section">
+                <div class="player-count-section">
+                    <label for="player-count">Hvor mange spillere?</label>
+                    <select id="player-count" class="player-count-select">
+                        <option value="1">1 spiller</option>
+                        <option value="2">2 spillere</option>
+                        <option value="3">3 spillere</option>
+                        <option value="4">4 spillere</option>
+                    </select>
+                    <div class="player-info">
+                        <p>Ved flerspiller: spillere bytter på å flippe 2 kort. Hvis du finner et par får du en tur til!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="start-game-btn" class="start-game-btn">🚀 Start spill</button>
+        </div>
+        
+        <div id="game-area" class="game-area">
+            <div class="game-info">
+                <div class="score">
+                    <span>Forsøk: <span id="attempts">0</span></span>
+                    <span>Par: <span id="pairs">0</span>/<span id="total-pairs">29</span></span>
+                </div>
+                <div class="players-info" id="players-info">
+                    <!-- Player information will be added here -->
+                </div>
+                <div class="controls">
+                    <button id="settings-btn" class="settings-btn" title="Innstillinger">⚙️</button>
+                </div>
+            </div>
+            
+            <div id="voice-controls" class="voice-controls hidden">
+                <div class="voice-buttons-container">
+                    <button id="listen-btn" class="listen-btn">🔊 Hør ordet</button>
+                    <button id="record-btn" class="record-btn">🎤 Ta opp</button>
+                    <button id="play-btn" class="play-btn hidden">▶️ Spill av igjen</button>
+                    <button id="continue-btn" class="continue-btn hidden">✓ Fortsett</button>
+                </div>
+                <div id="recording-status" class="recording-status"></div>
+            </div>
+
+            <div id="win-message" class="win-message hidden">
+                <h2>🏆 Gratulerer!</h2>
+                <p>Du fant alle parene!</p>
+                <button id="play-again-btn" class="play-again-btn">Spill igjen</button>
+            </div>
+
+            <div class="game-board" id="game-board">
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="settings-modal hidden">
+        <div class="settings-modal-content">
+            <div class="settings-header">
+                <h3>⚙️ Innstillinger</h3>
+                <button id="close-settings-btn" class="close-settings-btn">✕</button>
+            </div>
+            <div class="settings-body">
+                <div class="settings-section">
+                    <h4>Spillkontroller</h4>
+                    <button id="restart-btn" class="restart-btn">🔄 Nytt spill</button>
+                    <p class="warning-text">⚠️ Dette vil slette gjeldende spill</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="settings-overlay" class="settings-overlay hidden"></div>
+    
+    <script src="memory-game.js"></script>
+</body>
+</html>

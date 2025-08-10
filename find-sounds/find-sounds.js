@@ -1,0 +1,449 @@
+class FindSoundsGame {
+    constructor() {
+        this.letterData = null;
+        this.currentWord = '';
+        this.currentLetterKey = '';
+        this.wordIndex = 0;
+        this.guessedLetters = [];
+        this.wrongGuesses = 0;
+        this.maxWrongGuesses = 7;
+        this.gameEnded = false;
+        this.currentLetterIndex = 0;
+        this.uniqueLetters = [];
+        
+        this.flowerPetals = ['petal1', 'petal2', 'petal3', 'petal4', 'petal5', 'petal6', 'petal7'];
+        
+        this.initializeGame();
+    }
+
+    async initializeGame() {
+        await this.loadLetterData();
+        this.setupEventListeners();
+        this.showStartScreen();
+    }
+
+    async loadLetterData() {
+        try {
+            const response = await fetch('../letter-images.json');
+            this.letterData = await response.json();
+        } catch (error) {
+            console.error('Error loading letter data:', error);
+        }
+    }
+
+    setupEventListeners() {
+        document.getElementById('start-game-btn').addEventListener('click', () => {
+            this.hideStartScreen();
+            this.showGameScreen();
+            this.startNewGame();
+        });
+
+        document.querySelectorAll('.letter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!this.gameEnded && !btn.disabled) {
+                    this.guessLetter(btn.dataset.letter);
+                }
+            });
+        });
+
+        document.querySelectorAll('.sound-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.playLetterSound(btn.dataset.letter);
+            });
+        });
+
+        document.getElementById('new-game-btn').addEventListener('click', () => {
+            this.startNewGame();
+        });
+
+        document.getElementById('replay-letter-btn').addEventListener('click', () => {
+            this.playCurrentLetterSound();
+        });
+
+        document.getElementById('play-found-letters-btn').addEventListener('click', () => {
+            this.playFoundLetters();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            const key = e.key.toUpperCase();
+            if (!this.gameEnded && this.isValidLetter(key)) {
+                const btn = document.querySelector(`[data-letter="${key}"]`);
+                if (btn && !btn.disabled) {
+                    this.guessLetter(key);
+                }
+            }
+        });
+    }
+
+    isValidLetter(letter) {
+        const validLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ';
+        return validLetters.includes(letter);
+    }
+
+    startNewGame() {
+        if (!this.letterData) {
+            console.error('Letter data not loaded yet');
+            return;
+        }
+        
+        this.selectRandomWord();
+        this.guessedLetters = [];
+        this.wrongGuesses = 0;
+        this.gameEnded = false;
+        this.currentLetterIndex = 0;
+        this.createUniqueLettersList();
+        
+        this.resetDisplay();
+        this.createWordDisplay();
+        this.updateGameInfo();
+        this.hideGameResult();
+        
+        // Play the first letter sound immediately after setup
+        this.playNextLetterSound();
+    }
+
+    selectRandomWord() {
+        const letters = Object.keys(this.letterData);
+        this.currentLetterKey = letters[Math.floor(Math.random() * letters.length)];
+        
+        const letterInfo = this.letterData[this.currentLetterKey];
+        this.wordIndex = Math.floor(Math.random() * letterInfo.words.length);
+        this.currentWord = letterInfo.words[this.wordIndex].toUpperCase();
+        
+        console.log('Selected word:', this.currentWord);
+    }
+
+    createUniqueLettersList() {
+        this.uniqueLetters = [];
+        const seen = new Set();
+        
+        for (let letter of this.currentWord) {
+            if (!seen.has(letter) && letter !== ' ') {
+                this.uniqueLetters.push(letter);
+                seen.add(letter);
+            }
+        }
+        console.log('Unique letters in order:', this.uniqueLetters);
+    }
+
+    async playNextLetterSound() {
+        if (this.currentLetterIndex < this.uniqueLetters.length) {
+            const nextLetter = this.uniqueLetters[this.currentLetterIndex];
+            console.log('Playing sound for letter:', nextLetter);
+            this.updateReplayButton();
+            
+            try {
+                const audio = new Audio(`../sounds/Letter_${nextLetter}.wav`);
+                await audio.play();
+            } catch (error) {
+                console.log('Could not play letter sound:', error);
+            }
+        } else {
+            this.updateReplayButton();
+        }
+    }
+
+    async playCurrentLetterSound() {
+        if (this.currentLetterIndex < this.uniqueLetters.length) {
+            const currentLetter = this.uniqueLetters[this.currentLetterIndex];
+            console.log('Replaying sound for letter:', currentLetter);
+            
+            try {
+                const audio = new Audio(`../sounds/Letter_${currentLetter}.wav`);
+                await audio.play();
+            } catch (error) {
+                console.log('Could not play letter sound:', error);
+            }
+        }
+    }
+
+    async playLetterSound(letter) {
+        console.log('Playing sound for letter:', letter);
+        try {
+            const audio = new Audio(`../sounds/Letter_${letter}.wav`);
+            await audio.play();
+        } catch (error) {
+            console.log('Could not play letter sound:', error);
+        }
+    }
+
+    async playFoundLetters() {
+        const foundLetters = [];
+        
+        // Go through each letter in the word and collect the ones that have been guessed
+        for (let letter of this.currentWord) {
+            if (letter !== ' ' && this.guessedLetters.includes(letter)) {
+                foundLetters.push(letter);
+            }
+        }
+        
+        console.log('Playing found letters:', foundLetters);
+        
+        // Play each found letter with a delay between them
+        for (let i = 0; i < foundLetters.length; i++) {
+            try {
+                const audio = new Audio(`../sounds/Letter_${foundLetters[i]}.wav`);
+                await audio.play();
+                
+                // Wait a bit between letters (except for the last one)
+                if (i < foundLetters.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 800));
+                }
+            } catch (error) {
+                console.log('Could not play letter sound:', error);
+            }
+        }
+    }
+
+    updateReplayButton() {
+        const replayBtn = document.getElementById('replay-letter-btn');
+        if (this.currentLetterIndex < this.uniqueLetters.length && !this.gameEnded) {
+            replayBtn.textContent = '🔊 Spill av bokstav igjen';
+            replayBtn.disabled = false;
+        } else {
+            replayBtn.textContent = '🔊 Spill av bokstav igjen';
+            replayBtn.disabled = true;
+        }
+        
+        this.updateFoundLettersButton();
+    }
+
+    updateFoundLettersButton() {
+        const foundLettersBtn = document.getElementById('play-found-letters-btn');
+        
+        // Check if any letters have been found
+        const hasFoundLetters = this.guessedLetters.some(letter => 
+            this.currentWord.includes(letter)
+        );
+        
+        foundLettersBtn.disabled = !hasFoundLetters || this.gameEnded;
+    }
+
+    createWordDisplay() {
+        const wordContainer = document.getElementById('word-container');
+        wordContainer.innerHTML = '';
+        
+        for (let i = 0; i < this.currentWord.length; i++) {
+            const letterSlot = document.createElement('div');
+            letterSlot.className = 'letter-slot';
+            letterSlot.dataset.index = i;
+            
+            if (this.guessedLetters.includes(this.currentWord[i]) || this.currentWord[i] === ' ') {
+                letterSlot.textContent = this.currentWord[i];
+                letterSlot.classList.add('filled');
+            }
+            
+            wordContainer.appendChild(letterSlot);
+        }
+    }
+
+    resetDisplay() {
+        document.querySelectorAll('.letter-btn').forEach(btn => {
+            btn.disabled = false;
+            btn.classList.remove('correct', 'incorrect');
+        });
+        
+        // Show all flower petals
+        this.flowerPetals.forEach(petal => {
+            document.getElementById(petal).style.display = 'block';
+        });
+        
+        // Show smile, hide frown
+        document.getElementById('smile').style.display = 'block';
+        document.getElementById('frown').style.display = 'none';
+        
+        this.updateReplayButton();
+    }
+
+    guessLetter(letter) {
+        if (this.guessedLetters.includes(letter)) {
+            return;
+        }
+        
+        this.guessedLetters.push(letter);
+        const btn = document.querySelector(`[data-letter="${letter}"]`);
+        btn.disabled = true;
+        
+        if (this.currentWord.includes(letter)) {
+            btn.classList.add('correct');
+            this.revealLetters(letter);
+            
+            // Check if this was the expected next letter
+            if (this.currentLetterIndex < this.uniqueLetters.length && 
+                letter === this.uniqueLetters[this.currentLetterIndex]) {
+                this.currentLetterIndex++;
+                
+                // Play next letter sound after a short delay
+                setTimeout(() => {
+                    this.playNextLetterSound();
+                }, 500);
+            }
+            
+            if (this.isWordComplete()) {
+                this.endGame(true);
+            }
+        } else {
+            btn.classList.add('incorrect');
+            this.wrongGuesses++;
+            this.removeFlowerPetal();
+            
+            if (this.wrongGuesses >= this.maxWrongGuesses) {
+                this.endGame(false);
+            }
+        }
+        
+        this.updateGameInfo();
+    }
+
+    revealLetters(letter) {
+        const letterSlots = document.querySelectorAll('.letter-slot');
+        
+        for (let i = 0; i < this.currentWord.length; i++) {
+            if (this.currentWord[i] === letter) {
+                letterSlots[i].textContent = letter;
+                letterSlots[i].classList.add('filled');
+            }
+        }
+    }
+
+
+    removeFlowerPetal() {
+        if (this.wrongGuesses <= this.flowerPetals.length) {
+            const petalToRemove = this.flowerPetals[this.wrongGuesses - 1];
+            document.getElementById(petalToRemove).style.display = 'none';
+        }
+        
+        // Change to sad face when losing petals
+        if (this.wrongGuesses >= 4) {
+            document.getElementById('smile').style.display = 'none';
+            document.getElementById('frown').style.display = 'block';
+        }
+    }
+
+    isWordComplete() {
+        for (let letter of this.currentWord) {
+            if (letter !== ' ' && !this.guessedLetters.includes(letter)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    updateGameInfo() {
+        document.getElementById('attempts-left').textContent = this.maxWrongGuesses - this.wrongGuesses;
+        document.getElementById('used-letters').textContent = this.guessedLetters.join(', ');
+    }
+
+    async endGame(won) {
+        this.gameEnded = true;
+        this.updateReplayButton();
+        this.updateFoundLettersButton();
+        
+        if (won) {
+            await this.playWordSounds();
+            this.showGameResult('Du vant! 🎉', true);
+        } else {
+            this.revealWord();
+            this.showGameResult('Du tapte! 😢', false);
+        }
+    }
+
+    revealWord() {
+        const letterSlots = document.querySelectorAll('.letter-slot');
+        for (let i = 0; i < this.currentWord.length; i++) {
+            letterSlots[i].textContent = this.currentWord[i];
+            letterSlots[i].classList.add('filled');
+        }
+    }
+
+    async playWordSounds() {
+        const letterInfo = this.letterData[this.currentLetterKey];
+        const wordAudio = letterInfo.audio[this.wordIndex];
+        
+        if (wordAudio) {
+            try {
+                const audio = new Audio(`../${wordAudio}`);
+                await audio.play();
+            } catch (error) {
+                console.log('Could not play word sound:', error);
+            }
+        }
+    }
+
+    showGameResult(message, won) {
+        const resultDiv = document.getElementById('game-result');
+        const messageDiv = document.getElementById('result-message');
+        const imageContainer = document.getElementById('word-image-container');
+        
+        messageDiv.textContent = message;
+        messageDiv.className = won ? 'win' : 'lose';
+        
+        if (won) {
+            this.displayWordImage(imageContainer);
+        } else {
+            imageContainer.innerHTML = `<p>Ordet var: <strong>${this.currentWord}</strong></p>`;
+        }
+        
+        resultDiv.style.display = 'flex';
+    }
+
+    displayWordImage(container) {
+        const letterInfo = this.letterData[this.currentLetterKey];
+        const imageData = letterInfo.images[this.wordIndex];
+        
+        container.innerHTML = `<p>Ordet var: <strong>${this.currentWord}</strong></p>`;
+        
+        if (imageData) {
+            // Check if it's a URL/file path or an emoji
+            if (imageData.startsWith('http') || imageData.includes('/')) {
+                // It's a URL or file path - use img tag
+                const img = document.createElement('img');
+                img.id = 'word-image';
+                img.alt = this.currentWord;
+                img.src = imageData.startsWith('http') ? imageData : `../${imageData}`;
+                
+                img.onerror = () => {
+                    img.style.display = 'none';
+                    const emojiDiv = document.createElement('div');
+                    emojiDiv.style.fontSize = '4rem';
+                    emojiDiv.style.textAlign = 'center';
+                    emojiDiv.style.margin = '1rem auto';
+                    emojiDiv.textContent = '🖼️'; // Fallback icon
+                    container.appendChild(emojiDiv);
+                };
+                
+                container.appendChild(img);
+            } else {
+                // It's an emoji or text - use div
+                const emojiDiv = document.createElement('div');
+                emojiDiv.id = 'word-emoji';
+                emojiDiv.style.fontSize = '4rem';
+                emojiDiv.style.textAlign = 'center';
+                emojiDiv.style.margin = '1rem auto';
+                emojiDiv.textContent = imageData;
+                container.appendChild(emojiDiv);
+            }
+        }
+    }
+
+    hideGameResult() {
+        document.getElementById('game-result').style.display = 'none';
+    }
+
+    showStartScreen() {
+        document.getElementById('start-screen').style.display = 'block';
+        document.getElementById('game-screen').style.display = 'none';
+    }
+
+    hideStartScreen() {
+        document.getElementById('start-screen').style.display = 'none';
+    }
+
+    showGameScreen() {
+        document.getElementById('game-screen').style.display = 'block';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    new FindSoundsGame();
+});

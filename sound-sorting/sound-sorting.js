@@ -34,7 +34,7 @@ class SoundSortingGame {
 
     async loadLetterData() {
         try {
-            const response = await fetch('letter-images.json');
+            const response = await fetch('../letter-images.json');
             this.letterData = await response.json();
         } catch (error) {
             console.error('Error loading letter data:', error);
@@ -144,8 +144,8 @@ class SoundSortingGame {
                 allWords.push({
                     word,
                     letter,
-                    audio: letterAudio[index],
-                    image: letterImages[index]
+                    audio: `../${letterAudio[index]}`,
+                    image: letterImages[index].startsWith('http') || letterImages[index].length <= 4 ? letterImages[index] : `../${letterImages[index]}`
                 });
             });
         });
@@ -248,7 +248,7 @@ class SoundSortingGame {
 
     playLetterSound(letter) {
         if (this.letterData[letter] && this.letterData[letter].letterSound) {
-            const letterSoundPath = this.letterData[letter].letterSound;
+            const letterSoundPath = `../${this.letterData[letter].letterSound}`;
             
             if (this.currentAudio) {
                 this.currentAudio.pause();
