@@ -4,8 +4,17 @@
       "Bash(npm start)",
       "Bash(cp:*)",
       "Bash(rm:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(mkdir:*)",
+      "Bash(move confetti.js game-effects.js)",
+      "Bash(mv:*)",
+      "Bash(timeout 3 curl -s http://localhost:8000)",
+      "Bash(timeout:*)",
+      "Bash(node:*)"
     ],
-    "deny": []
+    "deny": [],
+    "additionalDirectories": [
+      "C:\\c\\GIT\\PRIVATE"
+    ]
   }
 }

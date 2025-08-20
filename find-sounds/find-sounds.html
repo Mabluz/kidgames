@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finn Lyden - Lydspill for Barn</title>
     <link rel="stylesheet" href="find-sounds.css">
+    <link rel="stylesheet" href="../shared/confetti.css">
+    <link rel="stylesheet" href="../shared/letter-selection.css">
 </head>
 <body>
     <div class="game-container">
@@ -12,7 +14,17 @@
         
         <div class="start-screen" id="start-screen">
             <h2>Velkommen til Finn Lyden!</h2>
-            <p>Hør på lydene og finn de riktige bokstavene. Trykk for å starte!</p>
+            <p>Hør på lydene og finn de riktige bokstavene.</p>
+            
+            <div class="setup-section">
+                <h3>Velg bokstaver å øve på:</h3>
+                <div class="letter-grid" id="letter-selection"></div>
+                <div class="selection-controls">
+                    <button id="select-all-btn" class="control-btn">Velg alle</button>
+                    <button id="select-none-btn" class="control-btn deselect">Fjern alle</button>
+                </div>
+            </div>
+            
             <button id="start-game-btn" class="start-btn">Start Spill</button>
         </div>
         
@@ -190,6 +202,8 @@
         </div> <!-- Close game-screen -->
     </div>
 
+    <script src="../shared/game-effects.js"></script>
+    <script src="../shared/letter-selection.js"></script>
     <script src="find-sounds.js"></script>
 </body>
 </html>

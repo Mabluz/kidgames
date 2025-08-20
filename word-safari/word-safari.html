@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordsafari - Lydjakten</title>
+    <link rel="stylesheet" href="word-safari.css">
+    <link rel="stylesheet" href="../shared/confetti.css">
+    <link rel="stylesheet" href="../shared/letter-selection.css">
+</head>
+<body>
+    <!-- Setup Screen -->
+    <div id="setup-screen" class="screen">
+        <div class="setup-container">
+            <h1>🦁 Ordsafari 🦁</h1>
+            <p class="game-description">Gå på lydjakten! Finn alle ordene som starter med den valgte bokstaven.</p>
+            
+            <!-- Letter Selection -->
+            <div class="setup-section">
+                <h2>Velg bokstav å jakte på:</h2>
+                <div id="letter-selection" class="letter-grid"></div>
+                <div class="selection-buttons">
+                    <button id="select-all-btn" class="btn-secondary">Velg alle</button>
+                    <button id="select-none-btn" class="btn-secondary">Velg ingen</button>
+                </div>
+            </div>
+
+            <!-- Game Settings -->
+            <div class="setup-section">
+                <h2>Spillinnstillinger:</h2>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <label for="words-to-find">Antall ord å finne:</label>
+                        <select id="words-to-find">
+                            <option value="3">3 ord</option>
+                            <option value="4">4 ord</option>
+                            <option value="5" selected>5 ord</option>
+                            <option value="6">6 ord</option>
+                            <option value="8">8 ord</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="total-words">Totalt antall ord på skjermen:</label>
+                        <select id="total-words">
+                            <option value="6">6 ord</option>
+                            <option value="8">8 ord</option>
+                            <option value="10" selected>10 ord</option>
+                            <option value="12">12 ord</option>
+                            <option value="15">15 ord</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="setup-buttons">
+                <button id="start-game-btn" class="btn-primary">Start Safari!</button>
+                <button id="back-btn" class="btn-secondary">Tilbake</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen hidden">
+        <div class="game-header">
+            <div class="progress-info">
+                <span id="progress-text">Finn ord som starter med</span>
+                <button id="letter-sound-btn" class="letter-sound-button">
+                    <span id="current-letter">A</span>
+                    <div class="play-icon">▶</div>
+                </button>
+                <span id="score-info"><span id="found-count">0</span>/<span id="total-to-find">5</span> funnet</span>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <div id="safari-field" class="safari-field"></div>
+        </div>
+    </div>
+
+    <!-- Victory Screen -->
+    <div id="victory-screen" class="screen hidden">
+        <div class="victory-container">
+            <h1>🎉 Safari fullført! 🎉</h1>
+            <div id="victory-stats">
+                <p>Du fant alle <span id="final-count">5</span> ordene som starter med <span id="final-letter">A</span>!</p>
+            </div>
+            <div class="victory-buttons">
+                <button id="play-again-btn" class="btn-primary">Spill igjen</button>
+                <button id="main-menu-btn" class="btn-secondary">Hovedmeny</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio loading indicator -->
+    <div id="audio-loading" class="hidden">
+        <div class="loading-spinner"></div>
+        <p>Laster lyder...</p>
+    </div>
+
+    <script src="../shared/game-effects.js"></script>
+    <script src="../shared/letter-selection.js"></script>
+    <script src="word-safari.js"></script>
+</body>
+</html>

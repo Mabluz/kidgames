@@ -1,0 +1,141 @@
+/* Shared Letter Selection Component */
+
+.setup-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 15px;
+}
+
+.setup-section h3 {
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.letter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.letter-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+    user-select: none;
+}
+
+.letter-option:hover {
+    background: #f0f8ff;
+    border-color: #4ecdc4;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.letter-option.selected {
+    background: #4ecdc4;
+    color: white;
+    border-color: #44a08d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+}
+
+.selection-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    padding: 10px 20px;
+    background: #4ecdc4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.control-btn:hover {
+    background: #44a08d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Alternative control button style for deselect */
+.control-btn.deselect {
+    background: #ff6b6b;
+}
+
+.control-btn.deselect:hover {
+    background: #ee5a52;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 600px) {
+    .letter-grid {
+        grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+        gap: 8px;
+    }
+    
+    .letter-option {
+        padding: 8px;
+        font-size: 1rem;
+    }
+    
+    .setup-section {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .control-btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .selection-controls {
+        gap: 8px;
+    }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+    .setup-section {
+        background: #2a2a2a;
+        color: #e0e0e0;
+    }
+    
+    .setup-section h3 {
+        color: #e0e0e0;
+    }
+    
+    .letter-option {
+        background: #3a3a3a;
+        border-color: #555;
+        color: #e0e0e0;
+    }
+    
+    .letter-option:hover {
+        background: #4a4a4a;
+        border-color: #4ecdc4;
+    }
+}

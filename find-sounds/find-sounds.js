@@ -10,6 +10,8 @@ class FindSoundsGame {
         this.gameEnded = false;
         this.currentLetterIndex = 0;
         this.uniqueLetters = [];
+        this.selectedLetters = new Set();
+        this.letterSelection = null;
         
         this.flowerPetals = ['petal1', 'petal2', 'petal3', 'petal4', 'petal5', 'petal6', 'petal7'];
         
@@ -19,6 +21,7 @@ class FindSoundsGame {
     async initializeGame() {
         await this.loadLetterData();
         this.setupEventListeners();
+        this.initializeLetterSelection();
         this.showStartScreen();
     }
 
@@ -33,6 +36,11 @@ class FindSoundsGame {
 
     setupEventListeners() {
         document.getElementById('start-game-btn').addEventListener('click', () => {
+            if (!this.letterSelection.isValidSelection()) {
+                alert(this.letterSelection.getValidationMessage());
+                return;
+            }
+            this.selectedLetters = new Set(this.letterSelection.getSelectedLetters());
             this.hideStartScreen();
             this.showGameScreen();
             this.startNewGame();
@@ -73,6 +81,7 @@ class FindSoundsGame {
                 }
             }
         });
+        
     }
 
     isValidLetter(letter) {
@@ -103,14 +112,22 @@ class FindSoundsGame {
     }
 
     selectRandomWord() {
-        const letters = Object.keys(this.letterData);
-        this.currentLetterKey = letters[Math.floor(Math.random() * letters.length)];
+        const availableLetters = Object.keys(this.letterData).filter(letter => 
+            this.selectedLetters.has(letter)
+        );
+        
+        if (availableLetters.length === 0) {
+            console.error('No available letters selected');
+            return;
+        }
+        
+        this.currentLetterKey = availableLetters[Math.floor(Math.random() * availableLetters.length)];
         
         const letterInfo = this.letterData[this.currentLetterKey];
         this.wordIndex = Math.floor(Math.random() * letterInfo.words.length);
         this.currentWord = letterInfo.words[this.wordIndex].toUpperCase();
         
-        console.log('Selected word:', this.currentWord);
+        console.log('Selected word:', this.currentWord, 'from letter:', this.currentLetterKey);
     }
 
     createUniqueLettersList() {
@@ -340,13 +357,18 @@ class FindSoundsGame {
         this.updateFoundLettersButton();
         
         if (won) {
-            await this.playWordSounds();
             this.showGameResult('Du vant! 🎉', true);
+            triggerConfetti();
+            await this.playFoundLetters();
+            setTimeout(async () => {
+                await this.playWordSounds();
+            }, 1000);
         } else {
             this.revealWord();
             this.showGameResult('Du tapte! 😢', false);
         }
     }
+
 
     revealWord() {
         const letterSlots = document.querySelectorAll('.letter-slot');
@@ -441,6 +463,20 @@ class FindSoundsGame {
 
     showGameScreen() {
         document.getElementById('game-screen').style.display = 'block';
+    }
+    
+    initializeLetterSelection() {
+        this.letterSelection = new LetterSelection({
+            containerSelector: '#letter-selection',
+            selectAllBtnSelector: '#select-all-btn',
+            selectNoneBtnSelector: '#select-none-btn',
+            letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Æ', 'Ø', 'Å'],
+            minSelections: 1,
+            defaultSelections: 3,
+            onSelectionChange: (selectedLetters) => {
+                console.log('Selected letters:', selectedLetters);
+            }
+        });
     }
 }
 

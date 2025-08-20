@@ -3,6 +3,7 @@ class SoundSortingGame {
         this.letterData = {};
         this.selectedLetters = new Set();
         this.wordCount = 5;
+        this.letterSelection = null;
         this.gameWords = [];
         this.score = 0;
         this.currentAudio = null;
@@ -29,7 +30,7 @@ class SoundSortingGame {
     async init() {
         await this.loadLetterData();
         this.setupEventListeners();
-        this.createLetterSelection();
+        this.initializeLetterSelection();
     }
 
     async loadLetterData() {
@@ -43,8 +44,6 @@ class SoundSortingGame {
 
     setupEventListeners() {
         // Setup screen events
-        document.getElementById('select-all').addEventListener('click', () => this.selectAllLetters());
-        document.getElementById('select-none').addEventListener('click', () => this.selectNoLetters());
         document.getElementById('start-game').addEventListener('click', () => this.startGame());
 
         // Word count selection
@@ -58,52 +57,17 @@ class SoundSortingGame {
         document.getElementById('play-again').addEventListener('click', () => this.showSetupScreen());
     }
 
-    createLetterSelection() {
-        const letterGrid = document.getElementById('letter-grid');
-        letterGrid.innerHTML = '';
-
-        Object.keys(this.letterData).forEach(letter => {
-            const letterBtn = document.createElement('button');
-            letterBtn.className = 'letter-btn';
-            letterBtn.textContent = letter;
-            letterBtn.addEventListener('click', () => this.toggleLetter(letter, letterBtn));
-            letterGrid.appendChild(letterBtn);
-        });
-
-        // Select first 5 letters by default
-        const defaultLetters = Object.keys(this.letterData).slice(0, 5);
-        defaultLetters.forEach(letter => {
-            this.selectedLetters.add(letter);
-            const btn = letterGrid.querySelector(`button:nth-child(${Object.keys(this.letterData).indexOf(letter) + 1})`);
-            btn.classList.add('selected');
-        });
-    }
-
-    toggleLetter(letter, btn) {
-        if (this.selectedLetters.has(letter)) {
-            this.selectedLetters.delete(letter);
-            btn.classList.remove('selected');
-        } else {
-            this.selectedLetters.add(letter);
-            btn.classList.add('selected');
-        }
-    }
-
-    selectAllLetters() {
-        const letterGrid = document.getElementById('letter-grid');
-        Object.keys(this.letterData).forEach(letter => {
-            this.selectedLetters.add(letter);
-        });
-        letterGrid.querySelectorAll('.letter-btn').forEach(btn => {
-            btn.classList.add('selected');
-        });
-    }
-
-    selectNoLetters() {
-        const letterGrid = document.getElementById('letter-grid');
-        this.selectedLetters.clear();
-        letterGrid.querySelectorAll('.letter-btn').forEach(btn => {
-            btn.classList.remove('selected');
+    initializeLetterSelection() {
+        this.letterSelection = new LetterSelection({
+            containerSelector: '#letter-selection',
+            selectAllBtnSelector: '#select-all-btn',
+            selectNoneBtnSelector: '#select-none-btn',
+            letters: Object.keys(this.letterData),
+            minSelections: 1,
+            defaultSelections: 5,
+            onSelectionChange: (selectedLetters) => {
+                console.log('Selected letters for sorting:', selectedLetters);
+            }
         });
     }
 
@@ -114,10 +78,11 @@ class SoundSortingGame {
     }
 
     startGame() {
-        if (this.selectedLetters.size === 0) {
-            alert('Vennligst velg minst én bokstav for å spille!');
+        if (!this.letterSelection.isValidSelection()) {
+            alert(this.letterSelection.getValidationMessage());
             return;
         }
+        this.selectedLetters = new Set(this.letterSelection.getSelectedLetters());
 
         this.generateGameWords();
         this.createGameBoard();
@@ -401,6 +366,10 @@ class SoundSortingGame {
         if (this.currentAudio) {
             this.currentAudio.pause();
         }
+        
+        // Trigger confetti and game over sound effects
+        triggerConfetti();
+        playGameOverSound();
     }
 
     updateCardStack(droppedCardsArea) {
