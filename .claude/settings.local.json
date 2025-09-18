@@ -10,7 +10,8 @@
       "Bash(mv:*)",
       "Bash(timeout 3 curl -s http://localhost:8000)",
       "Bash(timeout:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(chmod:*)"
     ],
     "deny": [],
     "additionalDirectories": [
