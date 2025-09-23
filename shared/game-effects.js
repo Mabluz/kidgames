@@ -194,12 +194,20 @@ async function playLetterSequence(letters, duration = 1000, enableCrossfade = tr
         console.log('Could not load letter data:', error);
     }
 
+    // Filter out consecutive duplicate letters
+    const filteredLetters = [];
+    for (let i = 0; i < letters.length; i++) {
+        if (i === 0 || letters[i] !== letters[i - 1]) {
+            filteredLetters.push(letters[i]);
+        }
+    }
+
     const crossfadeDuration = 0.6; // 600ms crossfade for more overlap
     let currentTime = context.currentTime;
     const activeAudioSources = [];
 
-    for (let i = 0; i < letters.length; i++) {
-        const letter = letters[i];
+    for (let i = 0; i < filteredLetters.length; i++) {
+        const letter = filteredLetters[i];
         const isRepeatable = letterData && letterData[letter] && letterData[letter].repeatable;
         const audioUrl = `../sounds/Letter_${letter}.wav`;
 
@@ -331,8 +339,16 @@ async function playLetterSequenceFallback(letters, duration = 1000) {
         console.log('Could not load letter data:', error);
     }
 
+    // Filter out consecutive duplicate letters
+    const filteredLetters = [];
     for (let i = 0; i < letters.length; i++) {
-        const letter = letters[i];
+        if (i === 0 || letters[i] !== letters[i - 1]) {
+            filteredLetters.push(letters[i]);
+        }
+    }
+
+    for (let i = 0; i < filteredLetters.length; i++) {
+        const letter = filteredLetters[i];
         const isRepeatable = letterData && letterData[letter] && letterData[letter].repeatable;
 
         try {
