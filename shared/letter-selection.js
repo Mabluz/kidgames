@@ -129,8 +129,11 @@ class LetterSelection {
     }
     
     updateUI() {
+        const container = document.querySelector(this.containerSelector);
+        if (!container) return;
+
         this.letters.forEach(letter => {
-            const letterOption = document.querySelector(`[data-letter="${letter}"]`);
+            const letterOption = container.querySelector(`[data-letter="${letter}"]`);
             if (letterOption) {
                 if (this.selectedLetters.has(letter)) {
                     letterOption.classList.add('selected');

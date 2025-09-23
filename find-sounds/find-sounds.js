@@ -12,6 +12,9 @@ class FindSoundsGame {
         this.uniqueLetters = [];
         this.selectedLetters = new Set();
         this.letterSelection = null;
+        this.skipLettersEnabled = false;
+        this.lettersToSkip = new Set();
+        this.skipLetterSelection = null;
         
         this.flowerPetals = ['petal1', 'petal2', 'petal3', 'petal4', 'petal5', 'petal6', 'petal7'];
         
@@ -22,6 +25,8 @@ class FindSoundsGame {
         await this.loadLetterData();
         this.setupEventListeners();
         this.initializeLetterSelection();
+        this.initializeSkipLetterSelection();
+        this.setupSkipLettersToggle();
         this.showStartScreen();
     }
 
@@ -41,6 +46,39 @@ class FindSoundsGame {
                 return;
             }
             this.selectedLetters = new Set(this.letterSelection.getSelectedLetters());
+
+            // Handle skip letters option
+            const mainSkipCheckbox = document.getElementById('skip-letters-checkbox');
+            const autoSkipUnselected = document.getElementById('auto-skip-unselected-checkbox').checked;
+
+            // If auto-skip is enabled, automatically enable the main skip feature
+            if (autoSkipUnselected) {
+                mainSkipCheckbox.checked = true;
+            }
+
+            this.skipLettersEnabled = mainSkipCheckbox.checked;
+
+            console.log('Before setting skip options:', {
+                skipLettersEnabled: this.skipLettersEnabled,
+                autoSkipUnselected: autoSkipUnselected,
+                lettersToSkip: Array.from(this.lettersToSkip)
+            });
+
+            if (this.skipLettersEnabled) {
+                if (autoSkipUnselected) {
+                    // Auto-populate skip letters with unselected letters
+                    this.updateAutoSkipSelection();
+                }
+                this.lettersToSkip = new Set(this.skipLetterSelection.getSelectedLetters());
+            } else {
+                this.lettersToSkip = new Set();
+            }
+
+            console.log('After setting skip options:', {
+                skipLettersEnabled: this.skipLettersEnabled,
+                lettersToSkip: Array.from(this.lettersToSkip)
+            });
+
             this.hideStartScreen();
             this.showGameScreen();
             this.startNewGame();
@@ -133,7 +171,7 @@ class FindSoundsGame {
     createUniqueLettersList() {
         this.uniqueLetters = [];
         const seen = new Set();
-        
+
         for (let letter of this.currentWord) {
             if (!seen.has(letter) && letter !== ' ') {
                 this.uniqueLetters.push(letter);
@@ -141,11 +179,23 @@ class FindSoundsGame {
             }
         }
         console.log('Unique letters in order:', this.uniqueLetters);
+        console.log('Letters to skip:', Array.from(this.lettersToSkip));
     }
 
     async playNextLetterSound() {
         if (this.currentLetterIndex < this.uniqueLetters.length) {
             const nextLetter = this.uniqueLetters[this.currentLetterIndex];
+
+            console.log(`Playing letter: ${nextLetter}, Skip enabled: ${this.skipLettersEnabled}, Should skip: ${this.lettersToSkip.has(nextLetter)}`);
+            console.log(`Letters to skip:`, Array.from(this.lettersToSkip));
+
+            // Check if letter should be skipped
+            if (this.skipLettersEnabled && this.lettersToSkip.has(nextLetter)) {
+                console.log(`Auto-progressing through skipped letter: ${nextLetter}`);
+                await this.autoProgressSkippedLetter(nextLetter);
+                return;
+            }
+
             this.updateReplayButton();
             await playLetterSound(nextLetter);
         } else {
@@ -431,8 +481,102 @@ class FindSoundsGame {
             defaultSelections: 3,
             onSelectionChange: (selectedLetters) => {
                 console.log('Selected letters:', selectedLetters);
+                // Update auto-skip selection if that option is enabled
+                const autoSkipCheckbox = document.getElementById('auto-skip-unselected-checkbox');
+                if (autoSkipCheckbox && autoSkipCheckbox.checked) {
+                    this.updateAutoSkipSelection();
+                }
             }
         });
+    }
+
+    initializeSkipLetterSelection() {
+        this.skipLetterSelection = new LetterSelection({
+            containerSelector: '#skip-letter-selection',
+            selectAllBtnSelector: '#skip-select-all-btn',
+            selectNoneBtnSelector: '#skip-select-none-btn',
+            letters: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Æ', 'Ø', 'Å'],
+            minSelections: 0,
+            defaultSelections: 0,
+            onSelectionChange: (selectedLetters) => {
+                console.log('Letters to skip:', selectedLetters);
+            }
+        });
+    }
+
+    setupSkipLettersToggle() {
+        const checkbox = document.getElementById('skip-letters-checkbox');
+        const autoSkipCheckbox = document.getElementById('auto-skip-unselected-checkbox');
+        const skipLettersContainer = document.getElementById('skip-letters-selection');
+
+        checkbox.addEventListener('change', () => {
+            this.updateSkipLettersVisibility();
+        });
+
+        autoSkipCheckbox.addEventListener('change', () => {
+            // Auto-enable the main skip checkbox when auto-skip is enabled
+            if (autoSkipCheckbox.checked) {
+                checkbox.checked = true;
+                this.updateAutoSkipSelection();
+            }
+            this.updateSkipLettersVisibility();
+        });
+    }
+
+    updateSkipLettersVisibility() {
+        const checkbox = document.getElementById('skip-letters-checkbox');
+        const autoSkipCheckbox = document.getElementById('auto-skip-unselected-checkbox');
+        const skipLettersContainer = document.getElementById('skip-letters-selection');
+
+        const shouldShowContainer = checkbox.checked && !autoSkipCheckbox.checked;
+        skipLettersContainer.style.display = shouldShowContainer ? 'block' : 'none';
+    }
+
+    updateAutoSkipSelection() {
+        const autoSkipCheckbox = document.getElementById('auto-skip-unselected-checkbox');
+        if (!autoSkipCheckbox.checked) return;
+
+        // Get all letters that are NOT selected in the main selection
+        const selectedLetters = this.letterSelection.getSelectedLetters();
+        const allLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Æ', 'Ø', 'Å'];
+        const unselectedLetters = allLetters.filter(letter => !selectedLetters.includes(letter));
+
+        // Set these as the letters to skip
+        this.skipLetterSelection.setSelectedLetters(unselectedLetters);
+    }
+
+
+    async autoProgressSkippedLetter(letter) {
+        // Play the letter sound first
+        this.updateReplayButton();
+        await playLetterSound(letter);
+
+        // Automatically reveal and progress after sound finishes
+        setTimeout(() => {
+            if (!this.guessedLetters.includes(letter)) {
+                this.guessedLetters.push(letter);
+                const btn = document.querySelector(`[data-letter="${letter}"]`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.classList.add('correct');
+                }
+
+                this.revealLetters(letter);
+
+                // Move to next letter
+                this.currentLetterIndex++;
+
+                // Check if word is complete first
+                if (this.isWordComplete()) {
+                    this.endGame(true);
+                } else {
+                    // Play next letter sound after a short delay
+                    setTimeout(() => {
+                        this.playNextLetterSound();
+                    }, 500);
+                }
+            }
+        }, 1000); // Wait 1 second after sound finishes before auto-progressing
     }
 }
 

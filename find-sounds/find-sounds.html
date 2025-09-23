@@ -24,6 +24,27 @@
                     <button id="select-none-btn" class="control-btn deselect">Fjern alle</button>
                 </div>
             </div>
+
+            <div class="setup-section">
+                <div class="skip-letters-section">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="skip-letters-checkbox">
+                        <span class="checkbox-text">Hopp over bokstaver barnet ikke har lært ennå</span>
+                    </label>
+                    <label class="checkbox-label checkbox-space">
+                        <input type="checkbox" id="auto-skip-unselected-checkbox">
+                        <span class="checkbox-text">Hopp over alle bokstaver som ikke er valgt</span>
+                    </label>
+                </div>
+                <div id="skip-letters-selection" class="skip-letters-container" style="display: none;">
+                    <h4>Velg bokstaver å hoppe over:</h4>
+                    <div class="letter-grid" id="skip-letter-selection"></div>
+                    <div class="selection-controls">
+                        <button id="skip-select-all-btn" class="control-btn">Velg alle</button>
+                        <button id="skip-select-none-btn" class="control-btn deselect">Fjern alle</button>
+                    </div>
+                </div>
+            </div>
             
             <button id="start-game-btn" class="start-btn">Start Spill</button>
         </div>
