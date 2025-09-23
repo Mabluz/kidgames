@@ -146,15 +146,8 @@ class FindSoundsGame {
     async playNextLetterSound() {
         if (this.currentLetterIndex < this.uniqueLetters.length) {
             const nextLetter = this.uniqueLetters[this.currentLetterIndex];
-            console.log('Playing sound for letter:', nextLetter);
             this.updateReplayButton();
-            
-            try {
-                const audio = new Audio(`../sounds/Letter_${nextLetter}.wav`);
-                await audio.play();
-            } catch (error) {
-                console.log('Could not play letter sound:', error);
-            }
+            await playLetterSound(nextLetter);
         } else {
             this.updateReplayButton();
         }
@@ -163,53 +156,16 @@ class FindSoundsGame {
     async playCurrentLetterSound() {
         if (this.currentLetterIndex < this.uniqueLetters.length) {
             const currentLetter = this.uniqueLetters[this.currentLetterIndex];
-            console.log('Replaying sound for letter:', currentLetter);
-            
-            try {
-                const audio = new Audio(`../sounds/Letter_${currentLetter}.wav`);
-                await audio.play();
-            } catch (error) {
-                console.log('Could not play letter sound:', error);
-            }
+            await playLetterSound(currentLetter);
         }
     }
 
     async playLetterSound(letter) {
-        console.log('Playing sound for letter:', letter);
-        try {
-            const audio = new Audio(`../sounds/Letter_${letter}.wav`);
-            await audio.play();
-        } catch (error) {
-            console.log('Could not play letter sound:', error);
-        }
+        await playLetterSound(letter);
     }
 
     async playFoundLetters() {
-        const foundLetters = [];
-        
-        // Go through each letter in the word and collect the ones that have been guessed
-        for (let letter of this.currentWord) {
-            if (letter !== ' ' && this.guessedLetters.includes(letter)) {
-                foundLetters.push(letter);
-            }
-        }
-        
-        console.log('Playing found letters:', foundLetters);
-        
-        // Play each found letter with a delay between them
-        for (let i = 0; i < foundLetters.length; i++) {
-            try {
-                const audio = new Audio(`../sounds/Letter_${foundLetters[i]}.wav`);
-                await audio.play();
-                
-                // Wait a bit between letters (except for the last one)
-                if (i < foundLetters.length - 1) {
-                    await new Promise(resolve => setTimeout(resolve, 800));
-                }
-            } catch (error) {
-                console.log('Could not play letter sound:', error);
-            }
-        }
+        await playFoundLetters(this.currentWord, this.guessedLetters);
     }
 
     updateReplayButton() {
