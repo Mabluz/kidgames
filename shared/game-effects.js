@@ -3,6 +3,108 @@
  * Used across multiple games in the memory project
  */
 
+// Audio crossfading utilities using Web Audio API
+let audioContext = null;
+const audioBufferCache = new Map();
+
+/**
+ * Initialize audio context (lazy initialization)
+ */
+function getAudioContext() {
+    if (!audioContext) {
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (error) {
+            console.log('Web Audio API not supported:', error);
+            return null;
+        }
+    }
+    return audioContext;
+}
+
+/**
+ * Preload audio file into a buffer for Web Audio API
+ * @param {string} url - URL of the audio file to load
+ * @returns {Promise<AudioBuffer>} - Promise that resolves to the audio buffer
+ */
+async function preloadAudioBuffer(url) {
+    if (audioBufferCache.has(url)) {
+        return audioBufferCache.get(url);
+    }
+
+    const context = getAudioContext();
+    if (!context) {
+        throw new Error('Web Audio API not supported');
+    }
+
+    try {
+        const response = await fetch(url);
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await context.decodeAudioData(arrayBuffer);
+        audioBufferCache.set(url, audioBuffer);
+        return audioBuffer;
+    } catch (error) {
+        console.log(`Failed to load audio buffer for ${url}:`, error);
+        throw error;
+    }
+}
+
+/**
+ * Create a fade transition effect using gain nodes
+ * @param {GainNode} gainNode - The gain node to apply the fade to
+ * @param {number} fromVolume - Starting volume (0.0 to 1.0)
+ * @param {number} toVolume - Ending volume (0.0 to 1.0)
+ * @param {number} duration - Fade duration in seconds
+ * @param {number} startTime - When to start the fade (in AudioContext time)
+ */
+function createFadeTransition(gainNode, fromVolume, toVolume, duration, startTime) {
+    const context = getAudioContext();
+    if (!context || !gainNode) return;
+
+    gainNode.gain.setValueAtTime(fromVolume, startTime);
+    // Use linear ramp for smoother crossfading, and don't go as low
+    gainNode.gain.linearRampToValueAtTime(Math.max(toVolume || 0.001, 0.1), startTime + duration);
+}
+
+/**
+ * Play an audio buffer with crossfading support
+ * @param {AudioBuffer} buffer - The audio buffer to play
+ * @param {number} startTime - When to start playing (in AudioContext time)
+ * @param {number} fadeInDuration - Fade in duration in seconds
+ * @param {number} fadeOutDelay - When to start fade out (relative to start)
+ * @param {number} fadeOutDuration - Fade out duration in seconds
+ * @returns {Object} - Object containing the source and gain nodes for control
+ */
+function playAudioBufferWithFade(buffer, startTime, fadeInDuration = 0.1, fadeOutDelay = null, fadeOutDuration = 0.3) {
+    const context = getAudioContext();
+    if (!context || !buffer) return null;
+
+    const source = context.createBufferSource();
+    const gainNode = context.createGain();
+
+    source.buffer = buffer;
+    source.connect(gainNode);
+    gainNode.connect(context.destination);
+
+    // Set initial volume and fade in more gently
+    gainNode.gain.setValueAtTime(0.1, startTime);
+    gainNode.gain.linearRampToValueAtTime(1.0, startTime + fadeInDuration);
+
+    // Schedule fade out if specified - use gentler fade that doesn't go to silence
+    if (fadeOutDelay !== null) {
+        const fadeOutStart = startTime + fadeOutDelay;
+        gainNode.gain.setValueAtTime(1.0, fadeOutStart);
+        // Fade to 0.3 instead of near zero to maintain audible overlap
+        gainNode.gain.linearRampToValueAtTime(0.3, fadeOutStart + fadeOutDuration);
+        // Then fade to silence more quickly at the very end
+        gainNode.gain.linearRampToValueAtTime(0.001, fadeOutStart + fadeOutDuration + 0.1);
+    }
+
+    source.start(startTime);
+
+    return { source, gainNode };
+}
+
 /**
  * Triggers a confetti animation on the screen
  * Creates 50 confetti pieces with random properties and animations
@@ -66,13 +168,160 @@ async function playLetterSound(letter) {
 }
 
 /**
- * Plays all letters in a given array with repetition based on letter type
+ * Plays all letters in a given array with crossfading between sounds
  * @param {string[]} letters - Array of letters to play sounds for
  * @param {number} duration - Duration to repeat each letter in milliseconds (default: 1000)
+ * @param {boolean} enableCrossfade - Whether to use crossfading (default: true)
  */
-async function playLetterSequence(letters, duration = 1000) {
+async function playLetterSequence(letters, duration = 1000, enableCrossfade = true) {
     console.log('Playing letter sequence:', letters);
 
+    // Check if Web Audio API is available for crossfading
+    const context = getAudioContext();
+    const useCrossfade = enableCrossfade && context;
+
+    if (!useCrossfade) {
+        // Fallback to original implementation
+        return playLetterSequenceFallback(letters, duration);
+    }
+
+    // Load letter data to check repeatability
+    let letterData = null;
+    try {
+        const response = await fetch('../letter-images.json');
+        letterData = await response.json();
+    } catch (error) {
+        console.log('Could not load letter data:', error);
+    }
+
+    const crossfadeDuration = 0.6; // 600ms crossfade for more overlap
+    let currentTime = context.currentTime;
+    const activeAudioSources = [];
+
+    for (let i = 0; i < letters.length; i++) {
+        const letter = letters[i];
+        const isRepeatable = letterData && letterData[letter] && letterData[letter].repeatable;
+        const audioUrl = `../sounds/Letter_${letter}.wav`;
+
+        try {
+            // Preload the audio buffer
+            const buffer = await preloadAudioBuffer(audioUrl);
+
+            if (isRepeatable) {
+                // For repeatable letters, play with overlap and crossfading
+                const letterDurationSeconds = duration / 1000;
+                const audioLength = buffer.duration;
+
+                let letterStartTime = currentTime;
+                const letterEndTime = letterStartTime + letterDurationSeconds;
+
+                // Calculate how many times we need to repeat this sound
+                const repeatCount = Math.ceil(letterDurationSeconds / audioLength);
+
+                for (let j = 0; j < repeatCount; j++) {
+                    // For repeatable letters, overlap the repetitions to create seamless continuity
+                    const soundStartTime = letterStartTime + (j * (audioLength - crossfadeDuration));
+                    const isLastRepeat = j === repeatCount - 1;
+
+                    // Calculate fade out timing
+                    let fadeOutDelay = null;
+                    let fadeOutDuration = crossfadeDuration;
+
+                    if (isLastRepeat) {
+                        // Last repeat: fade out before letter end or when transitioning to next letter
+                        const timeUntilLetterEnd = letterEndTime - soundStartTime;
+                        if (i < letters.length - 1) {
+                            // Not the last letter - fade out for transition to next letter
+                            fadeOutDelay = Math.max(0, timeUntilLetterEnd - crossfadeDuration);
+                        } else {
+                            // Last letter - let it play fully
+                            fadeOutDelay = Math.max(0, audioLength - 0.1);
+                            fadeOutDuration = 0.1;
+                        }
+                    } else {
+                        // Not last repeat: fade out to blend with next repetition
+                        fadeOutDelay = Math.max(0, audioLength - crossfadeDuration);
+                    }
+
+                    const audioSource = playAudioBufferWithFade(
+                        buffer,
+                        soundStartTime,
+                        j === 0 ? 0.1 : crossfadeDuration, // Fade in duration
+                        fadeOutDelay,
+                        fadeOutDuration
+                    );
+
+                    if (audioSource) {
+                        activeAudioSources.push(audioSource);
+                    }
+                }
+
+                // For repeatable letters, if there's a next letter, start it with substantial overlap
+                if (i < letters.length - 1) {
+                    currentTime = letterEndTime - crossfadeDuration * 1.5; // Even more overlap for repeatable letters
+                } else {
+                    currentTime = letterEndTime;
+                }
+
+            } else {
+                // For non-repeatable letters, play once with crossfade
+                const audioLength = buffer.duration;
+                let fadeOutDelay = null;
+                let fadeOutDuration = crossfadeDuration;
+
+                // If this is not the last letter, fade out during the last part of the sound
+                if (i < letters.length - 1) {
+                    fadeOutDelay = Math.max(0, audioLength - crossfadeDuration);
+                }
+
+                const audioSource = playAudioBufferWithFade(
+                    buffer,
+                    currentTime,
+                    i === 0 ? 0.1 : 0.1, // Quick fade in for all letters
+                    fadeOutDelay,
+                    fadeOutDuration
+                );
+
+                if (audioSource) {
+                    activeAudioSources.push(audioSource);
+                }
+
+                // Move to next letter with substantial overlap - start next letter well before current one ends
+                if (i < letters.length - 1) {
+                    // Start next letter even earlier for more overlap
+                    currentTime += Math.max(audioLength - crossfadeDuration, audioLength * 0.4); // Start next letter at 40% through current
+                } else {
+                    currentTime += audioLength;
+                }
+            }
+
+        } catch (error) {
+            console.log('Could not play letter sound with crossfade:', error);
+            // Skip this letter and continue
+            currentTime += duration / 1000;
+        }
+    }
+
+    // Wait for all audio to finish
+    const totalDuration = currentTime - context.currentTime;
+    await new Promise(resolve => setTimeout(resolve, totalDuration * 1000 + 500));
+
+    // Clean up audio sources
+    activeAudioSources.forEach(({ source }) => {
+        try {
+            source.stop();
+        } catch (e) {
+            // Source might already be stopped
+        }
+    });
+}
+
+/**
+ * Fallback implementation without crossfading (original behavior)
+ * @param {string[]} letters - Array of letters to play sounds for
+ * @param {number} duration - Duration to repeat each letter in milliseconds
+ */
+async function playLetterSequenceFallback(letters, duration = 1000) {
     // Load letter data to check repeatability
     let letterData = null;
     try {
