@@ -73,7 +73,6 @@ async function playLetterSound(letter) {
 async function playLetterSequence(letters, duration = 1000) {
     console.log('Playing letter sequence:', letters);
 
-    duration = 3000;
     // Load letter data to check repeatability
     let letterData = null;
     try {
