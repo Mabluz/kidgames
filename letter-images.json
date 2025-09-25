@@ -269,7 +269,7 @@
       "sounds/H_Helsesøster.wav"
     ],
     "letterSound": "sounds/Letter_H.wav",
-    "repeatable": true
+    "repeatable": false
   },
   "I": {
     "words": [

@@ -215,7 +215,7 @@ class FindSoundsGame {
     }
 
     async playFoundLetters() {
-        await playFoundLetters(this.currentWord, this.guessedLetters, 3000);
+        await playFoundLetters(this.currentWord, this.guessedLetters, 1000);
     }
 
     updateReplayButton() {
