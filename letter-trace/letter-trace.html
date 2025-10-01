@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bokstav Trace</title>
+    <link rel="stylesheet" href="letter-trace.css">
+    <link rel="stylesheet" href="../shared/letter-selection.css">
+    <link rel="stylesheet" href="../shared/confetti.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Setup Screen -->
+        <div id="setup-screen" class="screen">
+            <h1>Bokstav Trace</h1>
+            <div class="setup-content">
+                <div class="setup-section">
+                    <h3>Velg bokstaver å øve på:</h3>
+                    <div class="letter-grid" id="letter-selection"></div>
+                    <div class="selection-controls">
+                        <button id="select-all-btn" class="control-btn">Velg alle</button>
+                        <button id="select-none-btn" class="control-btn deselect">Velg ingen</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Velg modus:</h2>
+                    <div class="mode-selection">
+                        <button class="mode-btn active" data-mode="guided">
+                            <span class="mode-icon">🎯</span>
+                            <span class="mode-title">Veiledet</span>
+                            <span class="mode-desc">Vis hele bokstavformen</span>
+                        </button>
+                        <button class="mode-btn" data-mode="challenge">
+                            <span class="mode-icon">⭐</span>
+                            <span class="mode-title">Utfordring</span>
+                            <span class="mode-desc">Kun startpunkt</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button id="start-game" class="start-button">Start spill</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen hidden">
+            <div class="game-header">
+                <h1>Tegn bokstaven</h1>
+                <div class="game-info">
+                    <span id="current-letter">Bokstav: A</span>
+                    <span id="progress">Fremdrift: 0/5</span>
+                </div>
+            </div>
+
+            <div class="game-content">
+                <div class="canvas-container">
+                    <canvas id="trace-canvas"></canvas>
+                    <div id="letter-display" class="letter-display"></div>
+                </div>
+
+                <div class="trace-feedback">
+                    <div id="accuracy-bar" class="accuracy-bar">
+                        <div id="accuracy-fill" class="accuracy-fill"></div>
+                    </div>
+                    <p id="feedback-text" class="feedback-text">Tegn bokstaven ved å følge linjen</p>
+                </div>
+
+                <div class="word-display hidden" id="word-display">
+                    <div class="word-image" id="word-image"></div>
+                    <div class="word-text" id="word-text"></div>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button id="clear-btn" class="control-button">Tøm</button>
+                <button id="skip-btn" class="control-button">Hopp over</button>
+                <button id="new-game" class="control-button">Nytt spill</button>
+            </div>
+        </div>
+
+        <!-- Completion Screen -->
+        <div id="completion-screen" class="screen hidden">
+            <h1>Gratulerer!</h1>
+            <div class="completion-content">
+                <p>Du har øvd på alle bokstavene!</p>
+                <div id="final-stats"></div>
+                <button id="play-again" class="start-button">Spill igjen</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../shared/game-effects.js"></script>
+    <script src="../shared/letter-selection.js"></script>
+    <script src="../difficulty-filter.js"></script>
+    <script src="letter-trace.js"></script>
+</body>
+</html>
