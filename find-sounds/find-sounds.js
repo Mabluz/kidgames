@@ -15,9 +15,14 @@ class FindSoundsGame {
         this.skipLettersEnabled = false;
         this.lettersToSkip = new Set();
         this.skipLetterSelection = null;
-        
+
         this.flowerPetals = ['petal1', 'petal2', 'petal3', 'petal4', 'petal5', 'petal6', 'petal7'];
-        
+
+        // Recording state
+        this.mediaRecorder = null;
+        this.recordedChunks = [];
+        this.recordedBlob = null;
+
         this.initializeGame();
     }
 
@@ -110,6 +115,14 @@ class FindSoundsGame {
             this.playFoundLetters();
         });
 
+        document.getElementById('record-word-btn').addEventListener('click', () => {
+            this.startRecording();
+        });
+
+        document.getElementById('hear-word-again-btn').addEventListener('click', () => {
+            this.playWordSounds();
+        });
+
         document.addEventListener('keydown', (e) => {
             const key = e.key.toUpperCase();
             if (!this.gameEnded && this.isValidLetter(key)) {
@@ -119,7 +132,7 @@ class FindSoundsGame {
                 }
             }
         });
-        
+
     }
 
     isValidLetter(letter) {
@@ -132,19 +145,32 @@ class FindSoundsGame {
             console.error('Letter data not loaded yet');
             return;
         }
-        
+
         this.selectRandomWord();
         this.guessedLetters = [];
         this.wrongGuesses = 0;
         this.gameEnded = false;
         this.currentLetterIndex = 0;
+        this.recordedBlob = null;
+        this.recordedChunks = [];
         this.createUniqueLettersList();
-        
+
         this.resetDisplay();
         this.createWordDisplay();
         this.updateGameInfo();
         this.hideGameResult();
-        
+
+        // Reset recording UI
+        this.hideRecordingControls();
+        this.hideNewGameButton();
+
+        // Reset record button text
+        const recordBtn = document.getElementById('record-word-btn');
+        if (recordBtn) {
+            recordBtn.textContent = '🎤 Ta opp ordet';
+            recordBtn.disabled = false;
+        }
+
         // Play the first letter sound immediately after setup
         this.playNextLetterSound();
     }
@@ -361,17 +387,21 @@ class FindSoundsGame {
         this.gameEnded = true;
         this.updateReplayButton();
         this.updateFoundLettersButton();
-        
+
         if (won) {
             this.showGameResult('Du vant! 🎉', true);
             triggerConfetti();
             await this.playFoundLetters();
-            setTimeout(async () => {
-                await this.playWordSounds();
-            }, 1000);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await this.playWordSounds();
+
+            // Show recording controls after sounds are done
+            await new Promise(resolve => setTimeout(resolve, 500));
+            this.showRecordingControls();
         } else {
             this.revealWord();
             this.showGameResult('Du tapte! 😢', false);
+            this.showNewGameButton();
         }
     }
 
@@ -577,6 +607,75 @@ class FindSoundsGame {
                 }
             }
         }, 1000); // Wait 1 second after sound finishes before auto-progressing
+    }
+
+    showRecordingControls() {
+        document.getElementById('recording-controls').style.display = 'flex';
+    }
+
+    hideRecordingControls() {
+        document.getElementById('recording-controls').style.display = 'none';
+    }
+
+    showNewGameButton() {
+        document.getElementById('new-game-btn').style.display = 'block';
+    }
+
+    hideNewGameButton() {
+        document.getElementById('new-game-btn').style.display = 'none';
+    }
+
+    async startRecording() {
+        const recordBtn = document.getElementById('record-word-btn');
+
+        try {
+            // Initialize MediaRecorder if not already done
+            if (!this.mediaRecorder) {
+                this.mediaRecorder = await initializeVoiceRecording();
+            }
+
+            // If already recording, stop it
+            if (this.mediaRecorder.state === 'recording') {
+                recordBtn.textContent = '⏹️ Stopper...';
+                recordBtn.disabled = true;
+
+                this.recordedBlob = await stopRecording(this.mediaRecorder, this.recordedChunks);
+
+                recordBtn.textContent = '🎤 Ta opp ordet';
+                recordBtn.disabled = false;
+
+                // After recording is done, play back the word then the recording
+                await this.playRecordingSequence();
+            } else {
+                // Start recording
+                recordBtn.textContent = '⏹️ Stop opptak';
+                this.recordedChunks = [];
+
+                await startRecording(this.mediaRecorder, this.recordedChunks);
+            }
+        } catch (error) {
+            console.error('Error with recording:', error);
+            recordBtn.textContent = '🎤 Ta opp ordet';
+            recordBtn.disabled = false;
+            alert('Kunne ikke få tilgang til mikrofonen. Sjekk nettleserinnstillingene dine.');
+        }
+    }
+
+    async playRecordingSequence() {
+        // Play the user's recording first
+        if (this.recordedBlob) {
+            await playAudioBlob(this.recordedBlob);
+        }
+
+        // Wait 0.5 seconds
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Then play the word sound
+        await this.playWordSounds();
+
+        // After playback, show new game button (keep recording controls visible)
+        await new Promise(resolve => setTimeout(resolve, 500));
+        this.showNewGameButton();
     }
 }
 

@@ -11,7 +11,9 @@
       "Bash(timeout 3 curl -s http://localhost:8000)",
       "Bash(timeout:*)",
       "Bash(node:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs kill:*)"
     ],
     "deny": [],
     "additionalDirectories": [

@@ -389,6 +389,42 @@ h1 {
     100% { transform: scale(1); opacity: 1; }
 }
 
+#recording-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+#record-word-btn,
+#hear-word-again-btn {
+    background: linear-gradient(145deg, #48bb78, #38a169);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#record-word-btn:hover,
+#hear-word-again-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(145deg, #38a169, #2f855a);
+}
+
+#record-word-btn:disabled,
+#hear-word-again-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
 #new-game-btn {
     background: linear-gradient(145deg, #4299e1, #3182ce);
     color: white;
@@ -400,6 +436,8 @@ h1 {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 2rem auto 0;
+    display: block;
 }
 
 #new-game-btn:hover {

@@ -482,7 +482,107 @@ async function playFoundLetters(word, guessedLetters, duration = 1000) {
     await playLetterSequence(foundLetters, duration);
 }
 
+/**
+ * Initialize voice recording and return a MediaRecorder instance
+ * @returns {Promise<MediaRecorder>} - Promise that resolves to the MediaRecorder instance
+ */
+async function initializeVoiceRecording() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mediaRecorder = new MediaRecorder(stream);
+        return mediaRecorder;
+    } catch (error) {
+        console.error('Error accessing microphone:', error);
+        throw error;
+    }
+}
+
+/**
+ * Start recording audio
+ * @param {MediaRecorder} mediaRecorder - The MediaRecorder instance
+ * @param {Array} audioChunks - Array to store recorded audio chunks
+ * @returns {Promise<void>}
+ */
+function startRecording(mediaRecorder, audioChunks) {
+    return new Promise((resolve, reject) => {
+        if (!mediaRecorder) {
+            reject(new Error('MediaRecorder not initialized'));
+            return;
+        }
+
+        // Clear previous chunks
+        audioChunks.length = 0;
+
+        mediaRecorder.ondataavailable = (event) => {
+            audioChunks.push(event.data);
+        };
+
+        mediaRecorder.onstop = () => {
+            resolve();
+        };
+
+        mediaRecorder.start();
+    });
+}
+
+/**
+ * Stop recording and return the audio blob
+ * @param {MediaRecorder} mediaRecorder - The MediaRecorder instance
+ * @param {Array} audioChunks - Array containing recorded audio chunks
+ * @returns {Promise<Blob>} - Promise that resolves to the audio Blob
+ */
+function stopRecording(mediaRecorder, audioChunks) {
+    return new Promise((resolve) => {
+        if (!mediaRecorder || mediaRecorder.state !== 'recording') {
+            resolve(null);
+            return;
+        }
+
+        mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            resolve(audioBlob);
+        };
+
+        mediaRecorder.stop();
+    });
+}
+
+/**
+ * Play an audio blob
+ * @param {Blob} audioBlob - The audio blob to play
+ * @returns {Promise<void>} - Promise that resolves when playback is complete
+ */
+function playAudioBlob(audioBlob) {
+    return new Promise((resolve, reject) => {
+        if (!audioBlob) {
+            reject(new Error('No audio blob provided'));
+            return;
+        }
+
+        const audio = new Audio(URL.createObjectURL(audioBlob));
+        audio.onended = () => {
+            URL.revokeObjectURL(audio.src);
+            resolve();
+        };
+        audio.onerror = () => {
+            reject(new Error('Failed to play audio'));
+        };
+        audio.play();
+    });
+}
+
 // Export for use in other files
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { triggerConfetti, playGameOverSound, playLetterSound, playLetterSequence, playWordLetters, playFoundLetters };
+    module.exports = {
+        triggerConfetti,
+        playGameOverSound,
+        playLetterSound,
+        playLetterSequence,
+        playWordLetters,
+        playFoundLetters,
+        initializeVoiceRecording,
+        startRecording,
+        stopRecording,
+        playAudioBlob
+    };
 }
