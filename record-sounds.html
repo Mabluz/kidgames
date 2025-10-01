@@ -298,6 +298,7 @@
         let recordedChunks = [];
         let recordings = {};
         let letterSoundRecordings = {};
+        let repeatableLetterSoundRecordings = {};
 
         // Check if an audio file exists in the sounds directory
         async function checkAudioFileExists(letter, word) {
@@ -321,19 +322,30 @@
             }
         }
 
+        // Check if a repeatable letter sound file exists
+        async function checkRepeatableLetterSoundExists(letter) {
+            const filename = `Letter_${letter}_Repeatable.wav`;
+            try {
+                const response = await fetch(`sounds/${filename}`, { method: 'HEAD' });
+                return response.ok;
+            } catch (error) {
+                return false;
+            }
+        }
+
         // Generate letter sound recording cards
         async function generateLetterSoundCards() {
             const letterSoundGrid = document.getElementById('lettersSoundGrid');
-            
-            for (const letter of Object.keys(letterData)) {
+
+            for (const [letter, data] of Object.entries(letterData)) {
                 const hasExistingSound = await checkLetterSoundExists(letter);
                 const hasRecordingClass = hasExistingSound ? 'has-letter-recording' : '';
                 const statusText = hasExistingSound ? 'File exists' : 'Not recorded';
-                
+
                 const card = document.createElement('div');
                 card.className = `letter-sound-card ${hasRecordingClass}`;
                 card.id = `letter_sound_${letter}`;
-                
+
                 card.innerHTML = `
                     <div class="letter-sound-title">${letter}</div>
                     <div class="letter-sound-controls">
@@ -355,8 +367,43 @@
                         ${hasExistingSound ? `<audio controls><source src="sounds/Letter_${letter}.wav" type="audio/wav"></audio>` : ''}
                     </div>
                 `;
-                
+
                 letterSoundGrid.appendChild(card);
+
+                // Add repeatable letter sound card if the letter has repeatable flag
+                if (data.repeatable) {
+                    const hasRepeatableSound = await checkRepeatableLetterSoundExists(letter);
+                    const hasRepeatableClass = hasRepeatableSound ? 'has-letter-recording' : '';
+                    const repeatableStatusText = hasRepeatableSound ? 'File exists' : 'Not recorded';
+
+                    const repeatableCard = document.createElement('div');
+                    repeatableCard.className = `letter-sound-card ${hasRepeatableClass}`;
+                    repeatableCard.id = `letter_sound_repeatable_${letter}`;
+
+                    repeatableCard.innerHTML = `
+                        <div class="letter-sound-title">${letter} 🔁</div>
+                        <div class="letter-sound-controls">
+                            ${hasRepeatableSound ? `<button class="letter-sound-btn play" style="background-color: #2196F3; color: white;" onclick="playRepeatableLetterSound('${letter}')">
+                                ▶️ Play
+                            </button>` : ''}
+                            <button class="letter-sound-btn record" style="background-color: #f44336; color: white;" onclick="startRepeatableLetterRecording('${letter}')" id="letter_repeatable_record_${letter}">
+                                🎤 Record
+                            </button>
+                            <button class="letter-sound-btn stop hidden" style="background-color: #ff9800; color: white;" onclick="stopRepeatableLetterRecording('${letter}')" id="letter_repeatable_stop_${letter}">
+                                ⏹️ Stop
+                            </button>
+                            <button class="letter-sound-btn save hidden" style="background-color: #4CAF50; color: white;" onclick="saveRepeatableLetterRecording('${letter}')" id="letter_repeatable_save_${letter}">
+                                💾 Save
+                            </button>
+                        </div>
+                        <div class="letter-sound-status" id="letter_repeatable_status_${letter}">${repeatableStatusText}</div>
+                        <div class="audio-preview" id="letter_repeatable_preview_${letter}">
+                            ${hasRepeatableSound ? `<audio controls><source src="sounds/Letter_${letter}_Repeatable.wav" type="audio/wav"></audio>` : ''}
+                        </div>
+                    `;
+
+                    letterSoundGrid.appendChild(repeatableCard);
+                }
             }
         }
 
@@ -606,6 +653,7 @@
             if (confirm('Are you sure you want to clear all recordings?')) {
                 recordings = {};
                 letterSoundRecordings = {};
+                repeatableLetterSoundRecordings = {};
                 document.querySelectorAll('.has-recording, .has-letter-recording').forEach(el => {
                     el.classList.remove('has-recording', 'has-letter-recording');
                 });
@@ -726,21 +774,145 @@
             if (letterSoundRecordings[letter]) {
                 const audioUrl = URL.createObjectURL(letterSoundRecordings[letter]);
                 const audio = new Audio(audioUrl);
-                
+
                 audio.play().catch(error => {
                     console.error('Error playing new letter recording:', error);
                     alert('Could not play the new recording.');
                 });
-                
+
                 audio.onended = () => URL.revokeObjectURL(audioUrl);
                 audio.onerror = () => URL.revokeObjectURL(audioUrl);
             } else {
                 // Fall back to existing file
                 const filename = `sounds/Letter_${letter}.wav`;
                 const audio = new Audio(filename);
-                
+
                 audio.play().catch(error => {
                     console.error('Error playing existing letter audio:', error);
+                    alert(`Could not play ${filename}. Make sure the file exists in the sounds directory.`);
+                });
+            }
+        }
+
+        // Repeatable letter sound recording functions
+        async function startRepeatableLetterRecording(letter) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+                recordedChunks = [];
+                mediaRecorder = new MediaRecorder(stream);
+                currentRecording = `letter_repeatable_${letter}`;
+
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: 'audio/wav' });
+                    repeatableLetterSoundRecordings[letter] = blob;
+
+                    // Create audio preview
+                    const audioUrl = URL.createObjectURL(blob);
+                    const audioElement = document.createElement('audio');
+                    audioElement.src = audioUrl;
+                    audioElement.controls = true;
+
+                    const previewDiv = document.getElementById(`letter_repeatable_preview_${letter}`);
+                    previewDiv.innerHTML = '';
+                    previewDiv.appendChild(audioElement);
+
+                    // Show save button
+                    document.getElementById(`letter_repeatable_save_${letter}`).classList.remove('hidden');
+                    document.getElementById(`letter_repeatable_status_${letter}`).textContent = 'Recording ready to save';
+                };
+
+                mediaRecorder.start();
+
+                // Update UI
+                document.getElementById(`letter_repeatable_record_${letter}`).classList.add('hidden');
+                document.getElementById(`letter_repeatable_stop_${letter}`).classList.remove('hidden');
+                document.getElementById(`letter_repeatable_status_${letter}`).textContent = 'Recording...';
+                document.getElementById(`letter_repeatable_status_${letter}`).classList.add('recording');
+
+            } catch (error) {
+                console.error('Error starting repeatable letter recording:', error);
+                alert('Error accessing microphone. Please ensure microphone permissions are granted.');
+            }
+        }
+
+        function stopRepeatableLetterRecording(letter) {
+            if (mediaRecorder && currentRecording === `letter_repeatable_${letter}`) {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+
+                // Update UI
+                document.getElementById(`letter_repeatable_record_${letter}`).classList.remove('hidden');
+                document.getElementById(`letter_repeatable_stop_${letter}`).classList.add('hidden');
+                document.getElementById(`letter_repeatable_save_${letter}`).classList.remove('hidden');
+                document.getElementById(`letter_repeatable_status_${letter}`).classList.remove('recording');
+            }
+        }
+
+        async function saveRepeatableLetterRecording(letter) {
+            if (!repeatableLetterSoundRecordings[letter]) {
+                alert('No recording available to save');
+                return;
+            }
+
+            const blob = repeatableLetterSoundRecordings[letter];
+            const filename = `Letter_${letter}_Repeatable.wav`;
+
+            // Create download link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+
+            // Mark as saved
+            document.getElementById(`letter_sound_repeatable_${letter}`).classList.add('has-letter-recording');
+            document.getElementById(`letter_repeatable_status_${letter}`).textContent = 'Saved!';
+            document.getElementById(`letter_repeatable_save_${letter}`).classList.add('hidden');
+
+            // Add play button if it doesn't exist
+            const controlsDiv = document.getElementById(`letter_sound_repeatable_${letter}`).querySelector('.letter-sound-controls');
+            if (!controlsDiv.querySelector('.play')) {
+                const playButton = document.createElement('button');
+                playButton.className = 'letter-sound-btn play';
+                playButton.style.backgroundColor = '#2196F3';
+                playButton.style.color = 'white';
+                playButton.innerHTML = '▶️ Play';
+                playButton.onclick = () => playRepeatableLetterSound(letter);
+                controlsDiv.insertBefore(playButton, controlsDiv.firstChild);
+            }
+
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 1000);
+        }
+
+        function playRepeatableLetterSound(letter) {
+            // Try to play new recording first
+            if (repeatableLetterSoundRecordings[letter]) {
+                const audioUrl = URL.createObjectURL(repeatableLetterSoundRecordings[letter]);
+                const audio = new Audio(audioUrl);
+
+                audio.play().catch(error => {
+                    console.error('Error playing new repeatable letter recording:', error);
+                    alert('Could not play the new recording.');
+                });
+
+                audio.onended = () => URL.revokeObjectURL(audioUrl);
+                audio.onerror = () => URL.revokeObjectURL(audioUrl);
+            } else {
+                // Fall back to existing file
+                const filename = `sounds/Letter_${letter}_Repeatable.wav`;
+                const audio = new Audio(filename);
+
+                audio.play().catch(error => {
+                    console.error('Error playing existing repeatable letter audio:', error);
                     alert(`Could not play ${filename}. Make sure the file exists in the sounds directory.`);
                 });
             }

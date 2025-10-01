@@ -209,11 +209,24 @@ async function playLetterSequence(letters, duration = 1000, enableCrossfade = tr
     for (let i = 0; i < filteredLetters.length; i++) {
         const letter = filteredLetters[i];
         const isRepeatable = letterData && letterData[letter] && letterData[letter].repeatable;
-        const audioUrl = `../sounds/Letter_${letter}.wav`;
+
+        // Try to load repeatable sound, fall back to regular if not found
+        let audioUrl = isRepeatable ? `../sounds/Letter_${letter}_Repeatable.wav` : `../sounds/Letter_${letter}.wav`;
 
         try {
-            // Preload the audio buffer
-            const buffer = await preloadAudioBuffer(audioUrl);
+            // Preload the audio buffer, with fallback for repeatable
+            let buffer;
+            try {
+                buffer = await preloadAudioBuffer(audioUrl);
+            } catch (error) {
+                if (isRepeatable) {
+                    console.log(`Repeatable sound not found for ${letter}, falling back to regular sound`);
+                    audioUrl = `../sounds/Letter_${letter}.wav`;
+                    buffer = await preloadAudioBuffer(audioUrl);
+                } else {
+                    throw error;
+                }
+            }
 
             if (isRepeatable) {
                 // For repeatable letters, play with overlap and crossfading
@@ -355,7 +368,20 @@ async function playLetterSequenceFallback(letters, duration = 1000) {
             if (isRepeatable) {
                 // For repeatable letters (vowels and continuants), repeat for full duration
                 const startTime = Date.now();
-                let currentAudio = new Audio(`../sounds/Letter_${letter}.wav`);
+
+                // Try to load repeatable sound, fall back to regular if not found
+                let audioPath = `../sounds/Letter_${letter}_Repeatable.wav`;
+                let currentAudio = new Audio(audioPath);
+
+                // Check if repeatable file exists, otherwise use regular letter sound
+                await new Promise((resolve) => {
+                    currentAudio.onerror = () => {
+                        audioPath = `../sounds/Letter_${letter}.wav`;
+                        currentAudio = new Audio(audioPath);
+                        resolve();
+                    };
+                    currentAudio.oncanplaythrough = resolve;
+                });
 
                 // Play the first instance
                 await currentAudio.play();
@@ -376,7 +402,7 @@ async function playLetterSequenceFallback(letters, duration = 1000) {
 
                     // If we still have time left, start playing again
                     if (Date.now() - startTime < duration) {
-                        currentAudio = new Audio(`../sounds/Letter_${letter}.wav`);
+                        currentAudio = new Audio(audioPath);
                         await currentAudio.play();
                     }
                 }

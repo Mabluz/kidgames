@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Crossfading Audio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #e7f3ff;
+            border-left: 4px solid #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎵 Test Audio Crossfading</h1>
+
+    <div class="test-section">
+        <h2>Letter Sequence Tests</h2>
+        <p>Test the crossfading functionality with different letter combinations:</p>
+        <p><strong>With Crossfade:</strong> Sounds overlap and blend together smoothly<br>
+        <strong>Without Crossfade:</strong> Each sound plays completely before the next one starts</p>
+
+        <button onclick="testSimpleSequence()">🎵 Test A-B-C (With Crossfade)</button>
+        <button onclick="testMixedSequence()">🎵 Test A-E-I-O-U (With Crossfade)</button>
+        <button onclick="testLongSequence()">🎵 Test HELLO (With Crossfade)</button>
+        <button onclick="testWithoutCrossfade()">🔊 Test A-B-C (Without Crossfade)</button>
+
+        <div id="status" class="status">Ready to test HEAVY crossfading (600ms overlap). Sounds should blend seamlessly with NO silence gaps!</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Controls</h2>
+        <button onclick="stopAllAudio()">Stop All Audio</button>
+        <button onclick="enableAudioContext()" id="enableBtn">Enable Audio Context</button>
+    </div>
+
+    <script src="shared/game-effects.js"></script>
+    <script>
+        let isPlaying = false;
+
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+
+        function setButtonsDisabled(disabled) {
+            const buttons = document.querySelectorAll('button:not(#enableBtn)');
+            buttons.forEach(btn => btn.disabled = disabled);
+        }
+
+        async function enableAudioContext() {
+            try {
+                const context = getAudioContext();
+                if (context && context.state === 'suspended') {
+                    await context.resume();
+                }
+                updateStatus('Audio context enabled and ready!');
+                document.getElementById('enableBtn').style.display = 'none';
+            } catch (error) {
+                updateStatus('Error enabling audio context: ' + error.message);
+            }
+        }
+
+        async function testSimpleSequence() {
+            if (isPlaying) return;
+
+            isPlaying = true;
+            setButtonsDisabled(true);
+            updateStatus('Playing A-B-C with crossfading...');
+
+            try {
+                await playLetterSequence(['A', 'B', 'C'], 1000, true);
+                updateStatus('✅ Simple sequence completed with crossfading!');
+            } catch (error) {
+                updateStatus('❌ Error: ' + error.message);
+            }
+
+            isPlaying = false;
+            setButtonsDisabled(false);
+        }
+
+        async function testMixedSequence() {
+            if (isPlaying) return;
+
+            isPlaying = true;
+            setButtonsDisabled(true);
+            updateStatus('Playing vowels A-E-I-O-U with crossfading...');
+
+            try {
+                await playLetterSequence(['A', 'E', 'I', 'O', 'U'], 800, true);
+                updateStatus('✅ Vowel sequence completed with crossfading!');
+            } catch (error) {
+                updateStatus('❌ Error: ' + error.message);
+            }
+
+            isPlaying = false;
+            setButtonsDisabled(false);
+        }
+
+        async function testLongSequence() {
+            if (isPlaying) return;
+
+            isPlaying = true;
+            setButtonsDisabled(true);
+            updateStatus('Playing HELLO with crossfading...');
+
+            try {
+                await playWordLetters('HELLO', 600);
+                updateStatus('✅ HELLO completed with crossfading!');
+            } catch (error) {
+                updateStatus('❌ Error: ' + error.message);
+            }
+
+            isPlaying = false;
+            setButtonsDisabled(false);
+        }
+
+        async function testWithoutCrossfade() {
+            if (isPlaying) return;
+
+            isPlaying = true;
+            setButtonsDisabled(true);
+            updateStatus('Playing A-B-C WITHOUT crossfading (original method)...');
+
+            try {
+                await playLetterSequence(['A', 'B', 'C'], 1000, false);
+                updateStatus('✅ Simple sequence completed WITHOUT crossfading!');
+            } catch (error) {
+                updateStatus('❌ Error: ' + error.message);
+            }
+
+            isPlaying = false;
+            setButtonsDisabled(false);
+        }
+
+        function stopAllAudio() {
+            // Stop Web Audio API sources
+            try {
+                const context = getAudioContext();
+                if (context) {
+                    // Note: Individual sources should be stopped by the implementation
+                    updateStatus('Attempting to stop all audio...');
+                }
+            } catch (error) {
+                console.log('Error stopping audio:', error);
+            }
+
+            // Reset state
+            isPlaying = false;
+            setButtonsDisabled(false);
+            updateStatus('Audio stopped (if any was playing)');
+        }
+
+        // Check if Web Audio API is supported
+        window.addEventListener('load', () => {
+            const context = getAudioContext();
+            if (!context) {
+                updateStatus('⚠️ Web Audio API not supported. Only fallback mode available.');
+            } else {
+                updateStatus('🎵 Web Audio API supported! Click "Enable Audio Context" first if needed.');
+            }
+        });
+
+        // Handle user interaction requirement for audio
+        document.addEventListener('click', enableAudioContext, { once: true });
+    </script>
+</body>
+</html>

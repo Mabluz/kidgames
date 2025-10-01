@@ -19,7 +19,8 @@
       "sounds/A_Akvarium.wav"
     ],
     "letterSound": "sounds/Letter_A.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_A_Repeatable.wav"
   },
   "B": {
     "words": [
@@ -107,7 +108,8 @@
       "sounds/E_Engel.wav"
     ],
     "letterSound": "sounds/Letter_E.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_E_Repeatable.wav"
   },
   "F": {
     "words": [
@@ -177,7 +179,8 @@
       "sounds/F_Fredag.wav"
     ],
     "letterSound": "sounds/Letter_F.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_F_Repeatable.wav"
   },
   "G": {
     "words": [
@@ -291,7 +294,8 @@
       "sounds/I_Insekt.wav"
     ],
     "letterSound": "sounds/Letter_I.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_I_Repeatable.wav"
   },
   "J": {
     "words": [
@@ -405,7 +409,8 @@
       "sounds/L_Laks.wav"
     ],
     "letterSound": "sounds/Letter_L.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_L_Repeatable.wav"
   },
   "M": {
     "words": [
@@ -427,7 +432,8 @@
       "sounds/M_Musikk.wav"
     ],
     "letterSound": "sounds/Letter_M.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_M_Repeatable.wav"
   },
   "N": {
     "words": [
@@ -449,7 +455,8 @@
       "sounds/N_Null.wav"
     ],
     "letterSound": "sounds/Letter_N.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_N_Repeatable.wav"
   },
   "O": {
     "words": [
@@ -471,7 +478,8 @@
       "sounds/O_Orkester.wav"
     ],
     "letterSound": "sounds/Letter_O.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_O_Repeatable.wav"
   },
   "P": {
     "words": [
@@ -537,7 +545,8 @@
       "sounds/R_Robot.wav"
     ],
     "letterSound": "sounds/Letter_R.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_R_Repeatable.wav"
   },
   "S": {
     "words": [
@@ -607,7 +616,8 @@
       "sounds/S_Sirene.wav"
     ],
     "letterSound": "sounds/Letter_S.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_S_Repeatable.wav"
   },
   "T": {
     "words": [
@@ -651,7 +661,8 @@
       "sounds/U_Unge.wav"
     ],
     "letterSound": "sounds/Letter_U.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_U_Repeatable.wav"
   },
   "V": {
     "words": [
@@ -673,7 +684,8 @@
       "sounds/V_Veps.wav"
     ],
     "letterSound": "sounds/Letter_V.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_V_Repeatable.wav"
   },
   "W": {
     "words": [
@@ -761,7 +773,8 @@
       "sounds/Z_Zoom.wav"
     ],
     "letterSound": "sounds/Letter_Z.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_Z_Repeatable.wav"
   },
   "Æ": {
     "words": [
@@ -783,7 +796,8 @@
       "sounds/Æ_Ærfugl.wav"
     ],
     "letterSound": "sounds/Letter_Æ.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_Æ_Repeatable.wav"
   },
   "Ø": {
     "words": [
@@ -805,7 +819,8 @@
       "sounds/Ø_Ørn.wav"
     ],
     "letterSound": "sounds/Letter_Ø.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_Ø_Repeatable.wav"
   },
   "Å": {
     "words": [
@@ -827,6 +842,7 @@
       "sounds/Å_Åker.wav"
     ],
     "letterSound": "sounds/Letter_Å.wav",
-    "repeatable": true
+    "repeatable": true,
+    "repeatableLetterSound": "sounds/Letter_Å_Repeatable.wav"
   }
 }
