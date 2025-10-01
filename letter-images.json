@@ -18,6 +18,7 @@
       "sounds/A_Appelsin.wav",
       "sounds/A_Akvarium.wav"
     ],
+    "difficulty": [1, 2, 2, 2],
     "letterSound": "sounds/Letter_A.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_A_Repeatable.wav"
@@ -41,6 +42,7 @@
       "sounds/B_Ball.wav",
       "sounds/B_Blomst.wav"
     ],
+    "difficulty": [1, 1, 1, 2],
     "letterSound": "sounds/Letter_B.wav",
     "repeatable": false
   },
@@ -63,6 +65,7 @@
       "sounds/C_Cowboy.wav",
       "sounds/C_Cola.wav"
     ],
+    "difficulty": [1, 2, 2, 1],
     "letterSound": "sounds/Letter_C.wav",
     "repeatable": false
   },
@@ -85,6 +88,7 @@
       "sounds/D_Dinosaur.wav",
       "sounds/D_Dør.wav"
     ],
+    "difficulty": [1, 2, 2, 1],
     "letterSound": "sounds/Letter_D.wav",
     "repeatable": false
   },
@@ -107,6 +111,7 @@
       "sounds/E_Edderkopp.wav",
       "sounds/E_Engel.wav"
     ],
+    "difficulty": [2, 1, 3, 1],
     "letterSound": "sounds/Letter_E.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_E_Repeatable.wav"
@@ -178,6 +183,7 @@
       "sounds/F_Fornøyd.wav",
       "sounds/F_Fredag.wav"
     ],
+    "difficulty": [1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 3, 3, 2, 3, 3, 1, 2, 2],
     "letterSound": "sounds/Letter_F.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_F_Repeatable.wav"
@@ -201,6 +207,7 @@
       "sounds/G_Glass.wav",
       "sounds/G_Gris.wav"
     ],
+    "difficulty": [1, 2, 1, 1],
     "letterSound": "sounds/Letter_G.wav",
     "repeatable": false
   },
@@ -271,6 +278,7 @@
       "sounds/H_Hvile.wav",
       "sounds/H_Helsesøster.wav"
     ],
+    "difficulty": [1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 3, 1, 1, 1, 3, 3, 1, 3],
     "letterSound": "sounds/Letter_H.wav",
     "repeatable": false
   },
@@ -293,6 +301,7 @@
       "sounds/I_Is.wav",
       "sounds/I_Insekt.wav"
     ],
+    "difficulty": [2, 1, 1, 2],
     "letterSound": "sounds/Letter_I.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_I_Repeatable.wav"
@@ -316,6 +325,7 @@
       "sounds/J_Jul.wav",
       "sounds/J_Juice.wav"
     ],
+    "difficulty": [2, 1, 1, 1],
     "letterSound": "sounds/Letter_J.wav",
     "repeatable": false
   },
@@ -386,6 +396,7 @@
       "sounds/K_Klovn.wav",
       "sounds/K_Kjæreste.wav"
     ],
+    "difficulty": [1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 2, 1, 3, 2, 2, 2, 2, 2, 1, 3],
     "letterSound": "sounds/Letter_K.wav",
     "repeatable": false
   },
@@ -408,6 +419,7 @@
       "sounds/L_Larve.wav",
       "sounds/L_Laks.wav"
     ],
+    "difficulty": [1, 1, 1, 1],
     "letterSound": "sounds/Letter_L.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_L_Repeatable.wav"
@@ -431,6 +443,7 @@
       "sounds/M_Melk.wav",
       "sounds/M_Musikk.wav"
     ],
+    "difficulty": [1, 1, 1, 2],
     "letterSound": "sounds/Letter_M.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_M_Repeatable.wav"
@@ -454,6 +467,7 @@
       "sounds/N_Natt.wav",
       "sounds/N_Null.wav"
     ],
+    "difficulty": [1, 1, 1, 1],
     "letterSound": "sounds/Letter_N.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_N_Repeatable.wav"
@@ -477,6 +491,7 @@
       "sounds/O_Okse.wav",
       "sounds/O_Orkester.wav"
     ],
+    "difficulty": [1, 1, 1, 3],
     "letterSound": "sounds/Letter_O.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_O_Repeatable.wav"
@@ -500,6 +515,7 @@
       "sounds/P_Paraply.wav",
       "sounds/P_Papir.wav"
     ],
+    "difficulty": [1, 1, 2, 1],
     "letterSound": "sounds/Letter_P.wav",
     "repeatable": false
   },
@@ -522,6 +538,7 @@
       "sounds/Q_Quickstep.wav",
       "sounds/Q_Qatar.wav"
     ],
+    "difficulty": [1, 3, 3, 2],
     "letterSound": "sounds/Letter_Q.wav",
     "repeatable": false
   },
@@ -544,6 +561,7 @@
       "sounds/R_Rose.wav",
       "sounds/R_Robot.wav"
     ],
+    "difficulty": [2, 1, 1, 1],
     "letterSound": "sounds/Letter_R.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_R_Repeatable.wav"
@@ -615,6 +633,7 @@
       "sounds/S_Solbriller.wav",
       "sounds/S_Sirene.wav"
     ],
+    "difficulty": [2, 1, 1, 1, 2, 1, 2, 3, 2, 1, 3, 3, 3, 2, 1, 3, 3, 3, 3, 2],
     "letterSound": "sounds/Letter_S.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_S_Repeatable.wav"
@@ -638,6 +657,7 @@
       "sounds/T_Tog.wav",
       "sounds/T_Tann.wav"
     ],
+    "difficulty": [1, 1, 1, 1],
     "letterSound": "sounds/Letter_T.wav",
     "repeatable": false
   },
@@ -660,6 +680,7 @@
       "sounds/U_Ulv.wav",
       "sounds/U_Unge.wav"
     ],
+    "difficulty": [1, 1, 1, 1],
     "letterSound": "sounds/Letter_U.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_U_Repeatable.wav"
@@ -683,6 +704,7 @@
       "sounds/V_Vinter.wav",
       "sounds/V_Veps.wav"
     ],
+    "difficulty": [1, 1, 2, 1],
     "letterSound": "sounds/Letter_V.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_V_Repeatable.wav"
@@ -706,6 +728,7 @@
       "sounds/W_Wifi.wav",
       "sounds/W_Websider.wav"
     ],
+    "difficulty": [1, 1, 1, 2],
     "letterSound": "sounds/Letter_W.wav",
     "repeatable": false
   },
@@ -728,6 +751,7 @@
       "sounds/X_Xbox.wav",
       "sounds/X_X-Men.wav"
     ],
+    "difficulty": [1, 2, 1, 1],
     "letterSound": "sounds/Letter_X.wav",
     "repeatable": false
   },
@@ -750,6 +774,7 @@
       "sounds/Y_Yak.wav",
       "sounds/Y_Yogurt.wav"
     ],
+    "difficulty": [1, 1, 1, 2],
     "letterSound": "sounds/Letter_Y.wav",
     "repeatable": false
   },
@@ -772,6 +797,7 @@
       "sounds/Z_Zombie.wav",
       "sounds/Z_Zoom.wav"
     ],
+    "difficulty": [1, 1, 2, 1],
     "letterSound": "sounds/Letter_Z.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_Z_Repeatable.wav"
@@ -795,6 +821,7 @@
       "sounds/Æ_Ært.wav",
       "sounds/Æ_Ærfugl.wav"
     ],
+    "difficulty": [1, 1, 1, 2],
     "letterSound": "sounds/Letter_Æ.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_Æ_Repeatable.wav"
@@ -818,6 +845,7 @@
       "sounds/Ø_Øye.wav",
       "sounds/Ø_Ørn.wav"
     ],
+    "difficulty": [1, 1, 1, 1],
     "letterSound": "sounds/Letter_Ø.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_Ø_Repeatable.wav"
@@ -841,6 +869,7 @@
       "sounds/Å_År.wav",
       "sounds/Å_Åker.wav"
     ],
+    "difficulty": [1, 1, 1, 1],
     "letterSound": "sounds/Letter_Å.wav",
     "repeatable": true,
     "repeatableLetterSound": "sounds/Letter_Å_Repeatable.wav"

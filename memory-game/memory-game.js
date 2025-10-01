@@ -526,8 +526,11 @@ class MemoryGame {
     async loadCustomImagesFromJSON() {
         try {
             const response = await fetch('../letter-images.json');
-            const lettersData = await response.json();
-            
+            const rawData = await response.json();
+            // Apply difficulty filter
+            const lettersData = applyDifficultyFilter(rawData);
+            console.log(`Loaded letter data with difficulty: ${getDifficultyLabel()}`);
+
             this.letters = Object.keys(lettersData).map(letter => ({
                 letter: letter,
                 words: lettersData[letter].words || [],

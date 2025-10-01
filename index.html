@@ -45,6 +45,60 @@
             line-height: 1.6;
         }
 
+        .difficulty-selector {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: linear-gradient(145deg, #f7fafc, #edf2f7);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            z-index: 1000;
+            min-width: 220px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .difficulty-selector label {
+            display: block;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+        }
+
+        #difficulty-select {
+            padding: 0.6rem 1rem;
+            font-size: 0.95rem;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            background: white;
+            color: #2d3748;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        #difficulty-select:hover {
+            border-color: #764ba2;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        #difficulty-select:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .difficulty-selector {
+                position: static;
+                margin: 0 auto 2rem auto;
+                max-width: 280px;
+            }
+        }
+
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -161,10 +215,19 @@
     </style>
 </head>
 <body>
+    <div class="difficulty-selector">
+        <label for="difficulty-select">Velg vanskelighetsgrad:</label>
+        <select id="difficulty-select">
+            <option value="1">Enkle</option>
+            <option value="2">Middels (+ enkle)</option>
+            <option value="3">Vanskelige (alle)</option>
+        </select>
+    </div>
+
     <div class="main-container">
         <h1>🎵 Lydspill for Barn 🎵</h1>
         <p class="subtitle">Velg et spill og lær bokstaver gjennom lyd og lek!</p>
-        
+
         <div class="games-grid">
             <a href="memory-game/memory-game.html" class="game-card">
                 <div class="game-icon">🧠</div>
@@ -227,5 +290,20 @@
             <p>🎮 Alle spill er laget for å hjelpe barn med å lære bokstaver og lyder på en morsom måte!</p>
         </div>
     </div>
+
+    <script>
+        // Difficulty selector functionality
+        const difficultySelect = document.getElementById('difficulty-select');
+
+        // Load saved difficulty on page load
+        const savedDifficulty = localStorage.getItem('wordDifficulty') || '1';
+        difficultySelect.value = savedDifficulty;
+
+        // Save difficulty when changed
+        difficultySelect.addEventListener('change', function() {
+            localStorage.setItem('wordDifficulty', this.value);
+            console.log('Difficulty changed to:', this.value);
+        });
+    </script>
 </body>
 </html>

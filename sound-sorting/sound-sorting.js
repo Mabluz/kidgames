@@ -36,7 +36,10 @@ class SoundSortingGame {
     async loadLetterData() {
         try {
             const response = await fetch('../letter-images.json');
-            this.letterData = await response.json();
+            const rawData = await response.json();
+            // Apply difficulty filter
+            this.letterData = applyDifficultyFilter(rawData);
+            console.log(`Loaded letter data with difficulty: ${getDifficultyLabel()}`);
         } catch (error) {
             console.error('Error loading letter data:', error);
         }
