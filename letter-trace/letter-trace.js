@@ -12,6 +12,7 @@ class LetterTraceGame {
         this.canvas = null;
         this.ctx = null;
         this.isDrawing = false;
+        this.isLetterComplete = false; // Lock drawing when letter is complete
         this.lastPoint = null;
         this.drawnPath = [];
         this.letterPaths = this.initializeLetterPaths();
@@ -140,7 +141,7 @@ class LetterTraceGame {
         }, 100);
     }
 
-    loadNextLetter() {
+    async loadNextLetter() {
         if (this.currentLetterIndex >= this.selectedLetters.length) {
             this.showCompletionScreen();
             return;
@@ -148,6 +149,7 @@ class LetterTraceGame {
 
         const letter = this.selectedLetters[this.currentLetterIndex];
         this.currentLetter = letter;
+        this.isLetterComplete = false; // Allow drawing for new letter
 
         // Update UI
         document.getElementById('current-letter').textContent = `Bokstav: ${letter}`;
@@ -156,8 +158,46 @@ class LetterTraceGame {
         document.getElementById('letter-display').textContent = letter;
         document.getElementById('feedback-text').textContent = 'Tegn bokstaven ved å følge linjen';
 
-        // Hide word display
-        document.getElementById('word-display').classList.add('hidden');
+        // Show word and image
+        const wordImage = document.getElementById('word-image');
+        const wordText = document.getElementById('word-text');
+
+        // Get a word for this letter
+        const letterInfo = this.letterData[letter];
+        if (letterInfo && letterInfo.words && letterInfo.words.length > 0) {
+            const randomIndex = Math.floor(Math.random() * letterInfo.words.length);
+            const word = letterInfo.words[randomIndex];
+            const image = letterInfo.images[randomIndex];
+
+            // Store the current word info for playing audio later
+            this.currentWordIndex = randomIndex;
+
+            // Determine if image is emoji or file path
+            const isEmoji = image.length <= 4 && !/\.(jpg|jpeg|png|gif|webp)$/i.test(image);
+
+            if (isEmoji) {
+                wordImage.textContent = image;
+                wordImage.innerHTML = image;
+            } else {
+                const imgPath = image.startsWith('http') || image.length <= 4 ? image : `../${image}`;
+                wordImage.innerHTML = `<img src="${imgPath}" alt="${word}" style="max-width: 150px; max-height: 150px; border-radius: 10px;">`;
+            }
+
+            wordText.textContent = word;
+
+            // Play letter sound first
+            await playLetterSound(letter);
+
+            // Wait 1 second
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Then play word audio if available
+            if (letterInfo.audio && letterInfo.audio[randomIndex]) {
+                const audioPath = `../${letterInfo.audio[randomIndex]}`;
+                const audio = new Audio(audioPath);
+                await audio.play().catch(err => console.log('Could not play word audio:', err));
+            }
+        }
 
         // Reset canvas
         this.clearCanvas();
@@ -276,6 +316,11 @@ class LetterTraceGame {
     }
 
     startDrawing(e) {
+        // Prevent drawing if letter is already completed
+        if (this.isLetterComplete) {
+            return;
+        }
+
         this.isDrawing = true;
         const point = this.getCanvasPoint(e);
         this.lastPoint = point;
@@ -447,6 +492,9 @@ class LetterTraceGame {
     async completeCurrentLetter() {
         const letter = this.currentLetter;
 
+        // Lock drawing to prevent skipping letters
+        this.isLetterComplete = true;
+
         // Mark as completed
         this.completedLetters.push({
             letter: letter,
@@ -456,54 +504,14 @@ class LetterTraceGame {
         // Update feedback
         document.getElementById('feedback-text').textContent = 'Flott jobba!';
 
-        // Show word and image
-        const wordDisplay = document.getElementById('word-display');
-        const wordImage = document.getElementById('word-image');
-        const wordText = document.getElementById('word-text');
-
-        // Get a word for this letter
-        const letterInfo = this.letterData[letter];
-        if (letterInfo && letterInfo.words && letterInfo.words.length > 0) {
-            const randomIndex = Math.floor(Math.random() * letterInfo.words.length);
-            const word = letterInfo.words[randomIndex];
-            const image = letterInfo.images[randomIndex];
-
-            // Determine if image is emoji or file path
-            const isEmoji = image.length <= 4 && !/\.(jpg|jpeg|png|gif|webp)$/i.test(image);
-
-            if (isEmoji) {
-                wordImage.textContent = image;
-                wordImage.innerHTML = image;
-            } else {
-                const imgPath = image.startsWith('http') || image.length <= 4 ? image : `../${image}`;
-                wordImage.innerHTML = `<img src="${imgPath}" alt="${word}" style="max-width: 200px; max-height: 200px; border-radius: 10px;">`;
-            }
-
-            wordText.textContent = word;
-            wordDisplay.classList.remove('hidden');
-
-            // Play letter sound
-            await playLetterSound(letter);
-
-            // Play word audio if available
-            if (letterInfo.audio && letterInfo.audio[randomIndex]) {
-                const audioPath = `../${letterInfo.audio[randomIndex]}`;
-                const audio = new Audio(audioPath);
-                await audio.play().catch(err => console.log('Could not play word audio:', err));
-            }
-        } else {
-            // Just play letter sound
-            await playLetterSound(letter);
-        }
-
         // Show confetti
         triggerConfetti();
 
-        // Move to next letter after delay
+        // Move to next letter after delay (sounds will play when new letter loads)
         setTimeout(() => {
             this.currentLetterIndex++;
             this.loadNextLetter();
-        }, 3000);
+        }, 2000);
     }
 
     skipLetter() {
@@ -658,16 +666,8 @@ class LetterTraceGame {
             ],
             'I': [
                 [
-                    { x: 30, y: 20 },
-                    { x: 70, y: 20 }
-                ],
-                [
                     { x: 50, y: 20 },
                     { x: 50, y: 80 }
-                ],
-                [
-                    { x: 30, y: 80 },
-                    { x: 70, y: 80 }
                 ]
             ],
             'J': [
@@ -856,21 +856,33 @@ class LetterTraceGame {
             ],
             'Æ': [
                 [
-                    { x: 25, y: 80 },
-                    { x: 45, y: 20 },
-                    { x: 65, y: 80 }
+                    // Left leg of A going up
+                    { x: 20, y: 80 },
+                    { x: 50, y: 20 }
                 ],
                 [
-                    { x: 30, y: 60 },
-                    { x: 60, y: 60 }
+                    // Shared vertical stroke (right leg of A / left of E)
+                    { x: 50, y: 20 },
+                    { x: 50, y: 80 }
                 ],
                 [
-                    { x: 75, y: 20 },
-                    { x: 65, y: 20 },
-                    { x: 65, y: 50 },
-                    { x: 80, y: 50 },
-                    { x: 65, y: 50 },
-                    { x: 65, y: 80 },
+                    // Crossbar of A
+                    { x: 30, y: 55 },
+                    { x: 50, y: 55 }
+                ],
+                [
+                    // Top bar of E
+                    { x: 50, y: 20 },
+                    { x: 80, y: 20 }
+                ],
+                [
+                    // Middle bar of E
+                    { x: 50, y: 50 },
+                    { x: 75, y: 50 }
+                ],
+                [
+                    // Bottom bar of E
+                    { x: 50, y: 80 },
                     { x: 80, y: 80 }
                 ]
             ],

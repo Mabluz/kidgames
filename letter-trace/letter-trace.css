@@ -224,18 +224,46 @@ h3 {
     z-index: 2;
 }
 
+.letter-word-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.letter-card,
+.word-card {
+    background: linear-gradient(145deg, #f7fafc, #edf2f7);
+    border-radius: 15px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.letter-card {
+    min-width: 120px;
+}
+
+.word-card {
+    min-width: 140px;
+}
+
+.connector-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #718096;
+    font-style: italic;
+}
+
 .letter-display {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 20rem;
+    font-size: 5rem;
     font-weight: bold;
-    color: rgba(102, 126, 234, 0.1);
-    pointer-events: none;
+    color: #667eea;
     user-select: none;
     font-family: Arial, sans-serif;
-    z-index: 1;
 }
 
 .trace-feedback {
@@ -265,24 +293,12 @@ h3 {
     font-weight: 600;
 }
 
-.word-display {
-    text-align: center;
-    padding: 2rem;
-    background: linear-gradient(145deg, #f7fafc, #edf2f7);
-    border-radius: 20px;
-}
-
-.word-display.hidden {
-    display: none;
-}
-
 .word-image {
-    font-size: 5rem;
-    margin-bottom: 1rem;
+    font-size: 3.5rem;
 }
 
 .word-text {
-    font-size: 2rem;
+    font-size: 1.3rem;
     font-weight: bold;
     color: #2d3748;
 }
@@ -359,8 +375,29 @@ h3 {
         font-size: 2rem;
     }
 
+    .letter-word-display {
+        flex-wrap: wrap;
+    }
+
+    .letter-card,
+    .word-card {
+        padding: 1rem;
+    }
+
+    .connector-text {
+        font-size: 1rem;
+    }
+
     .letter-display {
-        font-size: 12rem;
+        font-size: 3.5rem;
+    }
+
+    .word-image {
+        font-size: 2.5rem;
+    }
+
+    .word-text {
+        font-size: 1.1rem;
     }
 
     .game-info {
@@ -384,7 +421,19 @@ h3 {
 
 @media (max-width: 480px) {
     .letter-display {
-        font-size: 8rem;
+        font-size: 2.5rem;
+    }
+
+    .word-image {
+        font-size: 2rem;
+    }
+
+    .word-text {
+        font-size: 0.9rem;
+    }
+
+    .connector-text {
+        font-size: 0.9rem;
     }
 
     h1 {

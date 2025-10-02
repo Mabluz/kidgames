@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uttale Trening</title>
+    <link rel="stylesheet" href="pronunciation-practice.css">
+    <link rel="stylesheet" href="../shared/letter-selection.css">
+    <link rel="stylesheet" href="../shared/confetti.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>🎤 Uttale Trening 🎤</h1>
+
+        <!-- Start Screen -->
+        <div class="start-screen" id="startScreen">
+            <h2>Velkommen til Uttale Trening!</h2>
+            <p>Lytt til ordet og si det selv. Talegjenkjenning sjekker om du sier riktig!</p>
+
+            <div class="setup-section">
+                <h3>Velg bokstaver å øve på:</h3>
+                <div class="letter-grid" id="letter-selection"></div>
+                <div class="selection-controls">
+                    <button id="select-all-btn" class="control-btn">Velg alle</button>
+                    <button id="select-none-btn" class="control-btn deselect">Fjern alle</button>
+                </div>
+            </div>
+
+            <button id="start-game-btn" class="start-btn">Start Spill</button>
+        </div>
+
+        <!-- Game Screen -->
+        <div class="game-screen" id="gameScreen" style="display: none;">
+            <div class="word-display">
+                <div class="word-image" id="wordImage"></div>
+                <div class="word-text" id="wordText">Laster...</div>
+            </div>
+
+            <div class="status-message" id="statusMessage">Hører på ordet...</div>
+
+            <div class="transcription-display" id="transcriptionDisplay"></div>
+
+            <div class="attempts-counter" id="attemptsCounter"></div>
+
+            <div class="button-group">
+                <button class="record-btn" id="recordBtn" disabled>🎤 Start Opptak</button>
+                <button class="next-btn" id="playWordBtn">🔊 Hør Ordet Igjen</button>
+                <button class="give-up-btn" id="giveUpBtn" style="display: none;">Gi Opp</button>
+                <button class="next-btn" id="nextBtn" style="display: none;">Neste Ord →</button>
+            </div>
+
+            <button class="home-btn" onclick="window.location.href='../index.html'">← Tilbake til Meny</button>
+        </div>
+    </div>
+
+    <script src="../difficulty-filter.js"></script>
+    <script src="../shared/letter-selection.js"></script>
+    <script src="../shared/game-effects.js"></script>
+    <script src="pronunciation-practice.js"></script>
+</body>
+</html>

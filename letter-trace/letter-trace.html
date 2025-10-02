@@ -56,20 +56,25 @@
             <div class="game-content">
                 <div class="canvas-container">
                     <canvas id="trace-canvas"></canvas>
-                    <div id="letter-display" class="letter-display"></div>
                 </div>
 
                 <div class="game-sidebar">
+                    <div class="letter-word-display">
+                        <div class="letter-card">
+                            <div id="letter-display" class="letter-display"></div>
+                        </div>
+                        <div class="connector-text">som i</div>
+                        <div class="word-card">
+                            <div class="word-image" id="word-image"></div>
+                            <div class="word-text" id="word-text"></div>
+                        </div>
+                    </div>
+
                     <div class="trace-feedback">
                         <div id="accuracy-bar" class="accuracy-bar">
                             <div id="accuracy-fill" class="accuracy-fill"></div>
                         </div>
                         <p id="feedback-text" class="feedback-text">Tegn bokstaven ved å følge linjen</p>
-                    </div>
-
-                    <div class="word-display hidden" id="word-display">
-                        <div class="word-image" id="word-image"></div>
-                        <div class="word-text" id="word-text"></div>
                     </div>
 
                     <div class="game-controls">
