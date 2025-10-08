@@ -17,6 +17,7 @@ class PronunciationGame {
         this.playWordBtn = document.getElementById('playWordBtn');
         this.giveUpBtn = document.getElementById('giveUpBtn');
         this.nextBtn = document.getElementById('nextBtn');
+        this.progressBar = document.getElementById('progressBar');
 
         // Game data
         this.letterData = null;
@@ -29,6 +30,9 @@ class PronunciationGame {
         this.excludedWords = [
             // Words with L-sounds (often misheard)
             'BALL',
+
+            // H sound is not said
+            'HUND',
 
             'FOTBALL', 'JUL', 'NULL', 'MELK', 'ØL', 'ÅL', // MIGHT BE AN ISSUE - NEED TO TEST
 
@@ -347,6 +351,7 @@ class PronunciationGame {
         this.displayImage(this.currentWordData.image);
 
         this.transcriptionDisplay.textContent = '';
+        this.resetProgressBar();
 
         // Provide helpful tip for very short words
         const isShortWord = this.currentWordData.word.length <= 2;
@@ -434,6 +439,7 @@ class PronunciationGame {
             this.recordBtn.disabled = true;
             this.showStatus('🎤 Lytter... Si ordet nå!', 'info');
             this.transcriptionDisplay.textContent = '';
+            this.resetProgressBar();
 
             // Start audio recording (don't await - just start it)
             this.audioChunks = [];
@@ -543,6 +549,14 @@ class PronunciationGame {
         // Only check the FIRST (most confident) transcription
         const spokenWord = transcriptions[0].text;
         const isCorrect = this.compareWords(spokenWord, this.currentWordData.word.toUpperCase());
+
+        // Update progress bar: 100% green if correct, otherwise show confidence score
+        if (isCorrect) {
+            this.updateProgressBar(1.0); // 100% green for correct answer
+        } else {
+            const confidence = transcriptions[0].confidence || 0;
+            this.updateProgressBar(confidence);
+        }
 
         this.attempts++;
         this.updateAttemptsCounter();
@@ -660,6 +674,38 @@ class PronunciationGame {
     showStatus(message, type = 'info') {
         this.statusMessage.textContent = message;
         this.statusMessage.className = `status-message ${type}`;
+    }
+
+    /**
+     * Update progress bar based on confidence score
+     * @param {number} confidence - Confidence score from 0 to 1
+     */
+    updateProgressBar(confidence) {
+        // Convert confidence to percentage (0-100)
+        const percentage = Math.min(100, Math.max(0, confidence * 100));
+
+        // Update progress bar width
+        this.progressBar.style.width = `${percentage}%`;
+
+        // Change color based on confidence threshold
+        // High confidence (>= 80%) = green, lower = red
+        if (percentage >= 80) {
+            this.progressBar.classList.remove('low');
+            this.progressBar.classList.add('high');
+        } else {
+            this.progressBar.classList.remove('high');
+            this.progressBar.classList.add('low');
+        }
+
+        console.log(`Progress bar updated: ${percentage.toFixed(1)}% confidence`);
+    }
+
+    /**
+     * Reset progress bar to empty
+     */
+    resetProgressBar() {
+        this.progressBar.style.width = '0%';
+        this.progressBar.classList.remove('low', 'high');
     }
 }
 

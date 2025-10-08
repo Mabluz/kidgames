@@ -31,22 +31,35 @@
 
         <!-- Game Screen -->
         <div class="game-screen" id="gameScreen" style="display: none;">
-            <div class="word-display">
-                <div class="word-image" id="wordImage"></div>
-                <div class="word-text" id="wordText">Laster...</div>
-            </div>
+            <div class="game-columns">
+                <div class="left-column">
+                    <div class="word-display">
+                        <div class="word-image" id="wordImage"></div>
+                        <div class="word-text" id="wordText">Laster...</div>
+                    </div>
+                </div>
 
-            <div class="status-message" id="statusMessage">Hører på ordet...</div>
+                <div class="right-column">
+                    <div class="status-message" id="statusMessage">Hører på ordet...</div>
 
-            <div class="transcription-display" id="transcriptionDisplay"></div>
+                    <div class="transcription-display" id="transcriptionDisplay"></div>
 
-            <div class="attempts-counter" id="attemptsCounter"></div>
+                    <div class="pronunciation-quality">
+                        <div class="quality-label">Uttale Kvalitet:</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                    </div>
 
-            <div class="button-group">
-                <button class="record-btn" id="recordBtn" disabled>🎤 Start Opptak</button>
-                <button class="next-btn" id="playWordBtn">🔊 Hør Ordet Igjen</button>
-                <button class="give-up-btn" id="giveUpBtn" style="display: none;">Gi Opp</button>
-                <button class="next-btn" id="nextBtn" style="display: none;">Neste Ord →</button>
+                    <div class="attempts-counter" id="attemptsCounter"></div>
+
+                    <div class="button-group">
+                        <button class="record-btn" id="recordBtn" disabled>🎤 Start Opptak</button>
+                        <button class="next-btn" id="playWordBtn">🔊 Hør Ordet Igjen</button>
+                        <button class="give-up-btn" id="giveUpBtn" style="display: none;">Gi Opp</button>
+                        <button class="next-btn" id="nextBtn" style="display: none;">Neste Ord →</button>
+                    </div>
+                </div>
             </div>
 
             <button class="home-btn" onclick="window.location.href='../index.html'">← Tilbake til Meny</button>
