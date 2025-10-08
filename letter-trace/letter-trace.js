@@ -4,9 +4,16 @@ class LetterTraceGame {
         this.selectedLetters = [];
         this.currentLetterIndex = 0;
         this.mode = 'guided'; // 'guided' or 'challenge'
+        this.repetitionCount = 7; // Default number of times to draw
+        this.pronunciationPractice = false; // Whether to practice pronunciation
         this.letterSelection = null;
         this.completedLetters = [];
         this.currentAccuracy = 0;
+
+        // Recording related
+        this.mediaRecorder = null;
+        this.audioChunks = [];
+        this.recordedAudioBlob = null;
 
         // Canvas and drawing
         this.canvas = null;
@@ -30,6 +37,19 @@ class LetterTraceGame {
         this.setupEventListeners();
         this.initializeLetterSelection();
         this.setupCanvas();
+        this.initializeSettingsModal();
+    }
+
+    initializeSettingsModal() {
+        // Wait for modal HTML to be loaded
+        const checkModal = setInterval(() => {
+            if (document.getElementById('settings-modal')) {
+                clearInterval(checkModal);
+                this.settingsModal = new SettingsModal({
+                    onRestart: () => this.showSetupScreen()
+                });
+            }
+        }, 100);
     }
 
     async loadLetterData() {
@@ -53,10 +73,29 @@ class LetterTraceGame {
             btn.addEventListener('click', (e) => this.selectMode(e.target.closest('.mode-btn')));
         });
 
+        // Repetition count selection
+        document.getElementById('repetition-count').addEventListener('change', (e) => {
+            this.repetitionCount = parseInt(e.target.value);
+        });
+
+        // Pronunciation practice checkbox
+        document.getElementById('pronunciation-practice').addEventListener('change', (e) => {
+            this.pronunciationPractice = e.target.checked;
+        });
+
+        // Pronunciation controls
+        document.getElementById('replay-word-btn').addEventListener('click', () => this.replayWord());
+        document.getElementById('record-btn').addEventListener('click', () => this.toggleRecording());
+        document.getElementById('replay-recording-btn').addEventListener('click', () => this.replayRecording());
+        document.getElementById('next-letter-btn').addEventListener('click', () => this.proceedToNextLetter());
+
         // Game controls
         document.getElementById('clear-btn').addEventListener('click', () => this.clearCanvas());
-        document.getElementById('skip-btn').addEventListener('click', () => this.skipLetter());
-        document.getElementById('new-game').addEventListener('click', () => this.showSetupScreen());
+        document.getElementById('settings-btn').addEventListener('click', () => {
+            if (this.settingsModal) {
+                this.settingsModal.show();
+            }
+        });
         document.getElementById('play-again').addEventListener('click', () => this.showSetupScreen());
     }
 
@@ -125,9 +164,31 @@ class LetterTraceGame {
             return;
         }
 
-        this.selectedLetters = this.letterSelection.getSelectedLetters();
+        const baseLetters = this.letterSelection.getSelectedLetters();
         this.currentLetterIndex = 0;
         this.completedLetters = [];
+
+        // Generate a random sequence of letters based on repetition count
+        // Avoid picking the same letter consecutively
+        this.selectedLetters = [];
+        let lastLetter = null;
+
+        for (let i = 0; i < this.repetitionCount; i++) {
+            let randomLetter;
+
+            // If there's only one letter, we have to use it
+            if (baseLetters.length === 1) {
+                randomLetter = baseLetters[0];
+            } else {
+                // Pick a random letter that's different from the last one
+                do {
+                    randomLetter = baseLetters[Math.floor(Math.random() * baseLetters.length)];
+                } while (randomLetter === lastLetter);
+            }
+
+            this.selectedLetters.push(randomLetter);
+            lastLetter = randomLetter;
+        }
 
         this.showGameScreen();
 
@@ -150,6 +211,14 @@ class LetterTraceGame {
         const letter = this.selectedLetters[this.currentLetterIndex];
         this.currentLetter = letter;
         this.isLetterComplete = false; // Allow drawing for new letter
+
+        // Always hide pronunciation section when loading a new letter
+        document.getElementById('pronunciation-section').classList.add('hidden');
+        document.getElementById('next-letter-btn').classList.add('hidden');
+        document.getElementById('replay-recording-btn').classList.add('hidden');
+
+        // Re-enable the clear button for the new letter
+        document.getElementById('clear-btn').disabled = false;
 
         // Update UI
         document.getElementById('current-letter').textContent = `Bokstav: ${letter}`;
@@ -495,6 +564,9 @@ class LetterTraceGame {
         // Lock drawing to prevent skipping letters
         this.isLetterComplete = true;
 
+        // Disable clear button to prevent accidental clearing
+        document.getElementById('clear-btn').disabled = true;
+
         // Mark as completed
         this.completedLetters.push({
             letter: letter,
@@ -507,14 +579,99 @@ class LetterTraceGame {
         // Show confetti
         triggerConfetti();
 
-        // Move to next letter after delay (sounds will play when new letter loads)
-        setTimeout(() => {
-            this.currentLetterIndex++;
-            this.loadNextLetter();
-        }, 2000);
+        // Check if pronunciation practice is enabled
+        if (this.pronunciationPractice) {
+            // Show pronunciation section
+            document.getElementById('pronunciation-section').classList.remove('hidden');
+            document.getElementById('record-btn').disabled = false;
+            document.getElementById('recording-status').textContent = '';
+            this.recordedAudioBlob = null;
+
+            // Hide next button and replay recording button initially
+            document.getElementById('next-letter-btn').classList.add('hidden');
+            document.getElementById('replay-recording-btn').classList.add('hidden');
+        } else {
+            // Ensure pronunciation section is hidden
+            document.getElementById('pronunciation-section').classList.add('hidden');
+
+            // Move to next letter after delay (sounds will play when new letter loads)
+            setTimeout(() => {
+                this.currentLetterIndex++;
+                this.loadNextLetter();
+            }, 2000);
+        }
     }
 
-    skipLetter() {
+    async replayWord() {
+        const letterInfo = this.letterData[this.currentLetter];
+        if (letterInfo && letterInfo.audio && letterInfo.audio[this.currentWordIndex]) {
+            const audioPath = `../${letterInfo.audio[this.currentWordIndex]}`;
+            const audio = new Audio(audioPath);
+            await audio.play().catch(err => console.log('Could not play word audio:', err));
+        }
+    }
+
+    async toggleRecording() {
+        const recordBtn = document.getElementById('record-btn');
+        const recordingStatus = document.getElementById('recording-status');
+
+        if (!this.mediaRecorder) {
+            try {
+                this.mediaRecorder = await initializeVoiceRecording();
+            } catch (error) {
+                recordingStatus.textContent = '❌ Kunne ikke få tilgang til mikrofon';
+                return;
+            }
+        }
+
+        if (this.mediaRecorder.state === 'recording') {
+            // Stop recording
+            this.recordedAudioBlob = await stopRecording(this.mediaRecorder, this.audioChunks);
+            recordBtn.textContent = '🎤 Spill inn uttale';
+            recordBtn.classList.remove('recording');
+            recordingStatus.textContent = 'Spiller av opptak...';
+
+            // Play back the recording
+            try {
+                await playAudioBlob(this.recordedAudioBlob);
+                recordingStatus.textContent = '✅ Opptaket er ferdig!';
+
+                // Show next button and replay recording button
+                document.getElementById('next-letter-btn').classList.remove('hidden');
+                document.getElementById('replay-recording-btn').classList.remove('hidden');
+            } catch (error) {
+                recordingStatus.textContent = '❌ Kunne ikke spille av opptak';
+            }
+        } else {
+            // Start recording
+            recordingStatus.textContent = '🔴 Spiller inn...';
+            recordBtn.textContent = '⏹️ Stopp opptak';
+            recordBtn.classList.add('recording');
+            await startRecording(this.mediaRecorder, this.audioChunks);
+        }
+    }
+
+    async replayRecording() {
+        if (!this.recordedAudioBlob) {
+            return;
+        }
+
+        const recordingStatus = document.getElementById('recording-status');
+        recordingStatus.textContent = 'Spiller av opptak...';
+
+        try {
+            await playAudioBlob(this.recordedAudioBlob);
+            recordingStatus.textContent = '✅ Opptaket er ferdig!';
+        } catch (error) {
+            recordingStatus.textContent = '❌ Kunne ikke spille av opptak';
+        }
+    }
+
+    proceedToNextLetter() {
+        // Hide pronunciation section
+        document.getElementById('pronunciation-section').classList.add('hidden');
+
+        // Move to next letter
         this.currentLetterIndex++;
         this.loadNextLetter();
     }
@@ -901,8 +1058,8 @@ class LetterTraceGame {
                     { x: 50, y: 20 }
                 ],
                 [
-                    { x: 30, y: 70 },
-                    { x: 70, y: 30 }
+                    { x: 25, y: 85 },
+                    { x: 75, y: 15 }
                 ]
             ],
             'Å': [

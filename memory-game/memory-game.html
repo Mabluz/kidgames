@@ -6,6 +6,7 @@
     <title>Bokstav Hukommelse Spill</title>
     <link rel="stylesheet" href="memory-game.css">
     <link rel="stylesheet" href="../shared/confetti.css">
+    <link rel="stylesheet" href="../shared/settings-modal.css">
 </head>
 <body>
     <div class="container">
@@ -88,26 +89,20 @@
         
     </div>
     
-    <!-- Settings Modal -->
-    <div id="settings-modal" class="settings-modal hidden">
-        <div class="settings-modal-content">
-            <div class="settings-header">
-                <h3>⚙️ Innstillinger</h3>
-                <button id="close-settings-btn" class="close-settings-btn">✕</button>
-            </div>
-            <div class="settings-body">
-                <div class="settings-section">
-                    <h4>Spillkontroller</h4>
-                    <button id="restart-btn" class="restart-btn">🔄 Nytt spill</button>
-                    <p class="warning-text">⚠️ Dette vil slette gjeldende spill</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="settings-overlay" class="settings-overlay hidden"></div>
-    
     <script src="../shared/game-effects.js"></script>
+    <script src="../shared/settings-modal.js"></script>
     <script src="../difficulty-filter.js"></script>
+
+    <!-- Include Settings Modal Component -->
+    <script>
+        // Load settings modal HTML dynamically
+        fetch('../shared/settings-modal.html')
+            .then(response => response.text())
+            .then(html => {
+                document.body.insertAdjacentHTML('beforeend', html);
+            });
+    </script>
+
     <script src="memory-game.js"></script>
 </body>
 </html>

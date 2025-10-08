@@ -83,24 +83,6 @@ header p {
     transform: rotate(90deg);
 }
 
-.restart-btn {
-    background: #ff6b6b;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.restart-btn:hover {
-    background: #ff5252;
-    transform: translateY(-2px);
-}
 
 .game-board {
     display: grid;
@@ -520,97 +502,6 @@ header p {
 
 .setup-screen.hidden {
     display: none;
-}
-
-/* Settings Modal */
-.settings-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
-
-.settings-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    z-index: 1001;
-    min-width: 300px;
-    max-width: 400px;
-    width: 90%;
-}
-
-.settings-modal-content {
-    padding: 0;
-}
-
-.settings-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 25px;
-    border-bottom: 1px solid #eee;
-    background: #f8f9fa;
-    border-radius: 15px 15px 0 0;
-}
-
-.settings-header h3 {
-    margin: 0;
-    color: #333;
-    font-size: 1.3rem;
-}
-
-.close-settings-btn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #666;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
-
-.close-settings-btn:hover {
-    background: #e9ecef;
-    color: #333;
-}
-
-.settings-body {
-    padding: 25px;
-}
-
-.settings-section {
-    margin-bottom: 20px;
-}
-
-.settings-section:last-child {
-    margin-bottom: 0;
-}
-
-.settings-section h4 {
-    color: #333;
-    margin-bottom: 15px;
-    font-size: 1.1rem;
-}
-
-.warning-text {
-    font-size: 0.85rem;
-    color: #ff6b6b;
-    text-align: center;
-    font-style: italic;
-    margin: 0;
 }
 
 /* Multiplayer Styles */

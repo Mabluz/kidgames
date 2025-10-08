@@ -1,7 +1,7 @@
 class MemoryGame {
     constructor() {
         this.letters = [];
-        
+
         this.cards = [];
         this.selectedLetters = []; // Letters chosen by user
         this.selectedPairs = 4; // Number of pairs to play with
@@ -18,7 +18,7 @@ class MemoryGame {
         this.flippedCards = [];
         this.matchedPairs = 0;
         this.attempts = 0;
-        
+
         // Multiplayer properties
         this.playerCount = 1;
         this.players = [];
@@ -31,14 +31,27 @@ class MemoryGame {
         this.voiceControls = document.getElementById('voice-controls');
         this.setupScreen = document.getElementById('setup-screen');
         this.gameArea = document.getElementById('game-area');
-        
+
         // Ensure elements start in correct state
         this.voiceControls.classList.add('hidden');
         this.gameArea.style.display = 'none';
-        
+
         this.initializeEventListeners();
         this.initializeVoiceRecording();
         this.initializeApp();
+        this.initializeSettingsModal();
+    }
+
+    initializeSettingsModal() {
+        // Wait for modal HTML to be loaded
+        const checkModal = setInterval(() => {
+            if (document.getElementById('settings-modal')) {
+                clearInterval(checkModal);
+                this.settingsModal = new SettingsModal({
+                    onRestart: () => this.restartGame()
+                });
+            }
+        }, 100);
     }
 
     async initializeApp() {
@@ -49,20 +62,9 @@ class MemoryGame {
     initializeEventListeners() {
         // Settings modal event listeners
         document.getElementById('settings-btn').addEventListener('click', () => {
-            this.showSettingsModal();
-        });
-
-        document.getElementById('close-settings-btn').addEventListener('click', () => {
-            this.hideSettingsModal();
-        });
-
-        document.getElementById('settings-overlay').addEventListener('click', () => {
-            this.hideSettingsModal();
-        });
-
-        document.getElementById('restart-btn').addEventListener('click', () => {
-            this.restartGame();
-            this.hideSettingsModal();
+            if (this.settingsModal) {
+                this.settingsModal.show();
+            }
         });
         
         document.getElementById('play-again-btn').addEventListener('click', () => {
@@ -924,19 +926,6 @@ class MemoryGame {
     nextPlayer() {
         this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.playerCount;
         this.updatePlayerDisplay();
-    }
-
-
-
-    // Settings Modal Functions
-    showSettingsModal() {
-        document.getElementById('settings-modal').classList.remove('hidden');
-        document.getElementById('settings-overlay').classList.remove('hidden');
-    }
-
-    hideSettingsModal() {
-        document.getElementById('settings-modal').classList.add('hidden');
-        document.getElementById('settings-overlay').classList.add('hidden');
     }
 }
 
