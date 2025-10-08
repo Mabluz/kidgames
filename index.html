@@ -45,6 +45,34 @@
             line-height: 1.6;
         }
 
+        .random-game-button {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            z-index: 1000;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .random-game-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+            background: linear-gradient(145deg, #764ba2, #667eea);
+        }
+
+        .random-game-button:active {
+            transform: translateY(0);
+        }
+
         .difficulty-selector {
             position: fixed;
             top: 2rem;
@@ -92,6 +120,13 @@
         }
 
         @media (max-width: 768px) {
+            .random-game-button {
+                position: static;
+                margin: 0 auto 1rem auto;
+                display: block;
+                width: fit-content;
+            }
+
             .difficulty-selector {
                 position: static;
                 margin: 0 auto 2rem auto;
@@ -215,6 +250,8 @@
     </style>
 </head>
 <body>
+    <button id="random-game-btn" class="random-game-button">🎲 Tilfeldig Spill</button>
+
     <div class="difficulty-selector">
         <label for="difficulty-select">Velg vanskelighetsgrad:</label>
         <select id="difficulty-select">
@@ -331,6 +368,22 @@
         difficultySelect.addEventListener('change', function() {
             localStorage.setItem('wordDifficulty', this.value);
             console.log('Difficulty changed to:', this.value);
+        });
+
+        // Random game button functionality
+        const randomGameBtn = document.getElementById('random-game-btn');
+        const games = [
+            'memory-game/memory-game.html',
+            'find-sounds/find-sounds.html',
+            'sound-sorting/sound-sorting.html',
+            'word-safari/word-safari.html',
+            'letter-trace/letter-trace.html',
+            'pronunciation-practice/pronunciation-practice.html'
+        ];
+
+        randomGameBtn.addEventListener('click', function() {
+            const randomIndex = Math.floor(Math.random() * games.length);
+            window.location.href = games[randomIndex];
         });
     </script>
 </body>
