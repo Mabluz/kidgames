@@ -593,6 +593,13 @@ body {
 
 .dice-section {
     text-align: center;
+    padding: 30px 20px;
+    position: relative;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .dice-display {
@@ -609,24 +616,75 @@ body {
     color: #667eea;
     margin: 0 auto 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
 }
 
 .dice-display.rolling {
-    animation: diceRoll 0.5s ease-in-out;
+    animation: diceRollBounce 0.25s ease-in-out infinite, diceColorShift 0.5s ease-in-out infinite;
 }
 
-@keyframes diceRoll {
-    0%, 100% {
-        transform: rotate(0deg);
+.dice-display.reveal {
+    animation: diceReveal 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes diceRollBounce {
+    0% {
+        transform: rotate(0deg) scale(1) translate(-30px, -20px);
     }
     25% {
-        transform: rotate(90deg);
+        transform: rotate(90deg) scale(1.15) translate(30px, -30px);
     }
     50% {
-        transform: rotate(180deg);
+        transform: rotate(180deg) scale(0.95) translate(-30px, 20px);
     }
     75% {
-        transform: rotate(270deg);
+        transform: rotate(270deg) scale(1.15) translate(30px, 10px);
+    }
+    100% {
+        transform: rotate(360deg) scale(1) translate(-30px, -20px);
+    }
+}
+
+@keyframes diceColorShift {
+    0%, 100% {
+        border-color: #667eea;
+        color: #667eea;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    25% {
+        border-color: #e74c3c;
+        color: #e74c3c;
+        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.6);
+    }
+    50% {
+        border-color: #27ae60;
+        color: #27ae60;
+        box-shadow: 0 8px 25px rgba(39, 174, 96, 0.6);
+    }
+    75% {
+        border-color: #f39c12;
+        color: #f39c12;
+        box-shadow: 0 8px 25px rgba(243, 156, 18, 0.6);
+    }
+}
+
+@keyframes diceReveal {
+    0% {
+        transform: scale(1.5) rotate(360deg);
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.8);
+    }
+    50% {
+        transform: scale(0.8) rotate(180deg);
+    }
+    70% {
+        transform: scale(1.2) rotate(0deg);
+    }
+    85% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 }
 
@@ -641,16 +699,44 @@ body {
     cursor: pointer;
     font-weight: bold;
     transition: all 0.3s;
+    animation: buttonIdle 2s ease-in-out infinite;
 }
 
 .roll-btn:hover:not(:disabled) {
     background: #764ba2;
     transform: scale(1.05);
+    animation: buttonHover 0.6s ease-in-out infinite;
+}
+
+.roll-btn:active:not(:disabled) {
+    transform: scale(0.95);
+    animation: none;
 }
 
 .roll-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    animation: none;
+}
+
+@keyframes buttonIdle {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+    }
+}
+
+@keyframes buttonHover {
+    0%, 100% {
+        transform: scale(1.05) translateY(0);
+    }
+    50% {
+        transform: scale(1.08) translateY(-3px);
+    }
 }
 
 .players-info h3 {

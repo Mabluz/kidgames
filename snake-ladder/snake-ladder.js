@@ -592,7 +592,17 @@ class SnakeLadderGame {
                 const finalRoll = Math.floor(Math.random() * 6) + 1;
                 diceDisplay.textContent = finalRoll;
                 diceDisplay.classList.remove('rolling');
-                this.movePlayer(finalRoll);
+
+                // Add reveal animation
+                diceDisplay.classList.add('reveal');
+                setTimeout(() => {
+                    diceDisplay.classList.remove('reveal');
+                }, 600);
+
+                // Wait a bit before moving player to let reveal animation finish
+                setTimeout(() => {
+                    this.movePlayer(finalRoll);
+                }, 400);
             }
         }, 100);
     }
@@ -602,11 +612,44 @@ class SnakeLadderGame {
         let newPosition = currentPlayer.position + steps;
         const startPos = currentPlayer.position;
 
-        // Check win condition - landing on or going past 30
-        if (newPosition >= 30) {
-            // Animate move to square 30
-            const stepsTo30 = 30 - startPos;
+        // Check win condition - going past 30
+        if (newPosition > 30) {
+            // Go directly to Mål and win (skip word practice on 30)
+            // For first move from position 0, place token at position 1 first
+            if (startPos === 0) {
+                currentPlayer.position = 1;
+                this.updatePlayerPositions();
+                await this.delay(100);
+            }
 
+            // Create animated token (now at position 1 if it was first move)
+            const animToken = await this.createAnimatedToken(startPos === 0 ? 1 : startPos);
+            if (animToken) {
+                // Animate through remaining steps to 30
+                const firstStep = startPos === 0 ? 2 : startPos + 1;
+                for (let pos = firstStep; pos <= 30; pos++) {
+                    await this.animateTokenToPosition(animToken, pos);
+                }
+
+                // Pause to show final position before moving to Mål
+                await this.delay(200);
+
+                // Continue to Mål (position 31)
+                await this.animateTokenToPosition(animToken, 31);
+
+                // Remove animated token
+                document.body.removeChild(animToken);
+            }
+
+            currentPlayer.position = 31;
+            this.updatePlayerPositions();
+            await this.delay(500);
+            this.showWinScreen();
+            return;
+        }
+
+        // Landing exactly on 30 - practice word but don't win yet
+        if (newPosition === 30) {
             // For first move from position 0, place token at position 1 first
             if (startPos === 0) {
                 currentPlayer.position = 1;
@@ -623,6 +666,9 @@ class SnakeLadderGame {
                     await this.animateTokenToPosition(animToken, pos);
                 }
 
+                // Pause to show final position at center
+                await this.delay(200);
+
                 // Animate from center to bottom-right corner of final tile
                 await this.animateTokenToCorner(animToken, 30);
 
@@ -636,7 +682,7 @@ class SnakeLadderGame {
             this.updatePlayersStatus();
             await this.delay(300);
 
-            // Practice pronunciation on square 30
+            // Practice pronunciation on square 30 (but won't win after)
             await this.handleSquareLanding(30);
             return;
         }
@@ -656,6 +702,9 @@ class SnakeLadderGame {
             for (let pos = firstStep; pos <= newPosition; pos++) {
                 await this.animateTokenToPosition(animToken, pos);
             }
+
+            // Pause to show final position at center
+            await this.delay(200);
 
             // Animate from center to bottom-right corner of final tile
             await this.animateTokenToCorner(animToken, newPosition);
@@ -733,7 +782,6 @@ class SnakeLadderGame {
         const toSquare = document.querySelector(`[data-position="${toPos}"]`);
         if (!toSquare) return;
 
-        const currentRect = animToken.getBoundingClientRect();
         const toRect = toSquare.getBoundingClientRect();
 
         const startX = parseFloat(animToken.style.left);
@@ -741,9 +789,9 @@ class SnakeLadderGame {
         const endX = toRect.left + toRect.width / 2 - 12.5;
         const endY = toRect.top + toRect.height / 2 - 12.5;
 
-        // Animate with smooth movement
-        const steps = 30;
-        const duration = 600;
+        // Fixed duration per tile for consistent timing
+        const duration = 350;
+        const steps = 25;
         const stepDelay = duration / steps;
 
         for (let i = 0; i <= steps; i++) {
@@ -752,8 +800,8 @@ class SnakeLadderGame {
             const x = startX + (endX - startX) * t;
             const y = startY + (endY - startY) * t;
 
-            // Parabolic curve for scale (bigger in the middle)
-            const scaleFactor = 1 + 0.3 * Math.sin(t * Math.PI);
+            // Gentler scale animation for smoother appearance
+            const scaleFactor = 1 + 0.15 * Math.sin(t * Math.PI);
 
             animToken.style.left = x + 'px';
             animToken.style.top = y + 'px';
@@ -762,10 +810,13 @@ class SnakeLadderGame {
             await this.delay(stepDelay);
         }
 
-        // Ensure we're exactly at the center
+        // Ensure we're exactly at the center and fully visible
         animToken.style.left = endX + 'px';
         animToken.style.top = endY + 'px';
         animToken.style.transform = 'scale(1)';
+
+        // Small pause between tiles for consistent rhythm
+        await this.delay(50);
     }
 
     async animateTokenToCorner(animToken, position) {
@@ -806,7 +857,9 @@ class SnakeLadderGame {
             await this.delay(stepDelay);
         }
 
-        // Ensure final scale is exactly 1
+        // Ensure final position and scale are exactly right
+        animToken.style.left = endX + 'px';
+        animToken.style.top = endY + 'px';
         animToken.style.transform = 'scale(1)';
     }
 
@@ -1122,19 +1175,7 @@ class SnakeLadderGame {
             return;
         }
 
-        // Check if current player is on square 30 (winning square)
-        const currentPlayer = this.players[this.currentPlayerIndex];
-        if (currentPlayer.position === 30) {
-            // Move to Mål tile (position 31) and win
-            await this.delay(300);
-            await this.animatePlayerMove(30, 31);
-            currentPlayer.position = 31;
-            this.updatePlayerPositions();
-            await this.delay(500);
-            this.showWinScreen();
-            return;
-        }
-
+        // Continue to next player (removed the check for position 30 winning)
         this.nextPlayer();
     }
 
