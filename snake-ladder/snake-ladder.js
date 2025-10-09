@@ -544,7 +544,6 @@ class SnakeLadderGame {
         const currentPlayer = this.players[this.currentPlayerIndex];
         const indicator = document.getElementById('currentPlayerName');
         indicator.textContent = currentPlayer.name;
-        indicator.style.backgroundColor = currentPlayer.color;
     }
 
     updatePlayersStatus() {
@@ -556,6 +555,7 @@ class SnakeLadderGame {
             playerDiv.className = 'player-status';
             if (index === this.currentPlayerIndex) {
                 playerDiv.classList.add('active');
+                playerDiv.style.setProperty('--player-color', player.color);
             }
             playerDiv.style.borderLeftColor = player.color;
 
