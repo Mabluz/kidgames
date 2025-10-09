@@ -666,6 +666,9 @@ class SnakeLadderGame {
                     await this.animateTokenToPosition(animToken, pos);
                 }
 
+                // Pause to show token at center of final tile
+                await this.delay(300);
+
                 // Animate from center to bottom-right corner of final tile
                 await this.animateTokenToCorner(animToken, 30);
 
@@ -699,6 +702,9 @@ class SnakeLadderGame {
             for (let pos = firstStep; pos <= newPosition; pos++) {
                 await this.animateTokenToPosition(animToken, pos);
             }
+
+            // Pause to show token at center of final tile
+            await this.delay(300);
 
             // Animate from center to bottom-right corner of final tile
             await this.animateTokenToCorner(animToken, newPosition);
