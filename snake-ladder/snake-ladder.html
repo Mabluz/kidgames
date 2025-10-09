@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slange og Stige - Lærespill</title>
+    <link rel="stylesheet" href="snake-ladder.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Setup Screen -->
+        <div id="setupScreen" class="setup-screen">
+            <h1>🐍 Slange og Stige 🪜</h1>
+            <p class="subtitle">Kast terning og lær nye ord!</p>
+
+            <div class="setup-section">
+                <h2>Velg Bokstaver</h2>
+                <p class="instruction">Velg minst 2 bokstaver for å starte spillet</p>
+                <div class="letter-controls">
+                    <button id="selectAllBtn" class="letter-control-btn">Velg alle</button>
+                    <button id="selectNoneBtn" class="letter-control-btn">Velg ingen</button>
+                </div>
+                <div id="letterGrid" class="letter-grid"></div>
+                <div class="selection-info">
+                    <span id="letterCount">0</span> bokstaver valgt
+                </div>
+            </div>
+
+            <div class="setup-section">
+                <h2>Antall Spillere</h2>
+                <div class="player-selector">
+                    <button class="player-btn" data-players="1">1 Spiller</button>
+                    <button class="player-btn active" data-players="2">2 Spillere</button>
+                    <button class="player-btn" data-players="3">3 Spillere</button>
+                    <button class="player-btn" data-players="4">4 Spillere</button>
+                </div>
+            </div>
+
+            <button id="startGameBtn" class="start-btn" disabled>Start Spill</button>
+            <a href="../index.html" class="back-link">← Tilbake til hovedmeny</a>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="game-screen hidden">
+            <div class="game-header">
+                <h2>Slange og Stige</h2>
+                <a href="../index.html" class="back-link-small">← Hovedmeny</a>
+            </div>
+
+            <div class="game-content">
+                <!-- Board Container with Start and Goal -->
+                <div class="board-container">
+                    <!-- Goal Tile (at top) -->
+                    <div class="special-tile goal-tile" data-position="31">
+                        <div class="special-tile-icon">🎯</div>
+                        <div class="special-tile-label">MÅL</div>
+                        <div class="player-tokens"></div>
+                    </div>
+
+                    <!-- Game Board -->
+                    <div id="gameBoard" class="game-board"></div>
+
+                    <!-- Start Tile (at bottom) -->
+                    <div class="special-tile start-tile" data-position="0">
+                        <div class="special-tile-icon">🏁</div>
+                        <div class="special-tile-label">START</div>
+                        <div class="player-tokens"></div>
+                    </div>
+                </div>
+
+                <!-- Control Panel -->
+                <div class="control-panel">
+                    <div class="current-player-indicator">
+                        <span id="currentPlayerName">Spiller 1</span>'s tur
+                    </div>
+
+                    <div class="dice-section">
+                        <div id="diceDisplay" class="dice-display">?</div>
+                        <button id="rollDiceBtn" class="roll-btn">Kast Terning 🎲</button>
+                    </div>
+
+                    <div class="players-info">
+                        <h3>Spillere</h3>
+                        <div id="playersStatus"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Voice Recording Modal -->
+            <div id="voiceModal" class="voice-modal hidden">
+                <div class="voice-modal-content">
+                    <div class="word-display">
+                        <div class="word-image" id="modalWordImage">📝</div>
+                        <div class="word-text" id="modalWordText">Ord</div>
+                    </div>
+
+                    <div class="voice-controls">
+                        <div class="status-text" id="recordingStatus">Klikk ta opp og si ordet</div>
+
+                        <div class="button-group">
+                            <button id="playWordBtn" class="voice-btn">🔊 Hør ordet</button>
+                            <button id="recordBtn" class="voice-btn record-btn">🎤 Ta opp</button>
+                        </div>
+
+                        <div class="button-group hidden" id="playbackGroup">
+                            <button id="playRecordingBtn" class="voice-btn">▶️ Spill av igjen</button>
+                            <button id="continueBtn" class="voice-btn continue-btn">✓ Fortsett</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Win Screen -->
+            <div id="winScreen" class="win-screen hidden">
+                <div class="win-content">
+                    <h1>🎉 Gratulerer! 🎉</h1>
+                    <p class="winner-text" id="winnerText">Spiller 1 vant!</p>
+                    <button id="newGameBtn" class="new-game-btn">Nytt Spill</button>
+                    <a href="../index.html" class="back-link">← Tilbake til hovedmeny</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../shared/game-effects.js"></script>
+    <script src="../difficulty-filter.js"></script>
+    <script src="snake-ladder.js"></script>
+</body>
+</html>
