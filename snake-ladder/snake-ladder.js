@@ -16,6 +16,7 @@ class SnakeLadderGame {
         this.gameBlocked = false;
         this.isRecording = false;
         this.currentWordAudioUrl = null;
+        this.pendingSnakeLadder = null; // Stores {type: 'snake'/'ladder', from: number, to: number}
 
         // Game settings
         this.numSnakes = 5;
@@ -674,29 +675,28 @@ class SnakeLadderGame {
         const ladder = this.ladders.find(l => l.bottom === newPosition);
 
         if (snake) {
-            await this.delay(300);
-            // Highlight the snake line
-            this.highlightConnector(snake.head, 'snake');
-            await this.animatePlayerMove(snake.head, snake.tail, 'snake');
-            this.unhighlightConnector();
-            currentPlayer.position = snake.tail;
-            this.updatePlayerPositions();
-            this.updatePlayersStatus();
-            newPosition = snake.tail;
+            // Store pending snake transition
+            this.pendingSnakeLadder = {
+                type: 'snake',
+                from: snake.head,
+                to: snake.tail
+            };
+            // First record the word at the snake head
+            await this.handleSquareLanding(newPosition);
         } else if (ladder) {
+            // Store pending ladder transition
+            this.pendingSnakeLadder = {
+                type: 'ladder',
+                from: ladder.bottom,
+                to: ladder.top
+            };
+            // First record the word at the ladder bottom
+            await this.handleSquareLanding(newPosition);
+        } else {
+            // No snake or ladder, just handle normal landing
             await this.delay(300);
-            // Highlight the ladder line
-            this.highlightConnector(ladder.bottom, 'ladder');
-            await this.animatePlayerMove(ladder.bottom, ladder.top, 'ladder');
-            this.unhighlightConnector();
-            currentPlayer.position = ladder.top;
-            this.updatePlayerPositions();
-            this.updatePlayersStatus();
-            newPosition = ladder.top;
+            await this.handleSquareLanding(newPosition);
         }
-
-        await this.delay(300);
-        await this.handleSquareLanding(newPosition);
     }
 
     async createAnimatedToken(position) {
@@ -1096,6 +1096,32 @@ class SnakeLadderGame {
     async continueAfterRecording() {
         this.hideVoiceControls();
 
+        // Check if there's a pending snake or ladder transition
+        if (this.pendingSnakeLadder) {
+            const transition = this.pendingSnakeLadder;
+            const currentPlayer = this.players[this.currentPlayerIndex];
+
+            await this.delay(300);
+            // Highlight the connector
+            this.highlightConnector(transition.from, transition.type);
+            // Animate the snake/ladder movement
+            await this.animatePlayerMove(transition.from, transition.to, transition.type);
+            this.unhighlightConnector();
+
+            // Update player position to destination
+            currentPlayer.position = transition.to;
+            this.updatePlayerPositions();
+            this.updatePlayersStatus();
+
+            // Clear the pending transition
+            this.pendingSnakeLadder = null;
+
+            // Now record the word at the destination
+            await this.delay(300);
+            await this.handleSquareLanding(transition.to);
+            return;
+        }
+
         // Check if current player is on square 30 (winning square)
         const currentPlayer = this.players[this.currentPlayerIndex];
         if (currentPlayer.position === 30) {
@@ -1145,6 +1171,7 @@ class SnakeLadderGame {
         this.currentPlayerIndex = 0;
         this.gameActive = false;
         this.gameBlocked = false;
+        this.pendingSnakeLadder = null;
 
         document.querySelectorAll('.letter-btn').forEach(btn => btn.classList.remove('selected'));
         document.getElementById('letterCount').textContent = '0';
