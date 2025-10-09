@@ -320,10 +320,12 @@ body {
 
 .start-tile {
     background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+    align-self: flex-start;
 }
 
 .goal-tile {
     background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    align-self: flex-end;
 }
 
 .special-tile-icon {

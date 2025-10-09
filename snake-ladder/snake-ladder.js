@@ -631,8 +631,8 @@ class SnakeLadderGame {
                     await this.animateTokenToPosition(animToken, pos);
                 }
 
-                // Pause to show final position before moving to Mål
-                await this.delay(200);
+                // Brief pause at 30 before continuing to goal
+                await this.delay(100);
 
                 // Continue to Mål (position 31)
                 await this.animateTokenToPosition(animToken, 31);
@@ -666,9 +666,6 @@ class SnakeLadderGame {
                     await this.animateTokenToPosition(animToken, pos);
                 }
 
-                // Pause to show final position at center
-                await this.delay(200);
-
                 // Animate from center to bottom-right corner of final tile
                 await this.animateTokenToCorner(animToken, 30);
 
@@ -680,7 +677,7 @@ class SnakeLadderGame {
             // Now update positions to place token in corner
             this.updatePlayerPositions();
             this.updatePlayersStatus();
-            await this.delay(300);
+            await this.delay(100);
 
             // Practice pronunciation on square 30 (but won't win after)
             await this.handleSquareLanding(30);
@@ -703,9 +700,6 @@ class SnakeLadderGame {
                 await this.animateTokenToPosition(animToken, pos);
             }
 
-            // Pause to show final position at center
-            await this.delay(200);
-
             // Animate from center to bottom-right corner of final tile
             await this.animateTokenToCorner(animToken, newPosition);
 
@@ -717,7 +711,7 @@ class SnakeLadderGame {
         // Now update positions to place token in corner
         this.updatePlayerPositions();
         this.updatePlayersStatus();
-        await this.delay(300);
+        await this.delay(100);
 
         // Check for snake or ladder
         const snake = this.snakes.find(s => s.head === newPosition);
@@ -743,7 +737,7 @@ class SnakeLadderGame {
             await this.handleSquareLanding(newPosition);
         } else {
             // No snake or ladder, just handle normal landing
-            await this.delay(300);
+            await this.delay(100);
             await this.handleSquareLanding(newPosition);
         }
     }
@@ -789,34 +783,41 @@ class SnakeLadderGame {
         const endX = toRect.left + toRect.width / 2 - 12.5;
         const endY = toRect.top + toRect.height / 2 - 12.5;
 
-        // Fixed duration per tile for consistent timing
-        const duration = 350;
-        const steps = 25;
-        const stepDelay = duration / steps;
+        // Calculate distance and duration for constant speed
+        const distance = Math.sqrt((endX - startX) ** 2 + (endY - startY) ** 2);
+        const speed = 400; // pixels per second - adjust for faster/slower movement
+        const duration = (distance / speed) * 1000; // convert to milliseconds
 
-        for (let i = 0; i <= steps; i++) {
-            const t = i / steps;
+        return new Promise(resolve => {
+            const startTime = performance.now();
 
-            const x = startX + (endX - startX) * t;
-            const y = startY + (endY - startY) * t;
+            const animate = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
 
-            // Gentler scale animation for smoother appearance
-            const scaleFactor = 1 + 0.15 * Math.sin(t * Math.PI);
+                // Use easeInOut for smooth start and stop
+                const eased = progress < 0.5
+                    ? 2 * progress * progress
+                    : 1 - Math.pow(-2 * progress + 2, 2) / 2;
 
-            animToken.style.left = x + 'px';
-            animToken.style.top = y + 'px';
-            animToken.style.transform = `scale(${scaleFactor})`;
+                const x = startX + (endX - startX) * eased;
+                const y = startY + (endY - startY) * eased;
 
-            await this.delay(stepDelay);
-        }
+                animToken.style.left = x + 'px';
+                animToken.style.top = y + 'px';
 
-        // Ensure we're exactly at the center and fully visible
-        animToken.style.left = endX + 'px';
-        animToken.style.top = endY + 'px';
-        animToken.style.transform = 'scale(1)';
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Ensure final position is exact
+                    animToken.style.left = endX + 'px';
+                    animToken.style.top = endY + 'px';
+                    resolve();
+                }
+            };
 
-        // Small pause between tiles for consistent rhythm
-        await this.delay(50);
+            requestAnimationFrame(animate);
+        });
     }
 
     async animateTokenToCorner(animToken, position) {
@@ -831,36 +832,42 @@ class SnakeLadderGame {
         const startY = parseFloat(animToken.style.top);
 
         // Calculate bottom-right position (where the token normally sits)
-        // Position it inside the tokens container
-        const endX = tokensRect.right - 30; // Offset from right edge
-        const endY = tokensRect.bottom - 30; // Offset from bottom edge
+        const endX = tokensRect.right - 30;
+        const endY = tokensRect.bottom - 30;
 
-        // Smooth animation to corner
-        const steps = 15;
-        const duration = 300;
-        const stepDelay = duration / steps;
+        // Use same smooth animation as position movement
+        const distance = Math.sqrt((endX - startX) ** 2 + (endY - startY) ** 2);
+        const speed = 300; // Slightly slower for the final settling movement
+        const duration = Math.max((distance / speed) * 1000, 200); // Minimum 200ms
 
-        for (let i = 0; i <= steps; i++) {
-            const t = i / steps;
+        return new Promise(resolve => {
+            const startTime = performance.now();
 
-            const x = startX + (endX - startX) * t;
-            const y = startY + (endY - startY) * t;
+            const animate = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
 
-            // Gradually scale back to normal size
-            const currentScale = parseFloat(animToken.style.transform.match(/scale\(([\d.]+)\)/)?.[1] || 1);
-            const scaleFactor = currentScale + (1 - currentScale) * t;
+                // Use easeOut for smooth deceleration into position
+                const eased = 1 - Math.pow(1 - progress, 3);
 
-            animToken.style.left = x + 'px';
-            animToken.style.top = y + 'px';
-            animToken.style.transform = `scale(${scaleFactor})`;
+                const x = startX + (endX - startX) * eased;
+                const y = startY + (endY - startY) * eased;
 
-            await this.delay(stepDelay);
-        }
+                animToken.style.left = x + 'px';
+                animToken.style.top = y + 'px';
 
-        // Ensure final position and scale are exactly right
-        animToken.style.left = endX + 'px';
-        animToken.style.top = endY + 'px';
-        animToken.style.transform = 'scale(1)';
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Ensure final position is exact
+                    animToken.style.left = endX + 'px';
+                    animToken.style.top = endY + 'px';
+                    resolve();
+                }
+            };
+
+            requestAnimationFrame(animate);
+        });
     }
 
     async animatePlayerMove(fromPos, toPos, type = 'normal') {
