@@ -1,0 +1,368 @@
+/* General Layout */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.screen.hidden {
+    display: none;
+}
+
+/* Setup Screen */
+.setup-container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.setup-container h1 {
+    text-align: center;
+    color: #667eea;
+    margin-bottom: 10px;
+    font-size: 2.5em;
+}
+
+.game-description {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}
+
+.setup-section {
+    margin: 30px 0;
+}
+
+.setup-section h2 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.settings-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.setting-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.setting-item label {
+    font-weight: bold;
+    color: #555;
+}
+
+.setting-item select {
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    background: white;
+}
+
+.setup-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 15px 40px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.btn-secondary:hover {
+    background: #e0e0e0;
+}
+
+/* Game Screen */
+#game-screen {
+    display: block;
+}
+
+.game-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.settings-btn {
+    background: white;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.settings-btn:hover {
+    background: #667eea;
+    color: white;
+}
+
+.game-info {
+    flex: 1;
+    text-align: center;
+}
+
+.score-display {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.game-area {
+    padding-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.image-display {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#image-content {
+    font-size: 120px;
+    min-width: 200px;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#image-content img {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.word-label {
+    font-size: 1.5em;
+    color: #667eea;
+    font-weight: bold;
+}
+
+.question-text {
+    font-size: 1.8em;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.replay-button-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.replay-word-btn {
+    padding: 12px 30px;
+    font-size: 1.1em;
+    font-weight: bold;
+    background: white;
+    color: #667eea;
+    border: 3px solid #667eea;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.replay-word-btn:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+}
+
+.replay-word-btn:active {
+    transform: translateY(0);
+}
+
+.letter-options {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 600px;
+}
+
+.letter-btn {
+    width: 80px;
+    height: 80px;
+    font-size: 2em;
+    font-weight: bold;
+    background: white;
+    border: 3px solid #667eea;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #667eea;
+}
+
+.letter-btn:hover {
+    transform: scale(1.1);
+    background: #667eea;
+    color: white;
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.letter-btn.correct {
+    background: #4caf50;
+    border-color: #4caf50;
+    color: white;
+    animation: correctPulse 0.5s;
+}
+
+.letter-btn.incorrect {
+    background: #f44336;
+    border-color: #f44336;
+    color: white;
+    animation: shake 0.5s;
+}
+
+@keyframes correctPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* Victory Screen */
+.victory-container {
+    background: white;
+    border-radius: 20px;
+    padding: 50px;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.victory-container h1 {
+    color: #667eea;
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+#victory-stats {
+    margin: 30px 0;
+}
+
+#victory-stats p {
+    font-size: 1.5em;
+    color: #333;
+    margin: 10px 0;
+}
+
+.score-result {
+    font-size: 2em !important;
+    color: #667eea !important;
+    font-weight: bold;
+}
+
+.victory-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .setup-container {
+        padding: 20px;
+    }
+
+    .setup-container h1 {
+        font-size: 2em;
+    }
+
+    #image-content {
+        font-size: 80px;
+        min-width: 150px;
+        min-height: 150px;
+    }
+
+    .question-text {
+        font-size: 1.3em;
+    }
+
+    .letter-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5em;
+    }
+
+    .victory-container {
+        padding: 30px 20px;
+    }
+
+    .victory-container h1 {
+        font-size: 2em;
+    }
+}
