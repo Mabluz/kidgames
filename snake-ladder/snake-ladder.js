@@ -17,6 +17,12 @@ class SnakeLadderGame {
         this.isRecording = false;
         this.currentWordAudioUrl = null;
 
+        // Game settings
+        this.numSnakes = 5;
+        this.numLadders = 5;
+        this.snakeMaxDistance = 20;
+        this.ladderMaxDistance = 20;
+
         this.playerColors = ['#e74c3c', '#3498db', '#27ae60', '#f39c12'];
         this.playerNames = ['Spiller 1', 'Spiller 2', 'Spiller 3', 'Spiller 4'];
 
@@ -196,6 +202,12 @@ class SnakeLadderGame {
             return;
         }
 
+        // Read game settings from dropdowns
+        this.numSnakes = parseInt(document.getElementById('numSnakes').value);
+        this.numLadders = parseInt(document.getElementById('numLadders').value);
+        this.snakeMaxDistance = parseInt(document.getElementById('snakeMaxDistance').value);
+        this.ladderMaxDistance = parseInt(document.getElementById('ladderMaxDistance').value);
+
         this.initializePlayers();
         this.generateBoard();
         this.placeSnakes();
@@ -231,8 +243,9 @@ class SnakeLadderGame {
                 letterObj.words.forEach((word, index) => {
                     // Get the raw image path (could be emoji, URL, or relative path)
                     const rawImage = letterObj.images[index];
-                    // Process image path
-                    const image = rawImage && (rawImage.startsWith('http') || rawImage.length <= 4) ? rawImage : `../${rawImage}`;
+                    // Process image path - if it contains a path separator or starts with http, it's a file path
+                    const isFilePath = rawImage && (rawImage.includes('/') || rawImage.includes('\\'));
+                    const image = isFilePath ? `../${rawImage}` : rawImage;
                     const audio = letterObj.audio[index] ? `../${letterObj.audio[index]}` : null;
 
                     allWords.push({
@@ -261,13 +274,20 @@ class SnakeLadderGame {
 
     placeSnakes() {
         this.snakes = [];
-        const numSnakes = 5;
         const attempts = 100;
 
-        for (let i = 0; i < numSnakes; i++) {
+        for (let i = 0; i < this.numSnakes; i++) {
             for (let attempt = 0; attempt < attempts; attempt++) {
+                // Head can be anywhere from square 9 to 29
                 const head = Math.floor(Math.random() * 21) + 9; // 9-29
-                const tail = Math.floor(Math.random() * (head - 5)) + 3; // At least 5 squares down
+
+                // Calculate minimum tail position (at least 3, but respect max distance)
+                const minTail = Math.max(3, head - this.snakeMaxDistance);
+                const maxTail = head - 3; // At least 3 squares down
+
+                if (maxTail < minTail) continue; // Not enough range
+
+                const tail = Math.floor(Math.random() * (maxTail - minTail + 1)) + minTail;
 
                 if (head <= 3 || head >= 28 || tail <= 3) continue;
                 if (this.hasOverlap(head, tail)) continue;
@@ -280,13 +300,20 @@ class SnakeLadderGame {
 
     placeLadders() {
         this.ladders = [];
-        const numLadders = 5;
         const attempts = 100;
 
-        for (let i = 0; i < numLadders; i++) {
+        for (let i = 0; i < this.numLadders; i++) {
             for (let attempt = 0; attempt < attempts; attempt++) {
+                // Bottom can be anywhere from square 3 to 22
                 const bottom = Math.floor(Math.random() * 20) + 3; // 3-22
-                const top = Math.floor(Math.random() * (27 - bottom)) + bottom + 5; // At least 5 squares up
+
+                // Calculate maximum top position (at most 27, but respect max distance)
+                const minTop = bottom + 3; // At least 3 squares up
+                const maxTop = Math.min(27, bottom + this.ladderMaxDistance);
+
+                if (minTop > maxTop) continue; // Not enough range
+
+                const top = Math.floor(Math.random() * (maxTop - minTop + 1)) + minTop;
 
                 if (bottom <= 3 || top >= 28) continue;
                 if (this.hasOverlap(bottom, top)) continue;
@@ -572,19 +599,39 @@ class SnakeLadderGame {
     async movePlayer(steps) {
         const currentPlayer = this.players[this.currentPlayerIndex];
         let newPosition = currentPlayer.position + steps;
+        const startPos = currentPlayer.position;
 
         // Check win condition - landing on or going past 30
         if (newPosition >= 30) {
             // Animate move to square 30
-            const stepsTo30 = 30 - currentPlayer.position;
-            for (let step = 1; step <= stepsTo30; step++) {
-                const targetPos = currentPlayer.position + 1;
-                await this.animatePlayerMove(currentPlayer.position, targetPos);
-                currentPlayer.position = targetPos;
+            const stepsTo30 = 30 - startPos;
+
+            // For first move from position 0, place token at position 1 first
+            if (startPos === 0) {
+                currentPlayer.position = 1;
                 this.updatePlayerPositions();
-                await this.delay(400);
+                await this.delay(100);
             }
 
+            // Create animated token (now at position 1 if it was first move)
+            const animToken = await this.createAnimatedToken(startPos === 0 ? 1 : startPos);
+            if (animToken) {
+                // Animate through remaining steps
+                const firstStep = startPos === 0 ? 2 : startPos + 1;
+                for (let pos = firstStep; pos <= 30; pos++) {
+                    await this.animateTokenToPosition(animToken, pos);
+                }
+
+                // Animate from center to bottom-right corner of final tile
+                await this.animateTokenToCorner(animToken, 30);
+
+                // Remove animated token
+                document.body.removeChild(animToken);
+            }
+
+            currentPlayer.position = 30;
+            // Now update positions to place token in corner
+            this.updatePlayerPositions();
             this.updatePlayersStatus();
             await this.delay(300);
 
@@ -593,15 +640,32 @@ class SnakeLadderGame {
             return;
         }
 
-        // Animate move to new position step by step
-        for (let step = 1; step <= steps; step++) {
-            const targetPos = currentPlayer.position + 1;
-            await this.animatePlayerMove(currentPlayer.position, targetPos);
-            currentPlayer.position = targetPos;
+        // For first move from position 0, place token at position 1 first
+        if (startPos === 0) {
+            currentPlayer.position = 1;
             this.updatePlayerPositions();
-            await this.delay(400);
+            await this.delay(100);
         }
 
+        // Create animated token (now at position 1 if it was first move)
+        const animToken = await this.createAnimatedToken(startPos === 0 ? 1 : startPos);
+        if (animToken) {
+            // Animate through remaining steps
+            const firstStep = startPos === 0 ? 2 : startPos + 1;
+            for (let pos = firstStep; pos <= newPosition; pos++) {
+                await this.animateTokenToPosition(animToken, pos);
+            }
+
+            // Animate from center to bottom-right corner of final tile
+            await this.animateTokenToCorner(animToken, newPosition);
+
+            // Remove animated token
+            document.body.removeChild(animToken);
+        }
+
+        currentPlayer.position = newPosition;
+        // Now update positions to place token in corner
+        this.updatePlayerPositions();
         this.updatePlayersStatus();
         await this.delay(300);
 
@@ -635,6 +699,117 @@ class SnakeLadderGame {
         await this.handleSquareLanding(newPosition);
     }
 
+    async createAnimatedToken(position) {
+        const currentPlayer = this.players[this.currentPlayerIndex];
+        const square = document.querySelector(`[data-position="${position}"]`);
+
+        if (!square) return null;
+
+        const tokensDiv = square.querySelector('.player-tokens');
+        const playerTokens = tokensDiv ? Array.from(tokensDiv.children) : [];
+        const token = playerTokens.find(t => parseInt(t.dataset.playerIndex) === this.currentPlayerIndex);
+
+        if (!token) return null;
+
+        // Clone token for animation
+        const animToken = token.cloneNode(true);
+        animToken.classList.add('moving');
+
+        const rect = square.getBoundingClientRect();
+        const x = rect.left + rect.width / 2 - 12.5;
+        const y = rect.top + rect.height / 2 - 12.5;
+
+        animToken.style.left = x + 'px';
+        animToken.style.top = y + 'px';
+        document.body.appendChild(animToken);
+
+        // Hide original token
+        token.style.opacity = '0';
+
+        return animToken;
+    }
+
+    async animateTokenToPosition(animToken, toPos) {
+        const toSquare = document.querySelector(`[data-position="${toPos}"]`);
+        if (!toSquare) return;
+
+        const currentRect = animToken.getBoundingClientRect();
+        const toRect = toSquare.getBoundingClientRect();
+
+        const startX = parseFloat(animToken.style.left);
+        const startY = parseFloat(animToken.style.top);
+        const endX = toRect.left + toRect.width / 2 - 12.5;
+        const endY = toRect.top + toRect.height / 2 - 12.5;
+
+        // Animate with smooth movement
+        const steps = 30;
+        const duration = 600;
+        const stepDelay = duration / steps;
+
+        for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+
+            const x = startX + (endX - startX) * t;
+            const y = startY + (endY - startY) * t;
+
+            // Parabolic curve for scale (bigger in the middle)
+            const scaleFactor = 1 + 0.3 * Math.sin(t * Math.PI);
+
+            animToken.style.left = x + 'px';
+            animToken.style.top = y + 'px';
+            animToken.style.transform = `scale(${scaleFactor})`;
+
+            await this.delay(stepDelay);
+        }
+
+        // Ensure we're exactly at the center
+        animToken.style.left = endX + 'px';
+        animToken.style.top = endY + 'px';
+        animToken.style.transform = 'scale(1)';
+    }
+
+    async animateTokenToCorner(animToken, position) {
+        const square = document.querySelector(`[data-position="${position}"]`);
+        if (!square) return;
+
+        const rect = square.getBoundingClientRect();
+        const tokensDiv = square.querySelector('.player-tokens');
+        const tokensRect = tokensDiv.getBoundingClientRect();
+
+        const startX = parseFloat(animToken.style.left);
+        const startY = parseFloat(animToken.style.top);
+
+        // Calculate bottom-right position (where the token normally sits)
+        // Position it inside the tokens container
+        const endX = tokensRect.right - 30; // Offset from right edge
+        const endY = tokensRect.bottom - 30; // Offset from bottom edge
+
+        // Smooth animation to corner
+        const steps = 15;
+        const duration = 300;
+        const stepDelay = duration / steps;
+
+        for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+
+            const x = startX + (endX - startX) * t;
+            const y = startY + (endY - startY) * t;
+
+            // Gradually scale back to normal size
+            const currentScale = parseFloat(animToken.style.transform.match(/scale\(([\d.]+)\)/)?.[1] || 1);
+            const scaleFactor = currentScale + (1 - currentScale) * t;
+
+            animToken.style.left = x + 'px';
+            animToken.style.top = y + 'px';
+            animToken.style.transform = `scale(${scaleFactor})`;
+
+            await this.delay(stepDelay);
+        }
+
+        // Ensure final scale is exactly 1
+        animToken.style.transform = 'scale(1)';
+    }
+
     async animatePlayerMove(fromPos, toPos, type = 'normal') {
         const currentPlayer = this.players[this.currentPlayerIndex];
 
@@ -657,7 +832,7 @@ class SnakeLadderGame {
         const token = playerTokens.find(t => parseInt(t.dataset.playerIndex) === this.currentPlayerIndex);
         if (!token) return;
 
-        // Get positions
+        // Get positions (center of tiles)
         const fromRect = fromSquare.getBoundingClientRect();
         const toRect = toSquare.getBoundingClientRect();
 
@@ -672,6 +847,7 @@ class SnakeLadderGame {
             animToken.classList.add('climbing-ladder');
         }
 
+        // Always use center positions for animation
         const startX = fromRect.left + fromRect.width / 2 - 12.5;
         const startY = fromRect.top + fromRect.height / 2 - 12.5;
         const endX = toRect.left + toRect.width / 2 - 12.5;
@@ -732,14 +908,28 @@ class SnakeLadderGame {
                 await this.delay(stepDelay);
             }
         } else {
-            // Normal straight line movement
-            await this.delay(50);
-            const duration = 0.5;
-            animToken.style.transition = `all ${duration}s cubic-bezier(0.4, 0.0, 0.2, 1)`;
-            animToken.style.left = endX + 'px';
-            animToken.style.top = endY + 'px';
+            // Normal straight line movement with hopping effect
+            const hopSteps = 20;
+            const duration = 400; // 400ms per hop
+            const stepDelay = duration / hopSteps;
 
-            await this.delay(duration * 1000);
+            for (let i = 0; i <= hopSteps; i++) {
+                const t = i / hopSteps;
+
+                // Linear interpolation for position
+                const x = startX + (endX - startX) * t;
+                const y = startY + (endY - startY) * t;
+
+                // Parabolic curve for scale (makes it bigger in the middle of the hop)
+                // Goes from 1.0 -> 1.5 -> 1.0
+                const scaleFactor = 1 + 0.5 * Math.sin(t * Math.PI);
+
+                animToken.style.left = x + 'px';
+                animToken.style.top = y + 'px';
+                animToken.style.transform = `scale(${scaleFactor})`;
+
+                await this.delay(stepDelay);
+            }
         }
 
         // Clean up
