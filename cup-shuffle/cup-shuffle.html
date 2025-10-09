@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kopp Shuffle - Finn ordet under koppen!</title>
+
+    <!-- Game-specific styles -->
+    <link rel="stylesheet" href="cup-shuffle.css">
+
+    <!-- REQUIRED: Shared CSS files -->
+    <link rel="stylesheet" href="../shared/confetti.css">
+    <link rel="stylesheet" href="../shared/letter-selection.css">
+    <link rel="stylesheet" href="../shared/settings-modal.css">
+</head>
+<body>
+    <!-- Setup Screen -->
+    <div id="setup-screen" class="screen">
+        <div class="setup-container">
+            <h1>🥤 Kopp Shuffle 🥤</h1>
+            <p class="game-description">Se på bildet og hør ordet. Ordet blir plassert under en av tre kopper som stokkes rundt. Finn den riktige koppen!</p>
+
+            <!-- Letter Selection -->
+            <div class="setup-section">
+                <h2>Velg bokstaver:</h2>
+                <div id="letter-selection" class="letter-grid"></div>
+                <div class="selection-buttons">
+                    <button id="select-all-btn" class="btn-secondary">Velg alle</button>
+                    <button id="select-none-btn" class="btn-secondary">Velg ingen</button>
+                </div>
+            </div>
+
+            <!-- Game-specific settings -->
+            <div class="setup-section">
+                <h2>Spillinnstillinger:</h2>
+                <div class="setting-row">
+                    <label for="rounds-select">Antall runder:</label>
+                    <select id="rounds-select" class="setting-select">
+                        <option value="3">3 runder</option>
+                        <option value="5" selected>5 runder</option>
+                        <option value="8">8 runder</option>
+                        <option value="10">10 runder</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="setup-buttons">
+                <button id="start-game-btn" class="btn-primary">Start Spill!</button>
+                <button id="back-btn" class="btn-secondary">Tilbake</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen hidden">
+        <div class="game-header">
+            <!-- Settings button to open modal during game -->
+            <button id="settings-btn" class="settings-btn">⚙️</button>
+
+            <!-- Game status and info -->
+            <div class="game-info">
+                <div class="score-display">
+                    <span id="round-counter">Runde: 1/5</span>
+                    <span id="score-counter">Poeng: 0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <!-- Word presentation area -->
+            <div id="word-presentation" class="word-presentation">
+                <div class="word-image-container">
+                    <img id="word-image" src="" alt="Word image">
+                </div>
+                <div class="word-text" id="word-text">Ape</div>
+                <div class="instruction-text">Husk dette ordet!</div>
+            </div>
+
+            <!-- Cups area -->
+            <div id="cups-area" class="cups-area hidden">
+                <div class="instruction-text">Finn ordet under riktig kopp!</div>
+                <div class="cups-container">
+                    <div class="cup-wrapper" data-cup="0">
+                        <div class="floating-image" id="floating-image-0"></div>
+                        <div class="cup">
+                            <div class="cup-top"></div>
+                            <div class="cup-body"></div>
+                            <div class="cup-handle"></div>
+                        </div>
+                        <div class="revealed-content" id="revealed-content-0">
+                            <div class="revealed-image" id="revealed-image-0"></div>
+                            <div class="cup-word" id="cup-word-0">?</div>
+                        </div>
+                    </div>
+                    <div class="cup-wrapper" data-cup="1">
+                        <div class="floating-image" id="floating-image-1"></div>
+                        <div class="cup">
+                            <div class="cup-top"></div>
+                            <div class="cup-body"></div>
+                            <div class="cup-handle"></div>
+                        </div>
+                        <div class="revealed-content" id="revealed-content-1">
+                            <div class="revealed-image" id="revealed-image-1"></div>
+                            <div class="cup-word" id="cup-word-1">?</div>
+                        </div>
+                    </div>
+                    <div class="cup-wrapper" data-cup="2">
+                        <div class="floating-image" id="floating-image-2"></div>
+                        <div class="cup">
+                            <div class="cup-top"></div>
+                            <div class="cup-body"></div>
+                            <div class="cup-handle"></div>
+                        </div>
+                        <div class="revealed-content" id="revealed-content-2">
+                            <div class="revealed-image" id="revealed-image-2"></div>
+                            <div class="cup-word" id="cup-word-2">?</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recording area -->
+            <div id="recording-area" class="recording-area hidden">
+                <div class="revealed-word-container">
+                    <div class="revealed-word-image-container">
+                        <img id="revealed-word-image" src="" alt="Revealed word image">
+                    </div>
+                    <div class="revealed-word-text" id="revealed-word-text">Ape</div>
+                </div>
+                <div class="instruction-text">Si ordet høyt og ta opp!</div>
+                <div class="recording-controls">
+                    <button id="record-btn" class="btn-record">🎤 Start Opptak</button>
+                    <button id="stop-record-btn" class="btn-stop hidden">⏹️ Stopp Opptak</button>
+                    <button id="play-recording-btn" class="btn-play hidden">▶️ Spill Av</button>
+                </div>
+                <div class="recording-status" id="recording-status"></div>
+                <button id="next-round-btn" class="btn-primary hidden">Neste Runde</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Victory/Game Over Screen -->
+    <div id="victory-screen" class="screen hidden">
+        <div class="victory-container">
+            <h1>🎉 Gratulerer! 🎉</h1>
+            <div id="victory-stats">
+                <!-- Game results here -->
+            </div>
+            <div class="victory-buttons">
+                <button id="play-again-btn" class="btn-primary">Spill igjen</button>
+                <button id="main-menu-btn" class="btn-secondary">Hovedmeny</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- REQUIRED: Settings Modal (shared component) -->
+    <div id="settings-modal-container"></div>
+
+    <!-- REQUIRED: JavaScript files in this order -->
+    <script src="../shared/game-effects.js"></script>
+    <script src="../shared/letter-selection.js"></script>
+    <script src="../shared/settings-modal.js"></script>
+    <script src="../difficulty-filter.js"></script>
+    <script src="cup-shuffle.js"></script>
+</body>
+</html>
