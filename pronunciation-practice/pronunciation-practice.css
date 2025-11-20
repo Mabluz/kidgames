@@ -1,3 +1,8 @@
+/**
+ * Pronunciation Practice Game - Specific Styles
+ * Uses the KidGames Design System
+ */
+
 * {
     margin: 0;
     padding: 0;
@@ -5,49 +10,50 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: var(--font-family);
+    background: var(--color-background-purple);
+    background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
+    padding: var(--spacing-lg);
 }
 
 .game-container {
-    background: white;
-    border-radius: 25px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    padding: 3rem;
+    background: var(--color-white);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-xl);
+    padding: var(--spacing-3xl);
     max-width: 1200px;
     width: 100%;
     text-align: center;
 }
 
 h1 {
-    color: #4a5568;
-    margin-bottom: 2rem;
-    font-size: 2.5rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-xl);
+    font-size: var(--font-size-4xl);
 }
 
 h2 {
-    color: #4a5568;
-    margin-bottom: 1rem;
-    font-size: 2rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-3xl);
 }
 
 p {
-    color: #718096;
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
+    color: var(--color-text-light);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-xl);
     line-height: 1.6;
 }
 
 .game-columns {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin: 2rem 0;
+    gap: var(--spacing-xl);
+    margin: var(--spacing-xl) 0;
 }
 
 .left-column {
@@ -60,19 +66,19 @@ p {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 1rem;
+    gap: var(--spacing-lg);
 }
 
 .word-display {
-    padding: 2rem;
-    background: linear-gradient(145deg, #f7fafc, #edf2f7);
-    border-radius: 20px;
+    padding: var(--spacing-xl);
+    background: linear-gradient(145deg, var(--color-light-gray), var(--color-gray));
+    border-radius: var(--radius-xl);
     min-height: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1.5rem;
+    gap: var(--spacing-lg);
 }
 
 .word-image {
@@ -85,7 +91,7 @@ p {
 .word-text {
     font-size: 5rem;
     font-weight: bold;
-    color: #667eea;
+    color: var(--color-primary);
 }
 
 .start-screen {
@@ -97,146 +103,93 @@ p {
 }
 
 .setup-section {
-    margin: 2rem 0;
+    margin: var(--spacing-xl) 0;
     text-align: left;
 }
 
 .setup-section h3 {
-    color: #4a5568;
-    margin-bottom: 1rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-lg);
 }
 
 .start-btn {
-    margin-top: 2rem;
+    margin-top: var(--spacing-xl);
 }
 
 .status-message {
-    font-size: 1.3rem;
-    color: #4a5568;
-    margin: 0.5rem 0;
+    font-size: var(--font-size-lg);
+    color: var(--color-text);
+    margin: var(--spacing-sm) 0;
     min-height: 2rem;
-    padding: 1rem;
-    background: #f7fafc;
-    border-radius: 10px;
+    padding: var(--spacing-lg);
+    background: var(--color-light-gray);
+    border-radius: var(--radius-md);
 }
 
 .status-message.success {
-    color: #48bb78;
+    color: var(--color-success);
     font-weight: bold;
 }
 
 .status-message.error {
-    color: #f56565;
+    color: var(--color-error);
     font-weight: bold;
 }
 
 .status-message.info {
-    color: #4299e1;
+    color: var(--color-blue);
 }
 
 .attempts-counter {
-    font-size: 1.1rem;
-    color: #718096;
-    margin: 1rem 0;
+    font-size: var(--font-size-lg);
+    color: var(--color-text-light);
+    margin: var(--spacing-lg) 0;
 }
 
 .button-group {
     display: flex;
-    gap: 1rem;
+    gap: var(--spacing-lg);
     justify-content: center;
-    margin-top: 1rem;
+    margin-top: var(--spacing-lg);
     flex-wrap: wrap;
 }
 
-button {
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.record-btn {
-    background: linear-gradient(145deg, #48bb78, #38a169);
-    color: white;
-}
-
-.record-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(72, 187, 120, 0.4);
-}
-
-.next-btn {
-    background: linear-gradient(145deg, #667eea, #764ba2);
-    color: white;
-}
-
-.next-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
-}
-
-.give-up-btn {
-    background: linear-gradient(145deg, #ed8936, #dd6b20);
-    color: white;
-}
-
-.give-up-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(237, 137, 54, 0.4);
-}
+/* Buttons - Using design system styles */
 
 .home-btn {
-    background: linear-gradient(145deg, #718096, #4a5568);
-    color: white;
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    margin-top: 2rem;
-}
-
-.home-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(113, 128, 150, 0.4);
+    margin-top: var(--spacing-xl);
 }
 
 .transcription-display {
-    font-size: 1.1rem;
-    color: #718096;
-    margin: 1rem 0;
-    padding: 1rem;
-    background: #f7fafc;
-    border-radius: 10px;
+    font-size: var(--font-size-lg);
+    color: var(--color-text-light);
+    margin: var(--spacing-lg) 0;
+    padding: var(--spacing-lg);
+    background: var(--color-light-gray);
+    border-radius: var(--radius-md);
     font-style: italic;
     min-height: 50px;
 }
 
 .pronunciation-quality {
-    margin: 0.5rem 0;
-    padding: 1rem;
-    background: #f7fafc;
-    border-radius: 10px;
+    margin: var(--spacing-sm) 0;
+    padding: var(--spacing-lg);
+    background: var(--color-light-gray);
+    border-radius: var(--radius-md);
 }
 
 .quality-label {
-    font-size: 0.9rem;
-    color: #718096;
-    margin-bottom: 0.5rem;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-sm);
     font-weight: bold;
 }
 
 .progress-bar-container {
     width: 100%;
     height: 30px;
-    background: #e2e8f0;
-    border-radius: 15px;
+    background: var(--color-light-gray);
+    border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -244,26 +197,26 @@ button:disabled {
 .progress-bar {
     height: 100%;
     width: 0%;
-    border-radius: 15px;
-    transition: width 0.5s ease, background 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-lg);
+    transition: width 0.5s ease, background var(--transition-normal);
+    box-shadow: var(--shadow-sm);
 }
 
 /* Red gradient for low confidence (0-80%) */
 .progress-bar.low {
-    background: linear-gradient(90deg, #fc8181 0%, #f56565 100%);
+    background: linear-gradient(90deg, var(--color-error-light), var(--color-error));
 }
 
 /* Green gradient for high confidence (80-100%) */
 .progress-bar.high {
-    background: linear-gradient(90deg, #68d391 0%, #48bb78 100%);
+    background: linear-gradient(90deg, var(--color-success-light), var(--color-success));
     box-shadow: 0 2px 8px rgba(72, 187, 120, 0.4);
 }
 
 @media (max-width: 900px) {
     .game-columns {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: var(--spacing-lg);
     }
 
     .word-display {
@@ -273,16 +226,16 @@ button:disabled {
 
 @media (max-width: 600px) {
     .game-container {
-        padding: 2rem;
-        margin: 1rem;
+        padding: var(--spacing-xl);
+        margin: var(--spacing-lg);
     }
 
     h1 {
-        font-size: 2rem;
+        font-size: var(--font-size-3xl);
     }
 
     .word-display {
-        padding: 1.5rem;
+        padding: var(--spacing-lg);
         min-height: 250px;
     }
 
@@ -295,7 +248,7 @@ button:disabled {
     }
 
     button {
-        padding: 0.8rem 1.5rem;
-        font-size: 1rem;
+        padding: var(--spacing-sm) var(--spacing-lg);
+        font-size: var(--font-size-md);
     }
 }

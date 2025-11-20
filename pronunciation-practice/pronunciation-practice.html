@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Uttale Trening</title>
-    <link rel="stylesheet" href="pronunciation-practice.css">
+
+    <!-- REQUIRED: Design System (must be first) -->
+    <link rel="stylesheet" href="../shared/design-system.css">
+
+    <!-- REQUIRED: Shared CSS files -->
     <link rel="stylesheet" href="../shared/letter-selection.css">
     <link rel="stylesheet" href="../shared/confetti.css">
+
+    <!-- Game-specific styles (last, for overrides) -->
+    <link rel="stylesheet" href="pronunciation-practice.css">
 </head>
 <body>
     <div class="game-container">
@@ -54,15 +61,15 @@
                     <div class="attempts-counter" id="attemptsCounter"></div>
 
                     <div class="button-group">
-                        <button class="record-btn" id="recordBtn" disabled>🎤 Start Opptak</button>
-                        <button class="next-btn" id="playWordBtn">🔊 Hør Ordet Igjen</button>
-                        <button class="give-up-btn" id="giveUpBtn" style="display: none;">Gi Opp</button>
-                        <button class="next-btn" id="nextBtn" style="display: none;">Neste Ord →</button>
+                        <button class="btn btn-record" id="recordBtn" disabled>🎤 Start Opptak</button>
+                        <button class="btn btn-play" id="playWordBtn">🔊 Hør Ordet Igjen</button>
+                        <button class="btn btn-accent" id="giveUpBtn" style="display: none;">Gi Opp</button>
+                        <button class="btn btn-primary" id="nextBtn" style="display: none;">Neste Ord →</button>
                     </div>
                 </div>
             </div>
 
-            <button class="home-btn" onclick="window.location.href='../index.html'">← Tilbake til Meny</button>
+            <button class="btn btn-secondary btn-sm home-btn" onclick="window.location.href='../index.html'">← Tilbake til Meny</button>
         </div>
     </div>
 

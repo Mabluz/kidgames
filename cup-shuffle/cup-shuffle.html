@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kopp Shuffle - Finn ordet under koppen!</title>
 
-    <!-- Game-specific styles -->
-    <link rel="stylesheet" href="cup-shuffle.css">
+    <!-- REQUIRED: Design System (must be first) -->
+    <link rel="stylesheet" href="../shared/design-system.css">
 
     <!-- REQUIRED: Shared CSS files -->
     <link rel="stylesheet" href="../shared/confetti.css">
     <link rel="stylesheet" href="../shared/letter-selection.css">
     <link rel="stylesheet" href="../shared/settings-modal.css">
+
+    <!-- Game-specific styles (last, for overrides) -->
+    <link rel="stylesheet" href="cup-shuffle.css">
 </head>
 <body>
     <!-- Setup Screen -->
@@ -25,8 +28,8 @@
                 <h2>Velg bokstaver:</h2>
                 <div id="letter-selection" class="letter-grid"></div>
                 <div class="selection-buttons">
-                    <button id="select-all-btn" class="btn-secondary">Velg alle</button>
-                    <button id="select-none-btn" class="btn-secondary">Velg ingen</button>
+                    <button id="select-all-btn" class="btn btn-secondary">Velg alle</button>
+                    <button id="select-none-btn" class="btn btn-secondary">Velg ingen</button>
                 </div>
             </div>
 
@@ -45,8 +48,8 @@
             </div>
 
             <div class="setup-buttons">
-                <button id="start-game-btn" class="btn-primary">Start Spill!</button>
-                <button id="back-btn" class="btn-secondary">Tilbake</button>
+                <button id="start-game-btn" class="btn btn-primary">Start Spill!</button>
+                <button id="back-btn" class="btn btn-secondary">Tilbake</button>
             </div>
         </div>
     </div>
@@ -129,12 +132,12 @@
                 </div>
                 <div class="instruction-text">Si ordet høyt og ta opp!</div>
                 <div class="recording-controls">
-                    <button id="record-btn" class="btn-record">🎤 Start Opptak</button>
-                    <button id="stop-record-btn" class="btn-stop hidden">⏹️ Stopp Opptak</button>
-                    <button id="play-recording-btn" class="btn-play hidden">▶️ Spill Av</button>
+                    <button id="record-btn" class="btn btn-record">🎤 Start Opptak</button>
+                    <button id="stop-record-btn" class="btn btn-stop hidden">⏹️ Stopp Opptak</button>
+                    <button id="play-recording-btn" class="btn btn-play hidden">▶️ Spill Av</button>
                 </div>
                 <div class="recording-status" id="recording-status"></div>
-                <button id="next-round-btn" class="btn-primary hidden">Neste Runde</button>
+                <button id="next-round-btn" class="btn btn-primary hidden">Neste Runde</button>
             </div>
         </div>
     </div>
@@ -147,8 +150,8 @@
                 <!-- Game results here -->
             </div>
             <div class="victory-buttons">
-                <button id="play-again-btn" class="btn-primary">Spill igjen</button>
-                <button id="main-menu-btn" class="btn-secondary">Hovedmeny</button>
+                <button id="play-again-btn" class="btn btn-primary">Spill igjen</button>
+                <button id="main-menu-btn" class="btn btn-secondary">Hovedmeny</button>
             </div>
         </div>
     </div>

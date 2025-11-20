@@ -1,3 +1,8 @@
+/**
+ * Cup Shuffle Game - Specific Styles
+ * Uses the KidGames Design System
+ */
+
 /* General styles */
 * {
     margin: 0;
@@ -6,8 +11,9 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: var(--font-family);
+    background: var(--color-background-rainbow);
+    background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -18,7 +24,7 @@ body {
 .screen {
     width: 100%;
     max-width: 1200px;
-    padding: 2rem;
+    padding: var(--spacing-xl);
 }
 
 .hidden {
@@ -27,103 +33,76 @@ body {
 
 /* Setup Screen */
 .setup-container {
-    background: white;
-    border-radius: 25px;
-    padding: 3rem;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    background: var(--color-white);
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-3xl);
+    box-shadow: var(--shadow-xl);
     text-align: center;
 }
 
 .setup-container h1 {
-    color: #4a5568;
-    margin-bottom: 1rem;
-    font-size: 2.5rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-4xl);
 }
 
 .game-description {
-    color: #718096;
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
+    color: var(--color-text-light);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-xl);
     line-height: 1.6;
 }
 
 .setup-section {
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-xl);
 }
 
 .setup-section h2 {
-    color: #4a5568;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-xl);
 }
 
 .setting-row {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
-    margin: 1rem 0;
+    gap: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
 }
 
 .setting-row label {
-    color: #4a5568;
-    font-size: 1.1rem;
+    color: var(--color-text);
+    font-size: var(--font-size-lg);
     font-weight: 600;
 }
 
 .setting-select {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border: 2px solid #667eea;
-    border-radius: 10px;
-    background: white;
-    color: #4a5568;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-md);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    color: var(--color-text);
     cursor: pointer;
 }
 
 .setup-buttons {
     display: flex;
-    gap: 1rem;
+    gap: var(--spacing-lg);
     justify-content: center;
-    margin-top: 2rem;
+    margin-top: var(--spacing-xl);
 }
 
-.btn-primary, .btn-secondary {
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.btn-primary {
-    background: linear-gradient(145deg, #667eea, #764ba2);
-    color: white;
-}
-
-.btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.btn-secondary {
-    background: #e2e8f0;
-    color: #4a5568;
-}
-
-.btn-secondary:hover {
-    background: #cbd5e0;
-}
+/* Buttons - Using design system styles */
 
 /* Game Screen */
 .game-header {
-    background: white;
-    border-radius: 15px;
-    padding: 1rem 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    box-shadow: var(--shadow-md);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -132,9 +111,9 @@ body {
 .settings-btn {
     background: transparent;
     border: none;
-    font-size: 2rem;
+    font-size: var(--font-size-3xl);
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-normal);
 }
 
 .settings-btn:hover {
@@ -149,17 +128,17 @@ body {
 .score-display {
     display: flex;
     justify-content: center;
-    gap: 3rem;
-    font-size: 1.3rem;
+    gap: var(--spacing-3xl);
+    font-size: var(--font-size-lg);
     font-weight: 600;
-    color: #4a5568;
+    color: var(--color-text);
 }
 
 .game-area {
-    background: white;
-    border-radius: 25px;
-    padding: 3rem;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    background: var(--color-white);
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-3xl);
+    box-shadow: var(--shadow-xl);
     min-height: 500px;
     display: flex;
     flex-direction: column;
@@ -176,7 +155,7 @@ body {
 .word-image-container {
     width: 250px;
     height: 250px;
-    margin: 0 auto 2rem;
+    margin: 0 auto var(--spacing-xl);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -186,21 +165,21 @@ body {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    border-radius: 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
 }
 
 .word-text {
-    font-size: 3rem;
+    font-size: var(--font-size-4xl);
     font-weight: bold;
-    color: #667eea;
-    margin-bottom: 1rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-lg);
 }
 
 .instruction-text {
-    font-size: 1.5rem;
-    color: #718096;
-    margin-bottom: 2rem;
+    font-size: var(--font-size-xl);
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-xl);
 }
 
 /* Cups Area */
@@ -212,15 +191,15 @@ body {
 .cups-container {
     display: flex;
     justify-content: center;
-    gap: 3rem;
-    margin-top: 2rem;
+    gap: var(--spacing-3xl);
+    margin-top: var(--spacing-xl);
     perspective: 1000px;
 }
 
 .cup-wrapper {
     position: relative;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-normal);
 }
 
 .cup-wrapper:hover .cup {
@@ -244,7 +223,7 @@ body {
     width: 100px;
     height: 100px;
     object-fit: contain;
-    border-radius: 15px;
+    border-radius: var(--radius-lg);
 }
 
 .floating-image.show {
@@ -307,22 +286,22 @@ body {
 }
 
 .cup-wrapper.target-cup .cup {
-    filter: drop-shadow(0 0 30px #667eea);
+    filter: drop-shadow(0 0 30px var(--color-primary));
     animation: pulse-glow 1.5s ease-in-out infinite;
 }
 
 .cup-wrapper.target-cup .cup-word {
-    color: #667eea;
+    color: var(--color-primary);
     font-weight: 900;
     transform: scale(1.1);
 }
 
 @keyframes pulse-glow {
     0%, 100% {
-        filter: drop-shadow(0 0 20px #667eea);
+        filter: drop-shadow(0 0 20px var(--color-primary));
     }
     50% {
-        filter: drop-shadow(0 0 40px #764ba2);
+        filter: drop-shadow(0 0 40px var(--color-primary-dark));
     }
 }
 
@@ -332,11 +311,11 @@ body {
 }
 
 .cup-wrapper.correct .cup {
-    filter: drop-shadow(0 0 20px #48bb78);
+    filter: drop-shadow(0 0 20px var(--color-success));
 }
 
 .cup-wrapper.wrong .cup {
-    filter: drop-shadow(0 0 20px #f56565);
+    filter: drop-shadow(0 0 20px var(--color-error));
     animation: shake 0.5s ease;
 }
 
@@ -344,7 +323,7 @@ body {
     position: relative;
     width: 120px;
     height: 150px;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-normal);
 }
 
 .cup-top {
@@ -354,9 +333,9 @@ body {
     transform: translateX(-50%);
     width: 140px;
     height: 20px;
-    background: linear-gradient(to bottom, #f56565, #e53e3e);
-    border-radius: 50%;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(to bottom, var(--color-error), var(--color-error-dark));
+    border-radius: var(--radius-round);
+    box-shadow: var(--shadow-md);
 }
 
 .cup-body {
@@ -366,11 +345,11 @@ body {
     transform: translateX(-50%);
     width: 120px;
     height: 130px;
-    background: linear-gradient(to right, #fc8181, #f56565);
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    background: linear-gradient(to right, var(--color-error-light), var(--color-error));
+    border-bottom-left-radius: var(--radius-xl);
+    border-bottom-right-radius: var(--radius-xl);
     clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
-    box-shadow: inset -5px 0 10px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: inset -5px 0 10px rgba(0, 0, 0, 0.2), var(--shadow-md);
 }
 
 .cup-handle {
@@ -379,7 +358,7 @@ body {
     right: -25px;
     width: 35px;
     height: 50px;
-    border: 8px solid #f56565;
+    border: 8px solid var(--color-error);
     border-left: none;
     border-radius: 0 25px 25px 0;
 }
@@ -390,34 +369,34 @@ body {
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--transition-normal);
     text-align: center;
 }
 
 .revealed-image {
     font-size: 80px;
     line-height: 80px;
-    margin-bottom: 10px;
+    margin-bottom: var(--spacing-sm);
 }
 
 .revealed-image img {
     width: 80px;
     height: 80px;
     object-fit: contain;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
 }
 
 .cup-word {
-    font-size: 1.8rem;
+    font-size: var(--font-size-2xl);
     font-weight: bold;
-    color: #667eea;
+    color: var(--color-primary);
 }
 
 .cup-wrapper.lifted .revealed-content {
     opacity: 1;
 }
 
-/* Shuffle animations */
+/* Shuffle animations - keep specific values for game mechanics */
 @keyframes shuffle-0-to-1 {
     0% { transform: translateX(0); }
     50% { transform: translateX(180px) translateY(-30px); }
@@ -486,13 +465,13 @@ body {
 }
 
 .revealed-word-container {
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-xl);
 }
 
 .revealed-word-image-container {
     width: 200px;
     height: 200px;
-    margin: 0 auto 1rem;
+    margin: 0 auto var(--spacing-lg);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -502,110 +481,72 @@ body {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
 }
 
 .revealed-word-text {
-    font-size: 2.5rem;
+    font-size: var(--font-size-3xl);
     font-weight: bold;
-    color: #667eea;
-    margin-bottom: 1rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-lg);
 }
 
 .recording-controls {
     display: flex;
-    gap: 1rem;
+    gap: var(--spacing-lg);
     justify-content: center;
-    margin: 2rem 0;
+    margin: var(--spacing-xl) 0;
     flex-wrap: wrap;
 }
 
-.btn-record, .btn-stop, .btn-play {
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.btn-record {
-    background: linear-gradient(145deg, #48bb78, #38a169);
-    color: white;
-}
-
-.btn-record:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(72, 187, 120, 0.4);
-}
-
-.btn-stop {
-    background: linear-gradient(145deg, #f56565, #e53e3e);
-    color: white;
-}
-
-.btn-stop:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(245, 101, 101, 0.4);
-}
-
-.btn-play {
-    background: linear-gradient(145deg, #667eea, #764ba2);
-    color: white;
-}
-
-.btn-play:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-}
+/* Voice recording buttons - Using design system .btn-record and .btn-play */
 
 .recording-status {
-    font-size: 1.2rem;
-    color: #4a5568;
+    font-size: var(--font-size-lg);
+    color: var(--color-text);
     min-height: 30px;
-    margin: 1rem 0;
+    margin: var(--spacing-lg) 0;
 }
 
 #next-round-btn {
-    margin-top: 2rem;
+    margin-top: var(--spacing-xl);
 }
 
 /* Victory Screen */
 .victory-container {
-    background: white;
-    border-radius: 25px;
-    padding: 3rem;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    background: var(--color-white);
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-3xl);
+    box-shadow: var(--shadow-xl);
     text-align: center;
     animation: fadeIn 0.5s ease;
 }
 
 .victory-container h1 {
-    color: #48bb78;
-    margin-bottom: 2rem;
-    font-size: 3rem;
+    color: var(--color-success);
+    margin-bottom: var(--spacing-xl);
+    font-size: var(--font-size-4xl);
 }
 
 #victory-stats {
-    font-size: 1.5rem;
-    color: #4a5568;
-    margin-bottom: 2rem;
+    font-size: var(--font-size-xl);
+    color: var(--color-text);
+    margin-bottom: var(--spacing-xl);
     line-height: 2;
 }
 
 .victory-buttons {
     display: flex;
-    gap: 1rem;
+    gap: var(--spacing-lg);
     justify-content: center;
-    margin-top: 2rem;
+    margin-top: var(--spacing-xl);
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
     .cups-container {
-        gap: 1.5rem;
+        gap: var(--spacing-lg);
     }
 
     .cup {
@@ -645,15 +586,15 @@ body {
     }
 
     .cup-word {
-        font-size: 1.5rem;
+        font-size: var(--font-size-xl);
     }
 
     .word-text {
-        font-size: 2rem;
+        font-size: var(--font-size-3xl);
     }
 
     .revealed-word-text {
-        font-size: 2rem;
+        font-size: var(--font-size-3xl);
     }
 
     @keyframes shuffle-0-to-1 {
@@ -697,7 +638,7 @@ body {
 
 @media (max-width: 480px) {
     .setup-container, .game-area, .victory-container {
-        padding: 2rem;
+        padding: var(--spacing-xl);
     }
 
     .word-image-container, .revealed-word-image-container {
@@ -707,7 +648,7 @@ body {
 
     .score-display {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: var(--spacing-sm);
     }
 
     .floating-image {

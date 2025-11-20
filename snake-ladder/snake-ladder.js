@@ -110,7 +110,7 @@ class SnakeLadderGame {
         // Create clickable letter options
         this.letters.forEach(letterObj => {
             const letterOption = document.createElement('div');
-            letterOption.className = 'letter-btn';
+            letterOption.className = 'letter-option';
             letterOption.textContent = letterObj.letter;
             letterOption.dataset.letter = letterObj.letter;
 
@@ -1227,7 +1227,7 @@ class SnakeLadderGame {
         this.gameBlocked = false;
         this.pendingSnakeLadder = null;
 
-        document.querySelectorAll('.letter-btn').forEach(btn => btn.classList.remove('selected'));
+        document.querySelectorAll('.letter-option').forEach(btn => btn.classList.remove('selected'));
         document.getElementById('letterCount').textContent = '0';
         document.getElementById('startGameBtn').disabled = true;
     }

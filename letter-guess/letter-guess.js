@@ -298,12 +298,11 @@ class LetterGuessGame {
      * Check if the player's answer is correct
      */
     async checkAnswer(selectedLetter, button) {
-        // Disable all buttons
-        const allButtons = document.querySelectorAll('.letter-btn');
-        allButtons.forEach(btn => btn.disabled = true);
-
         if (selectedLetter === this.currentLetter) {
             // Correct answer!
+            const allButtons = document.querySelectorAll('.letter-btn');
+            allButtons.forEach(btn => btn.disabled = true);
+
             button.classList.add('correct');
             this.score++;
             this.updateScore();
@@ -313,20 +312,14 @@ class LetterGuessGame {
                 this.nextRound();
             }, 1500);
         } else {
-            // Wrong answer
+            // Wrong answer - just mark this button as incorrect
             button.classList.add('incorrect');
+            button.disabled = true;
 
-            // Highlight the correct answer
-            allButtons.forEach(btn => {
-                if (btn.textContent === this.currentLetter) {
-                    btn.classList.add('correct');
-                }
-            });
-
-            // Wait a moment, then go to next round
+            // Shake animation feedback
             setTimeout(() => {
-                this.nextRound();
-            }, 2000);
+                button.classList.remove('incorrect');
+            }, 600);
         }
     }
 

@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bokstavgjetting - Lær Bokstaver</title>
 
-    <!-- Game-specific styles -->
-    <link rel="stylesheet" href="letter-guess.css">
+    <!-- REQUIRED: Design System (must be first) -->
+    <link rel="stylesheet" href="../shared/design-system.css">
 
     <!-- REQUIRED: Shared CSS files -->
     <link rel="stylesheet" href="../shared/confetti.css">
     <link rel="stylesheet" href="../shared/letter-selection.css">
     <link rel="stylesheet" href="../shared/settings-modal.css">
+
+    <!-- Game-specific styles (last, for overrides) -->
+    <link rel="stylesheet" href="letter-guess.css">
 </head>
 <body>
     <!-- Setup Screen -->
@@ -25,8 +28,8 @@
                 <h2>Velg bokstaver å øve på:</h2>
                 <div id="letter-selection" class="letter-grid"></div>
                 <div class="selection-buttons">
-                    <button id="select-all-btn" class="btn-secondary">Velg alle</button>
-                    <button id="select-none-btn" class="btn-secondary">Velg ingen</button>
+                    <button id="select-all-btn" class="btn btn-secondary">Velg alle</button>
+                    <button id="select-none-btn" class="btn btn-secondary">Velg ingen</button>
                 </div>
             </div>
 
@@ -46,8 +49,8 @@
             </div>
 
             <div class="setup-buttons">
-                <button id="start-game-btn" class="btn-primary">Start Spill!</button>
-                <button id="back-btn" class="btn-secondary">Tilbake</button>
+                <button id="start-game-btn" class="btn btn-primary">Start Spill!</button>
+                <button id="back-btn" class="btn btn-secondary">Tilbake</button>
             </div>
         </div>
     </div>
@@ -67,21 +70,27 @@
         </div>
 
         <div class="game-area">
-            <div class="image-display">
-                <div class="image-container">
-                    <div id="image-content"></div>
-                    <div class="word-label" id="word-label"></div>
+            <div class="game-content">
+                <!-- Left Column: Image -->
+                <div class="image-column">
+                    <div class="image-display">
+                        <div class="image-container">
+                            <div id="image-content"></div>
+                            <div class="word-label" id="word-label"></div>
+                        </div>
+                    </div>
+                    <div class="replay-button-container">
+                        <button id="replay-word-btn" class="btn btn-play">🔊 Hør ordet igjen</button>
+                    </div>
                 </div>
-            </div>
 
-            <div class="question-text">Hvilken bokstav starter dette ordet med?</div>
-
-            <div class="replay-button-container">
-                <button id="replay-word-btn" class="replay-word-btn">🔊 Hør ordet igjen</button>
-            </div>
-
-            <div class="letter-options" id="letter-options">
-                <!-- Letter buttons will be inserted here -->
+                <!-- Right Column: Question and Letters -->
+                <div class="question-column">
+                    <div class="question-text">Hvilken bokstav starter dette ordet med?</div>
+                    <div class="letter-options" id="letter-options">
+                        <!-- Letter buttons will be inserted here -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -95,8 +104,8 @@
                 <p class="score-result">Du fikk <span id="final-score">0</span> av <span id="final-total">5</span> riktige!</p>
             </div>
             <div class="victory-buttons">
-                <button id="play-again-btn" class="btn-primary">Spill igjen</button>
-                <button id="main-menu-btn" class="btn-secondary">Hovedmeny</button>
+                <button id="play-again-btn" class="btn btn-primary">Spill igjen</button>
+                <button id="main-menu-btn" class="btn btn-secondary">Hovedmeny</button>
             </div>
         </div>
     </div>

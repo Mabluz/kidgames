@@ -129,7 +129,7 @@ class FindSoundsGame {
         document.addEventListener('keydown', (e) => {
             const key = e.key.toUpperCase();
             if (!this.gameEnded && this.isValidLetter(key)) {
-                const btn = document.querySelector(`[data-letter="${key}"]`);
+                const btn = document.querySelector(`.letter-btn[data-letter="${key}"]`);
                 if (btn && !btn.disabled) {
                     this.guessLetter(key);
                 }
@@ -311,11 +311,11 @@ class FindSoundsGame {
         if (this.guessedLetters.includes(letter)) {
             return;
         }
-        
+
         this.guessedLetters.push(letter);
-        const btn = document.querySelector(`[data-letter="${letter}"]`);
+        const btn = document.querySelector(`.letter-btn[data-letter="${letter}"]`);
         btn.disabled = true;
-        
+
         if (this.currentWord.includes(letter)) {
             btn.classList.add('correct');
             this.revealLetters(letter);
@@ -588,7 +588,7 @@ class FindSoundsGame {
         setTimeout(() => {
             if (!this.guessedLetters.includes(letter)) {
                 this.guessedLetters.push(letter);
-                const btn = document.querySelector(`[data-letter="${letter}"]`);
+                const btn = document.querySelector(`.letter-btn[data-letter="${letter}"]`);
                 if (btn) {
                     btn.disabled = true;
                     btn.classList.add('correct');
