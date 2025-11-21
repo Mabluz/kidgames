@@ -266,7 +266,7 @@ body {
 
 /* Record Button */
 .btn-record {
-  background: linear-gradient(135deg, var(--color-error), var(--color-error-dark));
+  background: linear-gradient(135deg, var(--color-success), var(--color-success-dark));
   color: var(--color-white);
 }
 
@@ -276,7 +276,7 @@ body {
 
 /* Stop Button */
 .btn-stop {
-  background: linear-gradient(135deg, var(--color-error-dark), #C93368);
+  background: linear-gradient(135deg, var(--color-error), var(--color-error-dark));
   color: var(--color-white);
 }
 
