@@ -178,19 +178,17 @@ class SnakeLadderGame {
 
     async initializeVoiceRecording() {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            this.mediaRecorder = new MediaRecorder(stream);
-
-            this.mediaRecorder.ondataavailable = (event) => {
-                this.audioChunks.push(event.data);
-            };
-
-            this.mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-                this.recordedAudio = audioBlob;
-                this.audioChunks = [];
-                this.playRecordingAuto();
-            };
+            this.mediaRecorder = await initializeVoiceRecording({
+                ondataavailable: (event) => {
+                    this.audioChunks.push(event.data);
+                },
+                onstop: () => {
+                    const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+                    this.recordedAudio = audioBlob;
+                    this.audioChunks = [];
+                    this.playRecordingAuto();
+                }
+            });
         } catch (error) {
             console.error('Microphone access denied:', error);
             alert('Mikrofontilgang er nødvendig for dette spillet. Vennligst gi tilgang og last siden på nytt.');

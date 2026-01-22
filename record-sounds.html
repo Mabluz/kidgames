@@ -486,7 +486,25 @@
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 
                 recordedChunks = [];
-                mediaRecorder = new MediaRecorder(stream);
+                
+                // Safari compatibility: Check for supported MIME types
+                let options = {};
+                const mimeTypes = [
+                    'audio/webm;codecs=opus',
+                    'audio/webm',
+                    'audio/mp4',
+                    'audio/mp4;codecs=mp4a.40.2',
+                    'audio/ogg;codecs=opus'
+                ];
+                
+                for (const mimeType of mimeTypes) {
+                    if (MediaRecorder.isTypeSupported(mimeType)) {
+                        options = { mimeType };
+                        break;
+                    }
+                }
+                
+                mediaRecorder = new MediaRecorder(stream, options);
                 currentRecording = recordingKey;
                 
                 mediaRecorder.ondataavailable = event => {
@@ -676,7 +694,25 @@
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 
                 recordedChunks = [];
-                mediaRecorder = new MediaRecorder(stream);
+                
+                // Safari compatibility: Check for supported MIME types
+                let options = {};
+                const mimeTypes = [
+                    'audio/webm;codecs=opus',
+                    'audio/webm',
+                    'audio/mp4',
+                    'audio/mp4;codecs=mp4a.40.2',
+                    'audio/ogg;codecs=opus'
+                ];
+                
+                for (const mimeType of mimeTypes) {
+                    if (MediaRecorder.isTypeSupported(mimeType)) {
+                        options = { mimeType };
+                        break;
+                    }
+                }
+                
+                mediaRecorder = new MediaRecorder(stream, options);
                 currentRecording = `letter_${letter}`;
                 
                 mediaRecorder.ondataavailable = event => {
@@ -800,7 +836,25 @@
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
                 recordedChunks = [];
-                mediaRecorder = new MediaRecorder(stream);
+                
+                // Safari compatibility: Check for supported MIME types
+                let options = {};
+                const mimeTypes = [
+                    'audio/webm;codecs=opus',
+                    'audio/webm',
+                    'audio/mp4',
+                    'audio/mp4;codecs=mp4a.40.2',
+                    'audio/ogg;codecs=opus'
+                ];
+                
+                for (const mimeType of mimeTypes) {
+                    if (MediaRecorder.isTypeSupported(mimeType)) {
+                        options = { mimeType };
+                        break;
+                    }
+                }
+                
+                mediaRecorder = new MediaRecorder(stream, options);
                 currentRecording = `letter_repeatable_${letter}`;
 
                 mediaRecorder.ondataavailable = event => {

@@ -618,24 +618,21 @@ class MemoryGame {
     // Voice Recording Functions
     async initializeVoiceRecording() {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            this.mediaRecorder = new MediaRecorder(stream);
-            
-            this.mediaRecorder.ondataavailable = (event) => {
-                this.audioChunks.push(event.data);
-            };
-            
-            this.mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-                this.recordedAudio = new Audio(URL.createObjectURL(audioBlob));
-                this.audioChunks = [];
-                
-                // Auto-play the recording
-                setTimeout(() => {
-                    this.playRecording(true); // true indicates auto-play
-                }, 100);
-            };
-            
+            this.mediaRecorder = await initializeVoiceRecording({
+                ondataavailable: (event) => {
+                    this.audioChunks.push(event.data);
+                },
+                onstop: () => {
+                    const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+                    this.recordedAudio = new Audio(URL.createObjectURL(audioBlob));
+                    this.audioChunks = [];
+                    
+                    // Auto-play the recording
+                    setTimeout(() => {
+                        this.playRecording(true); // true indicates auto-play
+                    }, 100);
+                }
+            });
         } catch (error) {
             console.error('Error accessing microphone:', error);
             document.getElementById('recording-status').textContent = 'Mikrofon-tilgang nektet. Taleopptak ikke tilgjengelig.';

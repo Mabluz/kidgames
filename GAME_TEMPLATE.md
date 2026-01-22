@@ -288,6 +288,18 @@ await playWordLetters('APPLE', 1000);
 
 // 6. Play found letters from a word
 await playFoundLetters('APPLE', ['A', 'P'], 1000);
+
+// 7. Initialize voice recording with callbacks
+const mediaRecorder = await initializeVoiceRecording({
+    ondataavailable: (event) => { /* handle data */ },
+    onstop: () => { /* handle stop */ }
+});
+
+// 8. Start recording (using shared utility)
+await startRecording(mediaRecorder, audioChunks);
+
+// 9. Stop recording and get audio blob (using shared utility)
+const audioBlob = await stopRecording(mediaRecorder, audioChunks);
 ```
 
 ### Using Confetti & Game Over Sound
@@ -322,6 +334,134 @@ kidgames/
 ```
 
 The `playGameOverSound()` function in `shared/game-effects.js` automatically loads it from `../game-over.wav`.
+
+### Voice Recording Integration
+
+**IMPORTANT:** Always use the shared `game-effects.js` functions for voice recording to ensure Safari compatibility and avoid code duplication.
+
+#### Basic Voice Recording Setup
+
+```javascript
+class MyGame {
+    constructor() {
+        this.mediaRecorder = null;
+        this.audioChunks = [];
+        this.recordedAudio = null;
+    }
+
+    // Initialize recording with custom callbacks
+    async initializeRecording() {
+        try {
+            this.mediaRecorder = await initializeVoiceRecording({
+                ondataavailable: (event) => {
+                    this.audioChunks.push(event.data);
+                },
+                onstop: () => {
+                    const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+                    this.recordedAudio = new Audio(URL.createObjectURL(audioBlob));
+                    this.audioChunks = [];
+                    
+                    // Your custom logic after recording stops
+                    this.onRecordingComplete();
+                }
+            });
+        } catch (error) {
+            console.error('Error initializing recording:', error);
+            alert('Kunne ikke få tilgang til mikrofonen.');
+        }
+    }
+
+    // Start recording
+    startRecording() {
+        if (!this.mediaRecorder) {
+            console.error('MediaRecorder not initialized');
+            return;
+        }
+        
+        this.audioChunks = [];
+        this.mediaRecorder.start();
+        
+        // Update UI
+        document.getElementById('record-btn').classList.add('hidden');
+        document.getElementById('stop-btn').classList.remove('hidden');
+    }
+
+    // Stop recording
+    stopRecording() {
+        if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
+            this.mediaRecorder.stop();
+            this.mediaRecorder.stream.getTracks().forEach(track => track.stop());
+            
+            // Update UI
+            document.getElementById('stop-btn').classList.add('hidden');
+            document.getElementById('record-btn').classList.remove('hidden');
+        }
+    }
+
+    // Handle completed recording
+    onRecordingComplete() {
+        // Play the recording, compare with original, etc.
+        this.recordedAudio.play();
+    }
+}
+```
+
+#### Using Shared Recording Utilities
+
+For simpler implementations, use the shared `startRecording` and `stopRecording` utilities:
+
+```javascript
+class MyGame {
+    constructor() {
+        this.mediaRecorder = null;
+        this.audioChunks = [];
+    }
+
+    async initializeRecording() {
+        try {
+            this.mediaRecorder = await initializeVoiceRecording();
+        } catch (error) {
+            console.error('Error initializing recording:', error);
+        }
+    }
+
+    async record() {
+        // Start recording
+        await startRecording(this.mediaRecorder, this.audioChunks);
+        
+        // Wait for user to stop (you handle the UI/timing)
+        // ...
+        
+        // Stop and get the audio blob
+        const audioBlob = await stopRecording(this.mediaRecorder, this.audioChunks);
+        
+        // Use the blob
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        await audio.play();
+    }
+}
+```
+
+#### Recording UI Example
+
+```html
+<!-- In your game screen -->
+<div class="recording-controls">
+    <button id="record-btn" class="btn-primary">🎤 Start opptak</button>
+    <button id="stop-btn" class="btn-danger hidden">⏹️ Stopp opptak</button>
+    <button id="play-btn" class="btn-secondary hidden">▶️ Spill av</button>
+    <span id="recording-status"></span>
+</div>
+```
+
+#### Why Use game-effects.js for Recording?
+
+1. **Safari Compatibility**: Automatically detects and uses supported audio MIME types
+2. **Cross-Browser Support**: Works on Chrome, Safari, Firefox, and Edge
+3. **Centralized Updates**: Bug fixes apply to all games
+4. **Less Code**: Reduces duplication across games
+5. **Tested**: Already used in 6 games (memory-game, cup-shuffle, snake-ladder, letter-trace, find-sounds, pronunciation-practice)
 
 ---
 

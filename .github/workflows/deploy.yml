@@ -20,3 +20,20 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: ".,!.git,!.github,!node_modules,!.DS_Store,!CLAUDE.md"
           target: ${{ secrets.KIDGAMES_PATH }}
+
+      - name: Rebuild and restart Docker container
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.KIDGAMES_PATH }}
+            docker compose up -d --build
+
+      - name: Purge Cloudflare cache
+        run: |
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/c45921a1ebf186899ddbf3373199b473/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}'

@@ -591,23 +591,22 @@ class CupShuffleGame {
 
     async startRecording() {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            this.mediaRecorder = new MediaRecorder(stream);
             this.audioChunks = [];
+            
+            this.mediaRecorder = await initializeVoiceRecording({
+                ondataavailable: event => {
+                    this.audioChunks.push(event.data);
+                },
+                onstop: async () => {
+                    const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+                    this.recordedAudio = URL.createObjectURL(audioBlob);
 
-            this.mediaRecorder.addEventListener('dataavailable', event => {
-                this.audioChunks.push(event.data);
-            });
+                    document.getElementById('recording-status').textContent = 'Opptak fullført!';
+                    document.getElementById('play-recording-btn').classList.remove('hidden');
 
-            this.mediaRecorder.addEventListener('stop', async () => {
-                const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
-                this.recordedAudio = URL.createObjectURL(audioBlob);
-
-                document.getElementById('recording-status').textContent = 'Opptak fullført!';
-                document.getElementById('play-recording-btn').classList.remove('hidden');
-
-                // Automatically play comparison: original word first, then user's recording
-                await this.playComparisonAudio();
+                    // Automatically play comparison: original word first, then user's recording
+                    await this.playComparisonAudio();
+                }
             });
 
             this.mediaRecorder.start();

@@ -484,12 +484,42 @@ async function playFoundLetters(word, guessedLetters, duration = 1000) {
 
 /**
  * Initialize voice recording and return a MediaRecorder instance
+ * @param {Object} callbacks - Optional callbacks for MediaRecorder events
+ * @param {Function} callbacks.ondataavailable - Handler for dataavailable event
+ * @param {Function} callbacks.onstop - Handler for stop event
  * @returns {Promise<MediaRecorder>} - Promise that resolves to the MediaRecorder instance
  */
-async function initializeVoiceRecording() {
+async function initializeVoiceRecording(callbacks = {}) {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const mediaRecorder = new MediaRecorder(stream);
+        
+        // Safari compatibility: Check for supported MIME types
+        let options = {};
+        const mimeTypes = [
+            'audio/webm;codecs=opus',
+            'audio/webm',
+            'audio/mp4',
+            'audio/mp4;codecs=mp4a.40.2',
+            'audio/ogg;codecs=opus'
+        ];
+        
+        for (const mimeType of mimeTypes) {
+            if (MediaRecorder.isTypeSupported(mimeType)) {
+                options = { mimeType };
+                break;
+            }
+        }
+        
+        const mediaRecorder = new MediaRecorder(stream, options);
+        
+        // Attach optional callbacks
+        if (callbacks.ondataavailable) {
+            mediaRecorder.ondataavailable = callbacks.ondataavailable;
+        }
+        if (callbacks.onstop) {
+            mediaRecorder.onstop = callbacks.onstop;
+        }
+        
         return mediaRecorder;
     } catch (error) {
         console.error('Error accessing microphone:', error);
