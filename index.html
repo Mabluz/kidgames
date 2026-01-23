@@ -219,6 +219,12 @@
             color: #718096;
             font-size: 1rem;
         }
+        .version-info {
+            margin-top: 1rem;
+            color: #a0aec0;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
 
         @media (max-width: 600px) {
             .main-container {
@@ -394,10 +400,22 @@
 
         <div class="footer">
             <p>🎮 Alle spill er laget for å hjelpe barn med å lære bokstaver og lyder på en morsom måte!</p>
+            <p class="version-info" id="version-info">Versjon: ...</p>
         </div>
     </div>
 
     <script>
+        // Load and display version from package.json
+        fetch('/package.json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('version-info').textContent = `Versjon: ${data.version}`;
+            })
+            .catch(error => {
+                console.error('Could not load version:', error);
+                document.getElementById('version-info').textContent = '';
+            });
+
         // Difficulty selector functionality
         const difficultySelect = document.getElementById('difficulty-select');
 
