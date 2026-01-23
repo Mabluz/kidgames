@@ -465,11 +465,20 @@ class MyGame {
 
 ---
 
-## 5. Letter Selection Persistence
+## 5. Letter Selection Component
+
+### ⚠️ IMPORTANT: Use the Shared Component
+
+**DO NOT create your own letter selection UI or logic.** Always use the shared `LetterSelection` component from `shared/letter-selection.js`. This ensures:
+
+1. **Consistency** across all games
+2. **Automatic persistence** of user selections
+3. **Bug fixes** apply to all games
+4. **Less code** to maintain
 
 ### Automatic Memory Feature
 
-**NEW:** By default, the `LetterSelection` component now **automatically remembers** the user's letter selections using localStorage. When a user selects letters in one game and then opens another game, their previous selection will be automatically restored.
+**By default, the `LetterSelection` component automatically remembers** the user's letter selections using localStorage. When a user selects letters in one game and then opens another game, their previous selection will be automatically restored.
 
 ### How It Works
 
@@ -795,6 +804,7 @@ Use images from letter-images.json in card matching games.
 - [ ] Create HTML file with all required sections
 - [ ] Link shared CSS: confetti.css, letter-selection.css, settings-modal.css
 - [ ] Link shared JS: game-effects.js, letter-selection.js, settings-modal.js
+- [ ] **USE shared LetterSelection component (DO NOT create custom letter selection)**
 - [ ] Implement letter-images.json data loading
 - [ ] Setup settings modal with restart functionality
 - [ ] Add confetti trigger on game completion

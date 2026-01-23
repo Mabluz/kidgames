@@ -755,45 +755,34 @@ class MemoryGame {
     
     // Setup Screen Functions
     initializeSetupScreen() {
-        const letterGrid = document.getElementById('letter-selection');
+        // Get available letters for selection
+        const availableLetters = this.letters.map(l => l.letter);
         
-        // Create clickable letter options
-        this.letters.forEach(letterObj => {
-            const letterOption = document.createElement('div');
-            letterOption.className = 'letter-option';
-            letterOption.textContent = letterObj.letter;
-            letterOption.dataset.letter = letterObj.letter;
-            
-            letterOption.addEventListener('click', () => {
-                this.toggleLetterSelection(letterObj.letter);
-            });
-            
-            letterGrid.appendChild(letterOption);
+        // Initialize letter selection component with persistence
+        this.letterSelection = new LetterSelection({
+            containerSelector: '#letter-selection',
+            selectAllBtnSelector: '#select-all-btn',
+            selectNoneBtnSelector: '#select-none-btn',
+            letters: availableLetters,
+            minSelections: 1,
+            defaultSelections: 2,
+            onSelectionChange: (selectedLetters) => {
+                this.updateSelectedLetters(selectedLetters);
+            }
         });
         
-        // Select 2 random letters by default
-        const shuffledLetters = this.shuffle([...this.letters]);
-        this.selectedLetters = shuffledLetters.slice(0, 2);
-        this.updateLetterSelectionUI();
+        // Initialize selected letters from the component
+        this.updateSelectedLetters(this.letterSelection.getSelectedLetters());
         
         // Set up tile count input listener
         this.setupTileCountListener();
     }
     
-    toggleLetterSelection(letter) {
-        const letterObj = this.letters.find(l => l.letter === letter);
-        const letterOption = document.querySelector(`[data-letter="${letter}"]`);
-        
-        const index = this.selectedLetters.findIndex(l => l.letter === letter);
-        if (index === -1) {
-            // Add letter
-            this.selectedLetters.push(letterObj);
-            letterOption.classList.add('selected');
-        } else {
-            // Remove letter
-            this.selectedLetters.splice(index, 1);
-            letterOption.classList.remove('selected');
-        }
+    updateSelectedLetters(selectedLetterStrings) {
+        // Convert selected letter strings to letter objects
+        this.selectedLetters = selectedLetterStrings.map(letter => 
+            this.letters.find(l => l.letter === letter)
+        ).filter(Boolean);
         
         // Update tile count info when letters change
         if (this.updateTileInfo) {
@@ -801,33 +790,15 @@ class MemoryGame {
         }
     }
     
-    updateLetterSelectionUI() {
-        // Update visual selection state
-        document.querySelectorAll('.letter-option').forEach(option => {
-            const letter = option.dataset.letter;
-            const isSelected = this.selectedLetters.some(l => l.letter === letter);
-            
-            if (isSelected) {
-                option.classList.add('selected');
-            } else {
-                option.classList.remove('selected');
-            }
-        });
-    }
-    
     selectAllLetters() {
-        this.selectedLetters = [...this.letters];
-        this.updateLetterSelectionUI();
-        if (this.updateTileInfo) {
-            this.updateTileInfo();
+        if (this.letterSelection) {
+            this.letterSelection.selectAll();
         }
     }
     
     selectNoLetters() {
-        this.selectedLetters = [];
-        this.updateLetterSelectionUI();
-        if (this.updateTileInfo) {
-            this.updateTileInfo();
+        if (this.letterSelection) {
+            this.letterSelection.selectNone();
         }
     }
     

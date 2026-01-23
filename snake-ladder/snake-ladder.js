@@ -95,70 +95,43 @@ class SnakeLadderGame {
     }
 
     selectAllLetters() {
-        this.selectedLetters = [...this.letters];
-        this.updateLetterSelectionUI();
+        if (this.letterSelection) {
+            this.letterSelection.selectAll();
+        }
     }
 
     selectNoLetters() {
-        this.selectedLetters = [];
-        this.updateLetterSelectionUI();
+        if (this.letterSelection) {
+            this.letterSelection.selectNone();
+        }
     }
 
     initializeSetupScreen() {
-        const letterGrid = document.getElementById('letterGrid');
+        // Get available letters for selection
+        const availableLetters = this.letters.map(l => l.letter);
 
-        // Create clickable letter options
-        this.letters.forEach(letterObj => {
-            const letterOption = document.createElement('div');
-            letterOption.className = 'letter-option';
-            letterOption.textContent = letterObj.letter;
-            letterOption.dataset.letter = letterObj.letter;
-
-            letterOption.addEventListener('click', () => {
-                this.toggleLetterSelection(letterObj.letter);
-            });
-
-            letterGrid.appendChild(letterOption);
-        });
-
-        // Select 2 random letters by default
-        const shuffledLetters = this.shuffle([...this.letters]);
-        this.selectedLetters = shuffledLetters.slice(0, 2);
-        this.updateLetterSelectionUI();
-    }
-
-    toggleLetterSelection(letter) {
-        const letterObj = this.letters.find(l => l.letter === letter);
-        const letterOption = document.querySelector(`[data-letter="${letter}"]`);
-
-        const index = this.selectedLetters.findIndex(l => l.letter === letter);
-
-        if (index > -1) {
-            // Deselect
-            this.selectedLetters.splice(index, 1);
-            letterOption.classList.remove('selected');
-        } else {
-            // Select
-            this.selectedLetters.push(letterObj);
-            letterOption.classList.add('selected');
-        }
-
-        this.updateLetterSelectionUI();
-    }
-
-    updateLetterSelectionUI() {
-        // Update visual state of all letter buttons
-        this.letters.forEach(letterObj => {
-            const letterOption = document.querySelector(`[data-letter="${letterObj.letter}"]`);
-            if (letterOption) {
-                const isSelected = this.selectedLetters.some(l => l.letter === letterObj.letter);
-                if (isSelected) {
-                    letterOption.classList.add('selected');
-                } else {
-                    letterOption.classList.remove('selected');
-                }
+        // Initialize letter selection component with persistence
+        this.letterSelection = new LetterSelection({
+            containerSelector: '#letterGrid',
+            selectAllBtnSelector: '#selectAllBtn',
+            selectNoneBtnSelector: '#selectNoneBtn',
+            letters: availableLetters,
+            minSelections: 2,
+            defaultSelections: 2,
+            onSelectionChange: (selectedLetters) => {
+                this.updateSelectedLetters(selectedLetters);
             }
         });
+
+        // Initialize selected letters from the component
+        this.updateSelectedLetters(this.letterSelection.getSelectedLetters());
+    }
+
+    updateSelectedLetters(selectedLetterStrings) {
+        // Convert selected letter strings to letter objects
+        this.selectedLetters = selectedLetterStrings.map(letter => 
+            this.letters.find(l => l.letter === letter)
+        ).filter(Boolean);
 
         // Update counter
         document.getElementById('letterCount').textContent = this.selectedLetters.length;
