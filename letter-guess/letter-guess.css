@@ -364,11 +364,12 @@
 
 @media (max-width: 768px) {
   #setup-screen {
-    padding: var(--spacing-lg);
+    padding: var(--spacing-md);
   }
 
   .setup-container {
     padding: var(--spacing-lg);
+    max-width: 100%;
   }
 
   .setup-container h1 {
@@ -377,6 +378,10 @@
 
   .game-description {
     font-size: var(--font-size-lg);
+  }
+
+  .setup-section {
+    padding: var(--spacing-md);
   }
 
   .settings-grid {
@@ -394,31 +399,25 @@
   }
 
   .game-header {
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
   }
 
   .game-area {
     padding-top: 100px;
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
   }
 
   .game-content {
     grid-template-columns: 1fr;
-    gap: var(--spacing-xl);
+    gap: var(--spacing-lg);
+    padding: var(--spacing-md);
   }
 
-  .question-text {
-    font-size: var(--font-size-2xl);
-  }
-
-  #image-content {
-    font-size: 80px;
-    min-width: 150px;
-    min-height: 150px;
-  }
-
-  #image-content img {
-    max-width: 150px;
-    max-height: 150px;
+  .question-section {
+    max-width: 100%;
   }
 
   .question-text {
@@ -426,9 +425,25 @@
     padding: var(--spacing-md);
   }
 
+  #image-content {
+    font-size: 60px;
+    min-width: 120px;
+    min-height: 120px;
+    padding: var(--spacing-lg);
+  }
+
+  #image-content img {
+    max-width: 120px;
+    max-height: 120px;
+  }
+
+  .letter-options {
+    gap: var(--spacing-md);
+  }
+
   .letter-btn {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     font-size: var(--font-size-2xl);
   }
 
@@ -437,8 +452,8 @@
   }
 
   .victory-container {
-    padding: var(--spacing-xl);
-    margin: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-md);
   }
 
   .victory-container h1 {
@@ -465,17 +480,52 @@
 }
 
 @media (max-width: 480px) {
+  .setup-container {
+    padding: var(--spacing-md);
+  }
+
+  .setup-container h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  .game-description {
+    font-size: var(--font-size-md);
+  }
+
+  .setup-section h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .game-area {
+    padding-top: 90px;
+  }
+
   .letter-options {
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
   }
 
   .letter-btn {
-    width: 55px;
-    height: 55px;
+    width: 50px;
+    height: 50px;
     font-size: var(--font-size-xl);
   }
 
   .question-text {
     font-size: var(--font-size-lg);
+  }
+
+  #image-content {
+    font-size: 50px;
+    min-width: 100px;
+    min-height: 100px;
+  }
+
+  #image-content img {
+    max-width: 100px;
+    max-height: 100px;
+  }
+
+  .victory-container h1 {
+    font-size: var(--font-size-2xl);
   }
 }

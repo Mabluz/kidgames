@@ -454,13 +454,71 @@ p {
     background: linear-gradient(145deg, #3182ce, #2c5282);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .game-container {
         padding: var(--spacing-lg);
+        width: 95%;
     }
 
     h1 {
         font-size: var(--font-size-3xl);
+    }
+
+    h2 {
+        font-size: var(--font-size-2xl);
+    }
+
+    .alphabet {
+        grid-template-columns: repeat(5, 1fr);
+        gap: var(--spacing-sm);
+    }
+
+    .letter-container {
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm);
+    }
+
+    .letter-btn {
+        width: 40px;
+        height: 40px;
+        font-size: var(--font-size-md);
+    }
+
+    .sound-btn {
+        width: 24px;
+        height: 24px;
+        font-size: var(--font-size-sm);
+    }
+
+    .letter-slot {
+        width: 45px;
+        height: 55px;
+        font-size: var(--font-size-2xl);
+    }
+
+    .game-info {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+
+    .start-screen {
+        padding: var(--spacing-2xl) var(--spacing-lg);
+    }
+}
+
+@media (max-width: 480px) {
+    .game-container {
+        padding: var(--spacing-md);
+        width: 100%;
+    }
+
+    h1 {
+        font-size: var(--font-size-2xl);
+    }
+
+    h2 {
+        font-size: var(--font-size-xl);
     }
 
     .alphabet {
@@ -487,28 +545,22 @@ p {
     }
 
     .letter-slot {
-        width: 40px;
-        height: 50px;
+        width: 38px;
+        height: 48px;
         font-size: var(--font-size-xl);
-    }
-
-    .game-info {
-        flex-direction: column;
-        gap: var(--spacing-lg);
-        text-align: center;
     }
 
     .start-screen {
-        padding: var(--spacing-xl) var(--spacing-lg);
+        padding: var(--spacing-xl) var(--spacing-md);
     }
 
     .start-screen h2 {
-        font-size: var(--font-size-xl);
+        font-size: var(--font-size-lg);
     }
 
     .start-btn {
-        padding: var(--spacing-lg) var(--spacing-xl);
-        font-size: var(--font-size-lg);
+        padding: var(--spacing-md) var(--spacing-lg);
+        font-size: var(--font-size-md);
     }
 
     .letter-help {

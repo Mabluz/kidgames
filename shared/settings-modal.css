@@ -21,6 +21,8 @@
     min-width: 300px;
     max-width: 400px;
     width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .settings-modal-content {
@@ -93,4 +95,35 @@
 
 .hidden {
     display: none !important;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .settings-modal {
+        width: 95%;
+        max-width: none;
+        min-width: 0;
+    }
+
+    .settings-header {
+        padding: 15px 20px;
+    }
+
+    .settings-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .settings-body {
+        padding: 20px;
+    }
+
+    .settings-section h4 {
+        font-size: 1rem;
+    }
+
+    .close-settings-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 1.3rem;
+    }
 }

@@ -537,27 +537,92 @@ header p {
    RESPONSIVE DESIGN
    ========================================== */
 
-@media (max-width: 500px) {
+@media (max-width: 768px) {
   .container {
     padding: var(--spacing-lg);
+    width: 95%;
   }
 
   header h1 {
     font-size: var(--font-size-3xl);
   }
 
+  header p {
+    font-size: var(--font-size-lg);
+  }
+
   .game-board {
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .game-info {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .score {
+    width: 100%;
+    justify-content: space-around;
+    font-size: var(--font-size-md);
   }
 
   .letter {
     font-size: var(--font-size-xl);
   }
 
+  .word {
+    font-size: var(--font-size-md);
+  }
+
   .image {
-    width: 40px;
-    height: 40px;
-    font-size: 2rem;
+    font-size: 4rem;
+  }
+
+  .card-front {
+    font-size: 5rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    padding: var(--spacing-md);
+    width: 100%;
+    margin: 0;
+  }
+
+  header h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  header p {
+    font-size: var(--font-size-md);
+  }
+
+  .game-board {
+    gap: var(--spacing-sm);
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .letter {
+    font-size: var(--font-size-lg);
+  }
+
+  .word {
+    font-size: var(--font-size-sm);
+  }
+
+  .image {
+    font-size: 2.5rem;
+  }
+
+  .card-front {
+    font-size: 3rem;
   }
 
   /* Stack voice controls vertically on mobile */
