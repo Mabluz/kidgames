@@ -112,6 +112,7 @@ p {
     margin-bottom: var(--spacing-lg);
 }
 
+/* start-btn now uses design system .btn-start */
 .start-btn {
     margin-top: var(--spacing-xl);
 }

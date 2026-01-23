@@ -67,32 +67,7 @@ p {
     line-height: 1.6;
 }
 
-.start-btn {
-    background: linear-gradient(145deg, var(--color-success), var(--color-success-dark));
-    color: var(--color-white);
-    border: none;
-    padding: var(--spacing-lg) var(--spacing-2xl);
-    font-size: var(--font-size-lg);
-    font-weight: bold;
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    transition: all var(--transition-normal);
-    box-shadow: 0 6px 15px rgba(56, 161, 105, 0.4);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.start-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(56, 161, 105, 0.6);
-    background: linear-gradient(145deg, var(--color-success-dark), #276749);
-}
-
-.start-btn:active {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(56, 161, 105, 0.4);
-}
-
+/* start-btn styling now handled by design-system.css .btn-start */
 
 .flower-display {
     display: flex;

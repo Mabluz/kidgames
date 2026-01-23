@@ -443,26 +443,7 @@ header p {
   font-style: italic;
 }
 
-.start-game-btn {
-  /* Now uses design system button */
-  display: block;
-  margin: var(--spacing-2xl) auto 0;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
-  color: var(--color-white);
-  border: none;
-  padding: var(--spacing-lg) var(--spacing-3xl);
-  border-radius: var(--radius-xl);
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  cursor: pointer;
-  transition: all var(--transition-normal);
-  box-shadow: var(--shadow-lg);
-}
-
-.start-game-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-xl);
-}
+/* start-game-btn styling now handled by design-system.css .btn-start */
 
 .game-area {
   display: none;

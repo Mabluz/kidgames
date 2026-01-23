@@ -296,15 +296,7 @@ h3 {
     }
 }
 
-.next-btn {
-    background: linear-gradient(135deg, var(--color-success), var(--color-success-dark));
-    color: var(--color-white);
-}
-
-.next-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
-}
+/* next-btn styling now handled by design-system.css .btn-next */
 
 .recording-status {
     text-align: center;
@@ -314,25 +306,7 @@ h3 {
     min-height: 1.5rem;
 }
 
-.start-button {
-    display: block;
-    margin: var(--spacing-xl) auto 0;
-    padding: var(--spacing-lg) var(--spacing-3xl);
-    font-size: var(--font-size-lg);
-    font-weight: bold;
-    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
-    color: var(--color-white);
-    border: none;
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    transition: all var(--transition-normal);
-    box-shadow: var(--shadow-md);
-}
-
-.start-button:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
-}
+/* start-button styling now handled by design-system.css .btn-start */
 
 /* Game Screen */
 .game-header {

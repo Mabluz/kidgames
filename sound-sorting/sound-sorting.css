@@ -91,25 +91,7 @@ body {
     color: var(--color-white);
 }
 
-.start-button {
-    width: 100%;
-    background: var(--color-primary);
-    color: var(--color-white);
-    border: none;
-    padding: var(--spacing-lg);
-    border-radius: var(--radius-md);
-    font-size: var(--font-size-lg);
-    font-weight: bold;
-    cursor: pointer;
-    transition: all var(--transition-normal);
-    margin-top: var(--spacing-xl);
-}
-
-.start-button:hover {
-    background: var(--color-primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(90, 103, 216, 0.4);
-}
+/* start-button styling now handled by design-system.css .btn-start */
 
 /* Game Screen Styles */
 .game-header {

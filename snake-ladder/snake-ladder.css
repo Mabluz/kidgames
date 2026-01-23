@@ -149,7 +149,7 @@ body {
     border-color: var(--color-primary);
 }
 
-/* Start Button - Using design system .btn-primary */
+/* Start Button - Now uses design system .btn-start */
 .start-btn {
     width: 100%;
     margin-top: var(--spacing-2xl);

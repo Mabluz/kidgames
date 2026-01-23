@@ -81,24 +81,7 @@
     font-size: 1.1rem;
 }
 
-.restart-btn {
-    background: #ff6b6b;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.restart-btn:hover {
-    background: #ff5252;
-    transform: translateY(-2px);
-}
+/* restart-btn styling now handled by design-system.css .btn-start */
 
 .warning-text {
     font-size: 0.85rem;
