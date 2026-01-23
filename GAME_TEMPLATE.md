@@ -465,7 +465,83 @@ class MyGame {
 
 ---
 
-## 5. Required CSS Files
+## 5. Letter Selection Persistence
+
+### Automatic Memory Feature
+
+**NEW:** By default, the `LetterSelection` component now **automatically remembers** the user's letter selections using localStorage. When a user selects letters in one game and then opens another game, their previous selection will be automatically restored.
+
+### How It Works
+
+1. **User selects letters** in any game
+2. **Selection is saved** to localStorage automatically
+3. **Next time any game loads**, the saved selection is restored
+4. **Works across all games** that use the shared LetterSelection component
+
+### Benefits
+
+- **User convenience**: No need to select the same letters every time
+- **Seamless experience**: Works across all games automatically
+- **Smart fallback**: If no saved selection exists, defaults to random letters
+- **Validation**: Only restores letters that are valid for the current game
+
+### Configuration Options
+
+```javascript
+// Default behavior (persistence enabled)
+this.letterSelection = new LetterSelection({
+    containerSelector: '#letter-selection',
+    minSelections: 1,
+    defaultSelections: 3
+    // persistSelection: true (default)
+});
+
+// Disable persistence for a specific game
+this.letterSelection = new LetterSelection({
+    containerSelector: '#letter-selection',
+    minSelections: 1,
+    defaultSelections: 3,
+    persistSelection: false  // Selection won't be saved/loaded
+});
+
+// Use a custom localStorage key (for game-specific selections)
+this.letterSelection = new LetterSelection({
+    containerSelector: '#letter-selection',
+    minSelections: 1,
+    defaultSelections: 3,
+    persistSelection: true,
+    localStorageKey: 'my-game-letters'  // Default: 'kidgames-selected-letters'
+});
+```
+
+### Advanced: Manual Control
+
+```javascript
+// Load saved selection manually
+const savedLetters = this.letterSelection.loadFromLocalStorage();
+console.log('Saved letters:', savedLetters);
+
+// Save current selection manually
+this.letterSelection.saveToLocalStorage();
+
+// Clear saved selection (for testing or reset)
+this.letterSelection.clearLocalStorage();
+
+// Programmatically set letters (also saves to localStorage)
+this.letterSelection.setSelectedLetters(['A', 'B', 'C']);
+```
+
+### Technical Details
+
+- **Storage Key**: Default is `'kidgames-selected-letters'`
+- **Format**: JSON array of letter strings, e.g., `["A", "B", "C"]`
+- **Validation**: Automatically validates that saved letters exist in available letters
+- **Minimum Check**: Falls back to random selection if saved selection is too small
+- **Error Handling**: Gracefully handles localStorage errors (e.g., private browsing)
+
+---
+
+## 6. Required CSS Files
 
 ### Confetti CSS (`shared/confetti.css`)
 
@@ -570,7 +646,11 @@ class MyGame {
             defaultSelections: 3,
             onSelectionChange: (selectedLetters) => {
                 this.selectedLetters = selectedLetters;
-            }
+            },
+            // Optional: Enable/disable persistence (default: true)
+            persistSelection: true,  // Remembers selection across games
+            // Optional: Custom localStorage key (default: 'kidgames-selected-letters')
+            localStorageKey: 'kidgames-selected-letters'
         });
 
         // Set initial selected letters

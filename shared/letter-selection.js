@@ -15,6 +15,10 @@ class LetterSelection {
         this.defaultSelections = options.defaultSelections || 2;
         this.onSelectionChange = options.onSelectionChange || (() => {});
         
+        // Persistence settings
+        this.persistSelection = options.persistSelection !== false; // Default to true
+        this.localStorageKey = options.localStorageKey || 'kidgames-selected-letters';
+        
         this.init();
     }
     
@@ -73,7 +77,22 @@ class LetterSelection {
     }
     
     selectDefaultLetters() {
-        // Select random letters by default
+        // Try to load from localStorage if persistence is enabled
+        if (this.persistSelection) {
+            const savedLetters = this.loadFromLocalStorage();
+            if (savedLetters && savedLetters.length > 0) {
+                // Validate saved letters are still in available letters
+                const validSavedLetters = savedLetters.filter(letter => this.letters.includes(letter));
+                
+                if (validSavedLetters.length >= this.minSelections) {
+                    validSavedLetters.forEach(letter => this.selectedLetters.add(letter));
+                    this.updateUI();
+                    return;
+                }
+            }
+        }
+        
+        // Fallback: Select random letters by default
         const shuffled = [...this.letters].sort(() => Math.random() - 0.5);
         const defaultCount = Math.min(this.defaultSelections, shuffled.length);
         
@@ -108,6 +127,7 @@ class LetterSelection {
         }
         
         this.updateUI();
+        this.saveToLocalStorage();
         this.onSelectionChange(this.getSelectedLetters());
     }
     
@@ -119,12 +139,14 @@ class LetterSelection {
         
         lettersToAdd.forEach(letter => this.selectedLetters.add(letter));
         this.updateUI();
+        this.saveToLocalStorage();
         this.onSelectionChange(this.getSelectedLetters());
     }
     
     selectNone() {
         this.selectedLetters.clear();
         this.updateUI();
+        this.saveToLocalStorage();
         this.onSelectionChange(this.getSelectedLetters());
     }
     
@@ -156,6 +178,7 @@ class LetterSelection {
             }
         });
         this.updateUI();
+        this.saveToLocalStorage();
         this.onSelectionChange(this.getSelectedLetters());
     }
     
@@ -183,7 +206,81 @@ class LetterSelection {
             };
         });
     }
+    
+    /**
+     * Save selected letters to localStorage
+     * This allows the selection to persist across page reloads and different games
+     */
+    saveToLocalStorage() {
+        if (!this.persistSelection) return;
+        
+        try {
+            const letters = this.getSelectedLetters();
+            localStorage.setItem(this.localStorageKey, JSON.stringify(letters));
+        } catch (error) {
+            console.warn('Failed to save letter selection to localStorage:', error);
+        }
+    }
+    
+    /**
+     * Load selected letters from localStorage
+     * @returns {Array<string>|null} Array of letter strings or null if not found
+     */
+    loadFromLocalStorage() {
+        if (!this.persistSelection) return null;
+        
+        try {
+            const saved = localStorage.getItem(this.localStorageKey);
+            if (saved) {
+                return JSON.parse(saved);
+            }
+        } catch (error) {
+            console.warn('Failed to load letter selection from localStorage:', error);
+        }
+        return null;
+    }
+    
+    /**
+     * Clear saved selection from localStorage
+     * Useful for testing or reset functionality
+     */
+    clearLocalStorage() {
+        if (!this.persistSelection) return;
+        
+        try {
+            localStorage.removeItem(this.localStorageKey);
+        } catch (error) {
+            console.warn('Failed to clear letter selection from localStorage:', error);
+        }
+    }
 }
 
 // Make it available globally for backwards compatibility
 window.LetterSelection = LetterSelection;
+
+/**
+ * Legacy function for backwards compatibility
+ * Initialize letter selection with persistence enabled by default
+ * @deprecated Use new LetterSelection() instead
+ */
+async function initializeLetterSelection(options = {}) {
+    try {
+        const response = await fetch('../letter-images.json');
+        if (!response.ok) throw new Error('Failed to fetch letter data');
+        
+        const letterData = await response.json();
+        const letters = letterData.map(item => item.letter);
+        
+        // Create new instance with persistence enabled by default
+        return new LetterSelection({
+            letters: letters,
+            persistSelection: options.persistSelection !== false,
+            ...options
+        });
+    } catch (error) {
+        console.error('Error initializing letter selection:', error);
+        document.querySelector('#letter-selection-container').innerHTML = 
+            '<p style="color: red;">Kunne ikke laste bokstavdata. Prøv å laste siden på nytt.</p>';
+        throw error;
+    }
+}
