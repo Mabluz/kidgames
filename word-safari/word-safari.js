@@ -56,6 +56,7 @@ class WordSafari {
             maxSelections: 1,
             minSelections: 1,
             defaultSelections: 1,
+            persistSelection: false, // Don't remember selection for this game
             onSelectionChange: (selectedLetters) => {
                 this.updateStartButton();
             }
